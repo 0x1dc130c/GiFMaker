@@ -11,10 +11,12 @@ module.exports = {
       width: {
         '128': '32rem',
         '72': '52.5rem',
+        '80': '60rem',
       },
       height: {
         '54': '37.5rem',
         '128': '32rem',
+        '28' : '7rem',
       },
       size: {
         '48': "12rem",
