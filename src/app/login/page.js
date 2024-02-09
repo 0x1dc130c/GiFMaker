@@ -8,7 +8,7 @@ export default function Home() {
     <div style={{ minHeight: "100vh", backgroundColor: "#E1EFFE" }}>
       <Navbar />
       <div style={{ paddingLeft: "17.5%", paddingRight: "17.5%" }}>
-        <div className="px-5 py-5" style={{ minHeight: "calc(100vh - 120px)" }}>
+        <div className="px-5 py-5" style={{ minHeight: "calc(100vh - 185px)" }}>
           <h1 className="text-2xl font-bold text-center">Login</h1>
           <div className="flex flex-col items-center mt-4 py-5">
             <input type="text" className="border border-gray-400 p-2 mb-2 rounded-lg" style={{ width: "320px"}} placeholder="Username" />
