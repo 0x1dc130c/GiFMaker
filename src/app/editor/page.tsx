@@ -33,7 +33,6 @@ function EditorPage() {
     </div>
   );
 }
-
 EditorPage.diplsayName = "EditorPage";
 
 export default EditorPage;
