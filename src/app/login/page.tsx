@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
-
+import Navbar from '@/components/Navbar';
 function Login() {
     return (
         <div className="m-0">
+            <Navbar />
             <div className="items-center justify-between flex flex-col py-[14rem]">
                 <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                     <form className="space-y-6" action="#">

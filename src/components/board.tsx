@@ -16,33 +16,90 @@ const imgURLS: string[] = [
     "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg",
     "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg",
     "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
-
-
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg",
 ];
 
 interface BoradProps {
     gridClass: string;
 }
 
+
 const Borad: React.FC<BoradProps> = ({ gridClass }) => {
+    const count = 0;
+    const cols_one = [];
+    const cols_two = [];
+    const cols_three = [];
+    const cols_four = [];
+
+    for (let i = 0; i < imgURLS.length; i++) {
+        if (cols_one.length <= 3){
+            cols_one.push(imgURLS[i]);
+        } else if (cols_two.length <= 3) {
+            cols_two.push(imgURLS[i]);
+        } else if (cols_three.length <= 3) {
+            cols_three.push(imgURLS[i]);
+        } else if (cols_four.length <= 3) {
+            cols_four.push(imgURLS[i]);
+        }
+    }
+
+    // if (imgURLS.length > 0) {
+    //     for (let i = 0; i < imgURLS.length; i++) {
+    //         if (i % 4 === 0) {
+    //             cols_one.push(imgURLS[i]);
+    //             console.log(cols_one);
+    //         } else if (i % 4 === 1) {
+    //             cols_two.push(imgURLS[i]);
+    //             console.log(cols_two);
+    //         } else if (i % 4 === 2) {
+    //             cols_three.push(imgURLS[i]);
+    //             console.log(cols_three);
+    //         } else if (i % 4 === 3) {
+    //             cols_four.push(imgURLS[i]);
+    //             console.log(cols_four);
+    //         }
+    //     }
+    // }
+
     return (
-        // <Masonry
-        //     breakpointCols={{
-        //         default: 4,
-        //         1100: 3,
-        //         700: 2,
-        //         500: 1
-        //     }}
-        //     className="my-masonry-grid"
-        //     columnClassName="my-masonry-grid_column"
-        // >
-        <div  className="grid grid-cols-2 md:grid-cols-3 gap-4 flex-auto">
-            {imgURLS.map((url, index) => (
-                <div key={index} className={gridClass}>
-                    <img className="h-auto max-w-full rounded-lg w-full flew" src={url} alt=""/>
-                </div>
-            ))}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className={gridClass}>
+                {cols_one.map((url, index) => (
+                    <div key={index}>
+                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    </div>
+                ))}
+            </div>
+
+            <div className={gridClass}>
+                {cols_two.map((url, index) => (
+                    <div key={index}>
+                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    </div>
+                ))}
+            </div>
+            <div className={gridClass}>
+                {cols_three.map((url, index) => (
+                    <div key={index}>
+                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    </div>
+                ))}
+            </div>
+            <div className={gridClass}>
+                {cols_four.map((url, index) => (
+                    <div key={index}>
+                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    </div>
+                ))}
+            </div>
+            {/* {imgURLS.map((url, index) => (
+                    <div key={index} className={gridClass}>
+                        <div>
+                            <img className="h-auto max-w-full rounded-lg w-full flew" src={url} alt=""/>
+                        </div>
+                    </div>
+            
+            ))}; */}
         </div>
         // </Masonry>
     );
