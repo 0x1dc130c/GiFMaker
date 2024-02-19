@@ -9,7 +9,7 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
         <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen">
           <div className="sm:hidden row-start-1">
-              <label for="tabs" className="sr-only">Select your country</label>
+              <label htmlFor="tabs" className="sr-only">Select your country</label>
               <select id="tabs" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option>Profile</option>
                   <option>Dashboard</option>
@@ -31,8 +31,11 @@ export default function Home() {
                   <a href="#" className="inline-block w-full p-4 bg-white border-s-0 border-gray-200 dark:border-gray-700 rounded-e-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">Invoice</a>
               </li>
           </ul>
-          <div className="row-start-2">
-            <Borad gridClass="grid gap-4 m-[20px]" />
+          <div className="row-start-2 m-1">
+            <h1>Hello</h1>
+          </div>
+          <div className="row-start-3">
+            <Borad gridClass="grid gap-4" />
           </div> 
           
       </div>
