@@ -62,7 +62,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
     // }
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className={gridClass}>
                 {cols_one.map((url, index) => (
                     <div key={index} className='w-full h-full flex'>
