@@ -34,7 +34,7 @@ export default function Home() {
             </li>
           </ul>
           <div className="row-start-2 m-1">
-            <div className="flex flwx-col float-right mr-5">
+            <div className="flex flwx-col float-right mr-5 relative">
               <Tags_imge />
             </div>
           </div>

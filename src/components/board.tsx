@@ -17,6 +17,18 @@ const imgURLS: string[] = [
     "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg",
     "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg",
     "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg",
+    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg",
 ];
 
 interface BoradProps {
@@ -30,6 +42,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
     const cols_two = [];
     const cols_three = [];
     const cols_four = [];
+    const cols_five = [];
 
     for (let i = 0; i < imgURLS.length; i++) {
         if (cols_one.length <= 3){
@@ -40,6 +53,8 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
             cols_three.push(imgURLS[i]);
         } else if (cols_four.length <= 3) {
             cols_four.push(imgURLS[i]);
+        } else if (cols_five.length <= 3) {
+            cols_five.push(imgURLS[i]);
         }
     }
 
@@ -87,7 +102,14 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
             </div>
             <div className={gridClass}>
                 {cols_four.map((url, index) => (
-                    <div key={index}>
+                    <div key={index} className='w-full h-full flex'>
+                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    </div>
+                ))}
+            </div>
+            <div className={gridClass}>
+                {cols_five.map((url, index) => (
+                    <div key={index} className='w-full h-full flex'>
                         <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
                     </div>
                 ))}

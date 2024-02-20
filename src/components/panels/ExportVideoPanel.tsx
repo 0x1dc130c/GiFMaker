@@ -51,12 +51,12 @@ export const ExportVideoPanel = observer(() => {
             className="mr-2"
             name="video-format"
             value="gif"
-            checked={store.selectedVideoFormat === "webm"}
+            checked={store.selectedVideoFormat === "gif"}
             onChange={(e) => {
-              store.setVideoFormat("webm");
+              store.setVideoFormat("gif");
             }}
           />
-          <div className="text-xs mr-2">webm</div>
+          <div className="text-xs mr-2">gif</div>
         </div>
       </div>
 
