@@ -65,23 +65,23 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className={gridClass}>
                 {cols_one.map((url, index) => (
-                    <div key={index}>
-                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    <div key={index} className='w-full h-full flex'>
+                        <img className="h-auto max-w-full rounded-lg object-cover" src={url} alt="" />
                     </div>
                 ))}
             </div>
 
             <div className={gridClass}>
                 {cols_two.map((url, index) => (
-                    <div key={index}>
-                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    <div key={index} className='w-full h-full flex'>
+                        <img className="h-auto max-w-full rounded-lg object-cover" src={url} alt="" />
                     </div>
                 ))}
             </div>
             <div className={gridClass}>
                 {cols_three.map((url, index) => (
-                    <div key={index}>
-                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    <div key={index} className='w-full h-full flex'>
+                        <img className="h-auto max-w-full rounded-lg object-cover" src={url} alt="" />
                     </div>
                 ))}
             </div>
