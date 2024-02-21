@@ -6,7 +6,9 @@ import { MenuOption, EditorElement, Animation, TimeFrame, VideoEditorElement, Au
 import { FabricUitls } from '@/utils/fabric-utils';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { toBlobURL } from '@ffmpeg/util';
-
+// import { createFFmpeg, fetchFile } from '@ffmpeg/util';
+// import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+// import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 export class Store {
   canvas: fabric.Canvas | null
 
@@ -690,7 +692,7 @@ export class Store {
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "video.gif";
+          a.download = "video.webm";
           a.click();
         }
       };
