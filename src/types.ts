@@ -101,10 +101,12 @@ export type Animation =
 
 export type MenuOption =
   | "Video"
-  | "Audio"
   | "Text"
   | "Image"
   | "Export"
-  | "Animation"
   | "Effect"
   | "Fill";
+
+
+  // | "Audio"
+  // | "Animation"

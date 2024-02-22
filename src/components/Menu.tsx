@@ -64,13 +64,7 @@ const MENU_OPTIONS = [
       store.setSelectedMenuOption("Video");
     },
   },
-  {
-    name: "Audio",
-    icon: MdAudiotrack,
-    action: (store: Store) => {
-      store.setSelectedMenuOption("Audio");
-    },
-  },
+  
   {
     name: "Text",
     icon: MdTitle,
@@ -78,13 +72,7 @@ const MENU_OPTIONS = [
       store.setSelectedMenuOption("Text");
     },
   },
-  {
-    name: "Animation",
-    icon: MdTransform,
-    action: (store: Store) => {
-      store.setSelectedMenuOption("Animation");
-    },
-  },
+  
   {
     name: "Effect",
     icon: MdMovieFilter,
@@ -107,3 +95,18 @@ const MENU_OPTIONS = [
     },
   },
 ];
+
+// {
+//   name: "Audio",
+//   icon: MdAudiotrack,
+//   action: (store: Store) => {
+//     store.setSelectedMenuOption("Audio");
+//   },
+// },
+// {
+//   name: "Animation",
+//   icon: MdTransform,
+//   action: (store: Store) => {
+//     store.setSelectedMenuOption("Animation");
+//   },
+// },

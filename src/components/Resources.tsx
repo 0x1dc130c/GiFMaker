@@ -17,10 +17,10 @@ export const Resources = observer(() => {
   return (
     <div className="bg-slate-200 h-full">
       {selectedMenuOption === "Video" ? <VideoResourcesPanel /> : null}
-      {selectedMenuOption === "Audio" ? <AudioResourcesPanel /> : null}
+      {/* {selectedMenuOption === "Audio" ? <AudioResourcesPanel /> : null} */}
       {selectedMenuOption === "Image" ? <ImageResourcesPanel /> : null}
       {selectedMenuOption === "Text" ? <TextResourcesPanel /> : null}
-      {selectedMenuOption === "Animation" ? <AnimationsPanel /> : null}
+      {/* {selectedMenuOption === "Animation" ? <AnimationsPanel /> : null} */}
       {selectedMenuOption === "Effect" ? <EffectsPanel /> : null}
       {selectedMenuOption === "Export" ? <ExportVideoPanel /> : null}
       {selectedMenuOption === "Fill" ? <FillPanel /> : null}

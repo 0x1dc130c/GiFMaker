@@ -431,8 +431,8 @@ export class Store {
         name: `Media(video) ${index + 1}`,
         type: "video",
         placement: {
-          x: 0,
-          y: 0,
+          x: 100,
+          y: 100,
           width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
@@ -503,8 +503,8 @@ export class Store {
         name: `Media(audio) ${index + 1}`,
         type: "audio",
         placement: {
-          x: 0,
-          y: 0,
+          x: 100,
+          y: 100,
           width: 100,
           height: 100,
           rotation: 0,
@@ -536,8 +536,8 @@ export class Store {
         name: `Text ${index + 1}`,
         type: "text",
         placement: {
-          x: 0,
-          y: 0,
+          x: 100,
+          y: 100,
           width: 100,
           height: 100,
           rotation: 0,
