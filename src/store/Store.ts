@@ -27,8 +27,8 @@ export class Store {
   currentKeyFrame: number;
   fps: number;
 
-  possibleVideoFormats: string[] = ['mp4', 'webm'];
-  selectedVideoFormat: 'mp4' | 'webm';
+  possibleVideoFormats: string[] = ['mp4', 'gif'];
+  selectedVideoFormat: 'mp4' | 'gif';
 
   constructor() {
     this.canvas = null;
@@ -620,7 +620,7 @@ export class Store {
 
   // }
 
-  setVideoFormat(format: 'mp4' | 'webm') {
+  setVideoFormat(format: 'mp4' | 'gif') {
     this.selectedVideoFormat = format;
   }
 
@@ -690,7 +690,7 @@ export class Store {
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "video.webm";
+          a.download = "video.gif";
           a.click();
         }
       };

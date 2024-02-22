@@ -6,17 +6,29 @@ import Masonry from 'react-masonry-css';
 
 const imgURLS: string[] = [
     "/giphy.gif",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg",
-    "https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg",
+    "/giphy2.gif",
+    "/giphy3.gif",
+    "/giphy4.gif",
+    "/giphy5.gif",
+    "/giphy6.gif",
+    "/giphy7.gif",
+    "/giphy8.gif",
+    "/giphy9.gif",
+    "/giphy10.gif",
+    "/giphy11.gif",
+    "/giphy12.gif",
+    "/giphy13.gif",
+    "/giphy14.gif",
+    "/giphy15.gif",
+    "/giphy16.gif",
+    "/giphy17.gif",
+    "/giphy18.gif",
+    "/giphy19.gif",
+    "/giphy20.gif",
+    "/giphy21.gif",
+    "/giphy22.gif",
+    "/giphy23.gif",
+    "/giphy24.gif",
 ];
 
 interface BoradProps {
@@ -30,6 +42,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
     const cols_two = [];
     const cols_three = [];
     const cols_four = [];
+    const cols_five = [];
 
     for (let i = 0; i < imgURLS.length; i++) {
         if (cols_one.length <= 3){
@@ -40,6 +53,8 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
             cols_three.push(imgURLS[i]);
         } else if (cols_four.length <= 3) {
             cols_four.push(imgURLS[i]);
+        } else if (cols_five.length <= 3) {
+            cols_five.push(imgURLS[i]);
         }
     }
 
@@ -62,7 +77,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
     // }
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div className={gridClass}>
                 {cols_one.map((url, index) => (
                     <div key={index} className='w-full h-full flex'>
@@ -87,7 +102,14 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
             </div>
             <div className={gridClass}>
                 {cols_four.map((url, index) => (
-                    <div key={index}>
+                    <div key={index} className='w-full h-full flex'>
+                        <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
+                    </div>
+                ))}
+            </div>
+            <div className={gridClass}>
+                {cols_five.map((url, index) => (
+                    <div key={index} className='w-full h-full flex'>
                         <img className="h-auto max-w-full rounded-lg" src={url} alt="" />
                     </div>
                 ))}
