@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Borad from "../components/board";
 import Tags_imge from "../components/tags";
-import Search from "@/components/search";
+import Search from "../components/search";
 export default function Home() {
   return (
     < main >
