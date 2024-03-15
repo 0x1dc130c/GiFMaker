@@ -630,8 +630,8 @@ export class Store {
   }
 
   saveCanvasToVideoWithAudioWebmMp4() {
+    console.log('modified')
     let mp4 = this.selectedVideoFormat === 'mp4'
-    console.log(mp4);
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const stream = canvas.captureStream(30);
     const audioElements = this.editorElements.filter(isEditorAudioElement)
@@ -675,6 +675,14 @@ export class Store {
             wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
             // workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript'),
           });
+          // await ffmpeg.exec(["-y", "-i", "video.webm", "video.gif"]);
+          // const output = await ffmpeg.readFile('video.gif');
+          // const outputBlob = new Blob([output], { type: "image/gif" });
+          // const outputUrl = URL.createObjectURL(outputBlob);
+          // const a = document.createElement("a");
+          // a.download = "video.gif";
+          // a.href = outputUrl;
+          // a.click();
           await ffmpeg.writeFile('video.webm', data);
           await ffmpeg.exec(["-y", "-i", "video.webm", "-c", "copy", "video.mp4"]);
           // await ffmpeg.exec(["-y", "-i", "video.webm", "-c:v", "libx264", "video.mp4"]);
@@ -688,38 +696,11 @@ export class Store {
           a.click();
 
         } else {
-          console.log(" Convert GIF .....")
-          const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-          if (!canvas) {
-            console.error('Canvas element not found');
-            return;
-          }
-
-          const gif = new GIF({
-            workers: 2,
-            quality: 10
-          });
-
-          // เพิ่มเฟรมตามที่คุณต้องการใน GIF
-          // สามารถใช้ canvasElement แทน canvas ได้
-          // และสามารถกำหนดค่า delay ในแต่ละเฟรมได้
-          gif.addFrame(canvas, { delay: 200 });
-
-          // เมื่อเสร็จสิ้นการสร้าง GIF
-          gif.on('finished', function (blob) {
-            window.open(URL.createObjectURL(blob));
-          });
-          // สั่ง render สร้าง GIF
-          console.log("Convert GIF Success ! ")
-          // สั่ง render สร้าง GIF
-          gif.on('finished', function (blob) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "video.gif";
-            a.click();
-          });
-          gif.render();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "video.gif";
+          a.click();
         }
       };
       mediaRecorder.start();
