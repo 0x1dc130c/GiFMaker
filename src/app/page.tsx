@@ -5,31 +5,47 @@ import Footer from "../components/Footer";
 import Borad from "../components/board";
 import Tags_imge from "../components/tags";
 import SearchBar from "../components/searchbar";
+import { useState } from 'react';
 import Sort from "../components/sort";
-export default function Home() {
-  return (
-    < main >
-      <Navbar />
-      <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
-        <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen">
-          <Sort/>
-          <div className="grid p-6">
-          <SearchBar />
-            <div className="flex flwx-col float-right mr-5 relative">
-              {/* <Tags_imge /> */}
+import axios, { AxiosError } from "axios";
+export default async function Home() {
+  const payload = {}; // Declare the payload variable
+  try {
+    const {data} = await axios.post("/api/auth/login", payload);
+    console.log(data);
+  } catch (e) {
+    const error = e as AxiosError; // Add a space between 'as' and '.AxiosError'ert()
+    console.error(error.response?.data);
+  }
+    return (
+      < main >
+        <Navbar />
+        <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
+          <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen">
+            <Sort />
+            <div className="grid p-6">
+              <SearchBar />
+              <div className="flex flwx-col float-right mr-5 relative">
+                {/* <Tags_imge /> */}
+              </div>
+            </div>
+            <div className="row-start-3">
+              <Borad gridClass="grid gap-4" />
+            </div>
+            <div className="row-start-4">
+              <div className="flex flex-col items-center justify-between m-2">
+                <Link href="/"><button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 ">More</button></Link>
+              </div>
             </div>
           </div>
-          <div className="row-start-3">
-            <Borad gridClass="grid gap-4" />
-          </div>
-          <div className="row-start-4">
-            <div className="flex flex-col items-center justify-between m-2">
-              <Link href="/"><button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 ">More</button></Link>
-            </div>
-          </div>
-        </div>
+        </main>
+        <Footer />
       </main>
-      <Footer />
-    </main>
-  );
-}
+    );
+    // Remove the unnecessary closing parenthesis
+    // });
+  }
+  function useClient() {
+    throw new Error("Function not implemented.");
+  }
+
