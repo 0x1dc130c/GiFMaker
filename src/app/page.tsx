@@ -7,6 +7,9 @@ import Tags_imge from "../components/tags";
 import SearchBar from "../components/searchbar";
 import Sort from "../components/sort";
 export default function Home() {
+
+  
+
   return (
     < main >
       <Navbar />
