@@ -1,30 +1,24 @@
-import { NextResponse } from "next/server";
-import pool from "../../utils/db";
+import {NextRequest, NextResponse } from "next/server";
+import models from "../../utils/models";
 
 export async function POST(request: Request) {
     try {
-        const { name, email, password } = await request.json();
-        console.log("name : ", name);
-        console.log("email : ", email);
-        console.log("password : ", password);
+        const body = await request.json();
+        console.log("body", body);
+        const { username,password, cpassword, email, name } = body;
+        const status = 1;
+        const role = "user";
         
-        const newUser = {
-            Username: name,
-            Password: password,
-            email: email,
-            status:"test",
-            role: "test",
-            name: "test",
-        };
-        
-        pool.query("INSERT INTO user_ SET ?", newUser, (error, results) => {
-            if (error) {
-                throw error;
-            }
-            console.log("User registered successfully!!!!");
-        });
+        console.log("username", username, "email", email, "password", password, "name", name, "status", status, "role", role)
+        models.User.create({Username : username, Password : password, email : email, status : status, role : role , name : name });
+        return NextResponse.json({ message: {username, email, password}, status: 200 });
 
-        return NextResponse.json({ message: "User registered successfully", status: 201 });
+        // return NextResponse.json({ message: "User registered successfully", status: 200 });
+        // console.log("username", username, "email", email, "password", password, "name", name, "status", status, "role", role)
+
+        // await models.User.create({ username, email, password, name, status, role });
+        // return NextResponse.json({ message: "User registered successfully", status: 200 });
+
     } catch (error) {
         return NextResponse.json({ message: "Error in registration", status: 500 });
     }

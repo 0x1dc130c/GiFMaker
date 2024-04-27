@@ -56,7 +56,7 @@ export const TimeFrameView = observer((props: { element: EditorElement }) => {
           store.updateEditorElementTimeFrame(element, {
             start: value,
             end: value + (end - start),
-          });
+          })
         }}
       >
         <div

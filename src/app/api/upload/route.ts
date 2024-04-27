@@ -1,18 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { NextApiRequest } from 'next';
-import pool from '../../utils/db';
-
+import models from "../../utils/models";
 import { BlobServiceClient, BlockBlobUploadOptions, StorageSharedKeyCredential } from '@azure/storage-blob';
+import { where } from 'sequelize';
 const storageAccountName = 'gifmakerstorage';
 const storageAccountKey = 'GTVRTSAC2UtTOCgVoWuRtAQ6G6w4LWvbyT/TzWlHKA1uJWZro/CU+sQZPIfA6QtHJQZmlrClfAY7+AStc6Ax0g==';
 const containerName = 'gifstorage';
 
-function UploadMysql(data : any){
+async function UploadMysql(nameImg : string, time : number, url : string){  
+  const timstamp = time.toString();
+  const status = 'public';
+  const TagName = 'GIF';
+  const Userid = 104;
+  console.log('nameImg : ', nameImg);
+  console.log('timestamp : ', timstamp);
+  console.log('url : ', url); 
+  console.log('UserID : ', Userid);
+  console.log('status : ', status);
+  console.log('TagNames : ', TagName);
+  try {
+    const data = await models.info_image.create({imgName: nameImg, timestamp: timstamp, path_Img: url, UserID: Userid, status_img: status, TagNames: TagName});
+    console.log('data : ', data);
+
+  } catch (error) {
+
+    console.log('Error in UploadMysql : ', error);
+
+  }
   
-  const { name, email, password } = data;
-  console.log("name : ", name);
-  console.log("email : ", email);
-  console.log("password : ", password);
 };
 
 export async function POST(request : NextRequest){
@@ -37,12 +52,16 @@ export async function POST(request : NextRequest){
       const containerClient = blobServiceClient.getContainerClient(containerName);
       const blobName = `foldergif/${nameFile}-image.gif`;
       const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+      const ImgUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blobName}`;
       
+      UploadMysql(nameFile, Date.now(),  ImgUrl);
+
       // อัปโหลด Blob
       await blockBlobClient.uploadData(await blob.arrayBuffer(), options);
 
       console.log('file : ', file);
-      return NextResponse.json({ message: 'File uploaded successfully' });
+      return NextResponse.json({ message: 'File uploaded successfully',  });
     } catch (error) {
       console.error('Error uploading file : ', error);
       return NextResponse.json({ message: ' REQ == POST. Error in file upload ', status: 500 });

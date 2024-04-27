@@ -2,30 +2,10 @@
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import Link from 'next/link';
-
-function checkCookie(name: string) {
-  if (typeof document === 'undefined') {
-    return ; // Document object is not defined (server-side rendering)
-  }
-  
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.indexOf(name + '=') === 0) {
-      return true;
-    }
-  }
-  return ;
-}
+import { Modal } from 'flowbite';
 
 function Navbar() {
   const pathname = usePathname();
-  var cookieExists = checkCookie('OutSiteJWT');
-  let showObject: string = ''; // ย้ายการประกาศตัวแปร showObject มาที่นี่
-
-  if (!cookieExists) {
-    showObject = "hidden";
-  } 
   const isActive = (href: string) => {
     return pathname === href ? 'text-blue-700 md:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white' : 'text-gray-900 md:text-gray-900 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white';
   };
@@ -54,14 +34,9 @@ function Navbar() {
         <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             <li>
-              <Link href="/" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700${isActive('/')}`}>หน้าหลัก</Link>
+              <Link href="/" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700${isActive('/')}`}>หน้าหลัก test</Link>
             </li>
-            <li className={showObject}>
-              <Link href="/create" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700 ${isActive('/create')}`}>สร้าง</Link>
-            </li>
-            <li className={showObject}>
-              <Link href="/" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700 ${isActive('/upload')}`}>อัพโหลด</Link>
-            </li>
+            
             <li>
               <Link href="/about" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700 ${isActive('/about')}`}>เกี่ยวกับ</Link>
             </li>

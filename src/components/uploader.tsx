@@ -41,7 +41,16 @@ export default function UploadFile() {
                 console.log('formData client : ', formData);
                 const { data } = await axios.post('/api/upload', formData);
                 console.log('data : ', data);
-
+                if (data.status === 200) {
+                    console.log('File uploaded successfully');
+                    setSelectedImage("");
+                    setSetSelectedFile(undefined);
+                    setName("");
+                    setDescription("");
+                    
+                } else {
+                    console.log('Error uploading file');
+                }
                 setUploading(false);
                 // Handle success
             } catch (error) {
@@ -63,7 +72,7 @@ export default function UploadFile() {
 
     return (
         <div className="grid grid-rows-[500px_100px] grid-cols-[1fr_2fr]">
-            <div className="flex flex-col items-center justify-center row-1 col-1 bg-blue-300 p-5">
+            <div className="flex flex-col items-center justify-center row-1 col-1 bg-gray-300 p-5">
                 <label htmlFor="dropzone-file" className="relative flex flex-col items-center justify-center w-[52rem] h-[42rem] border-2 border-gray-800 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                     <div className="absolute inset-0 flex items-center justify-center">
                         {selectedImage && (
@@ -80,7 +89,7 @@ export default function UploadFile() {
                     <input id="dropzone-file" type="file" className="hidden" accept=".gif" onChange={handleImageChange} />
                 </label>
             </div>
-            <div className=" row-start-1 col-start-2 bg-green-500 p-5">
+            <div className=" row-start-1 col-start-2 bg-gray-500 p-5">
                 <div className="mb-6 m-2">
                     <label htmlFor="default-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                     <input value={name} onChange={handleNamechange} type="text" id="default-input" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -96,7 +105,7 @@ export default function UploadFile() {
                 </div>
 
             </div>
-            <div className="flex items-center justify-center row-start-2 col-start-2 bg-red-500 p-5">
+            <div className="flex items-center justify-center row-start-2 col-start-2 bg-gray-500 p-5">
                 <button onClick={handleImageUpload} disabled={uploading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4">
                     {uploading ? 'Uploading.. ' : "Upload"}
                 </button>

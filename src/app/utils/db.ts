@@ -1,12 +1,26 @@
 // project-root/utils/db.ts
-import mysql from 'mysql';
+import { Sequelize } from "sequelize";
 
-const pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'gif_maker'
-});
+const sequelize = new Sequelize(
+  'gif_maker',
+  'root',
+  '',
+  {
+    host: 'localhost',
+    dialect: 'mysql',
+    dialectModule: require('mysql2'),
+    define: {
+      timestamps: false,
+    },
+    logging: (msg: any) => console.log(msg)
+  },
+);
 
-export default pool;
+sequelize
+  .authenticate()
+  .then(() => console.log("Database connected successfully!"))
+  .catch((err: any) =>
+    console.error(`Unable to connect to the database: ${err}`),
+  );
+
+export default sequelize;

@@ -7,6 +7,7 @@ import { FabricUitls } from '@/utils/fabric-utils';
 import { FFmpeg} from '@ffmpeg/ffmpeg';
 import { toBlobURL } from '@ffmpeg/util';
 import GIF from 'gif.js';
+import { cookies } from 'next/dist/client/components/headers';
 
 export class Store {
   canvas: fabric.Canvas | null
@@ -21,6 +22,7 @@ export class Store {
   selectedElement: EditorElement | null;
 
   maxTime: number
+  minTime : number
   animations: Animation[]
   animationTimeLine: anime.AnimeTimelineInstance;
   playing: boolean;
@@ -38,11 +40,12 @@ export class Store {
     this.audios = [];
     this.editorElements = [];
     this.backgroundColor = '#111111';
-    this.maxTime = 10 * 1000;
+    this.maxTime = 5 * 1000;
+    this.minTime = this.maxTime / 5;
     this.playing = false;
     this.currentKeyFrame = 0;
     this.selectedElement = null;
-    this.fps = 60;
+    this.fps = 120;
     this.animations = [];
     this.animationTimeLine = anime.timeline();
     this.selectedMenuOption = 'Image';
@@ -430,8 +433,8 @@ export class Store {
         name: `Media(video) ${index + 1}`,
         type: "video",
         placement: {
-          x: 0,
-          y: 0,
+          x: 300,
+          y: 300,
           width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
@@ -466,8 +469,8 @@ export class Store {
         name: `Media(image) ${index + 1}`,
         type: "image",
         placement: {
-          x: 100,
-          y: 100,
+          x: 300,
+          y: 300,
           width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
@@ -535,8 +538,8 @@ export class Store {
         name: `Text ${index + 1}`,
         type: "text",
         placement: {
-          x: 0,
-          y: 0,
+          x: 250,
+          y: 200,
           width: 100,
           height: 100,
           rotation: 0,
@@ -545,7 +548,7 @@ export class Store {
         },
         timeFrame: {
           start: 0,
-          end: this.maxTime,
+          end: this.minTime,
         },
         properties: {
           text: options.text,
@@ -630,8 +633,8 @@ export class Store {
   }
 
   saveCanvasToVideoWithAudioWebmMp4() {
+    console.log('modified')
     let mp4 = this.selectedVideoFormat === 'mp4'
-    console.log(mp4);
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const stream = canvas.captureStream(30);
     const audioElements = this.editorElements.filter(isEditorAudioElement)
@@ -688,38 +691,26 @@ export class Store {
           a.click();
 
         } else {
-          console.log(" Convert GIF .....")
-          const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-          if (!canvas) {
-            console.error('Canvas element not found');
-            return;
-          }
-
-          const gif = new GIF({
-            workers: 2,
-            quality: 10
+          const data = new Uint8Array(await (blob).arrayBuffer());
+          const ffmpeg = new FFmpeg();
+          const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd"
+          await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+            // workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript'),
           });
+          await ffmpeg.writeFile('video.webm', data);
+          await ffmpeg.exec(["-y", "-i", "video.webm", "-c", "copy", "video.mp4"]);
+          await ffmpeg.exec(["-i","video.mp4", "videogif.gif" ])
+          // await ffmpeg.exec(["-y", "-i", "video.webm", "-c:v", "libx264", "video.mp4"]);
 
-          // เพิ่มเฟรมตามที่คุณต้องการใน GIF
-          // สามารถใช้ canvasElement แทน canvas ได้
-          // และสามารถกำหนดค่า delay ในแต่ละเฟรมได้
-          gif.addFrame(canvas, { delay: 200 });
-
-          // เมื่อเสร็จสิ้นการสร้าง GIF
-          gif.on('finished', function (blob) {
-            window.open(URL.createObjectURL(blob));
-          });
-          // สั่ง render สร้าง GIF
-          console.log("Convert GIF Success ! ")
-          // สั่ง render สร้าง GIF
-          gif.on('finished', function (blob) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "video.gif";
-            a.click();
-          });
-          gif.render();
+          const output = await ffmpeg.readFile('videogif.gif');
+          const outputBlob = new Blob([output], {  type: "image/gif"  });
+          const outputUrl = URL.createObjectURL(outputBlob);
+          const a = document.createElement("a");
+          a.download = "video-test.gif";
+          a.href = outputUrl;
+          a.click();
         }
       };
       mediaRecorder.start();

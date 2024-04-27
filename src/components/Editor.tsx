@@ -10,7 +10,7 @@ import { Menu } from "./Menu";
 import { TimeLine } from "./TimeLine";
 import { Store } from "@/store/Store";
 import "@/utils/fabric-utils";
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar-login';
 export const EditorWithStore = () => {
   const [store] = useState(new Store());
   return (

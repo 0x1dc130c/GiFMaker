@@ -1,12 +1,16 @@
 'use client';
 
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import axios, { AxiosError } from "axios";
+import Navbar from '@/components/Navbar-login';
+import { useCookies } from 'next-client-cookies';
+
+
 function Login() {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [error, setError] = React.useState('');
+    const cookies = useCookies();
+
     const payload = {
         username: username,
         password: password,
@@ -19,21 +23,25 @@ function Login() {
             return;
         }
         try {
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            fetch("/api/auth/login", {
+                method: "POST",
                 body: JSON.stringify({ username, password }),
+            }).then((res) => {
+                return res.json();
+            }).then((data) => {
+                if (data.status === 200) {
+                    cookies.set('token', data.token);
+                    if (data.role === 'admin') {
+                        window.location.href = "/admin";
+                    } else{
+                        window.location.href = "/";
+                    }
+                    console.log("User Login Successfully");
+                } else {
+                    console.log("User Login Failed");
+                }
             });
-            if (res.ok) {
-                const {data} = await axios.post("/api/auth/login", payload);
-                const form = e.target as HTMLFormElement;
-                setError("");
-                form.reset();
-            } else {
-                console.log("User Login Failed");
-            }
+
         } catch (error) {
             console.log("Error During login : ", error);
             // Handle the error here

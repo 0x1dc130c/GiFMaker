@@ -2,13 +2,69 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios'; // ต้องติดตั้ง axios ก่อนใช้งาน
 import PopUp from './popup';
+import ReloadImage from './reloadImage';
+
 interface BoradProps {
     gridClass: string;
 }
 
-const Borad: React.FC<BoradProps> = ({ gridClass }) => {
+function useImgState() {
     const [imgURLS, setImgURLS] = useState<string[]>([]);
     const [showPopUp, setShowPopUp] = useState('');
+
+    return { imgURLS, setImgURLS, showPopUp, setShowPopUp };
+}
+
+// const imgURLS: string[] = [];
+const cols_one: string[] = [];
+const cols_two: string[] = [];
+const cols_three: string[] = [];
+const cols_four: string[] = [];
+const cols_five: string[] = [];
+const cols_more: string[] = [];
+
+export function ReloadImageborad() {
+    const { imgURLS, setImgURLS, showPopUp, setShowPopUp } = useImgState();
+    console.log('value ReloadImageborad : ',false);
+    useEffect(() => {
+        async function fetchBlobImages() {
+            try {
+                const response = await axios.get('/api/fetchBlobImages');
+                const { urls } = response.data;
+                setImgURLS(urls);
+
+                if (urls.length === 0) {
+                    window.location.reload();
+                    console.log('No images found.');
+                }
+
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        }
+        fetchBlobImages();
+    }, []);
+
+    for (let i = 0; i < imgURLS.length; i++) {
+        if (cols_one.length <= 3){
+            cols_one.push(imgURLS[i]);
+        } else if (cols_two.length <= 3) {
+            cols_two.push(imgURLS[i]);
+        } else if (cols_three.length <= 3) {
+            cols_three.push(imgURLS[i]);
+        } else if (cols_four.length <= 3) {
+            cols_four.push(imgURLS[i]);
+        } else if (cols_five.length <= 3) {
+            cols_five.push(imgURLS[i]);
+        } else {
+            cols_more.push(imgURLS[i]);
+        }
+    }
+}
+
+const Borad: React.FC<BoradProps> = ({ gridClass }) => {
+    
+    const { imgURLS, setImgURLS, showPopUp, setShowPopUp } = useImgState();
 
     const handleClick = (url: string) => {
         console.log('Print url:', url);
@@ -26,22 +82,20 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
             try {
                 const response = await axios.get('/api/fetchBlobImages');
                 const { urls } = response.data;
-                console.log('Images fetched:', urls);
                 setImgURLS(urls);
-                
+
+                if (urls.length === 0) {
+                    window.location.reload();
+                    console.log('No images found.');
+                }
+
             } catch (error) {
                 console.error('Error fetching images:', error);
             }
         }
         fetchBlobImages();
     }, []);
-
-    const cols_one = [];
-    const cols_two = [];
-    const cols_three = [];
-    const cols_four = [];
-    const cols_five = [];
-
+    
     for (let i = 0; i < imgURLS.length; i++) {
         if (cols_one.length <= 3){
             cols_one.push(imgURLS[i]);
@@ -53,6 +107,8 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
             cols_four.push(imgURLS[i]);
         } else if (cols_five.length <= 3) {
             cols_five.push(imgURLS[i]);
+        } else {
+            cols_more.push(imgURLS[i]);
         }
     }
 
@@ -98,6 +154,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
                     </div>
                 ))}
             </div>
+
             {showPopUp && <PopUp imgUrl={showPopUp} onclose={handleClose} />}
         </div>
     );

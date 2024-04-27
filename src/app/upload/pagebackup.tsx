@@ -1,5 +1,5 @@
 'use client';
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar-login";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import axios from "axios";

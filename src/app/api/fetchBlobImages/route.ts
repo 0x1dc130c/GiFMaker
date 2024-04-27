@@ -3,10 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { BlobServiceClient } from '@azure/storage-blob';
 
 // route.ts
-import { NextApiRequest, NextApiResponse } from 'next';
-import { cache } from 'react';
-import error from 'next/error';
-
 export async function GET(req: NextRequest) {
 
     if (req.method === 'GET') {

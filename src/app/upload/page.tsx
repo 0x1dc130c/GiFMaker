@@ -1,11 +1,9 @@
 'use client';
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar-login";
 import Footer from "@/components/Footer";
 import Uploadfile from "@/components/uploader";
 
 export default function Upload() {
-
-    
 
     return (
         <div>
