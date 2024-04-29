@@ -20,6 +20,7 @@ async function CheckCookie() {
   console.log('cookieValue : ', cookieValue);
 
   try {
+    console.log('process.env.URL + "/api/Checkcookies" : ', process.env.URL + "/api/Checkcookies");
     const response = await fetch(process.env.URL + "/api/Checkcookies", {
       method: "POST",
       body: JSON.stringify({ cookieName, cookieValue }),

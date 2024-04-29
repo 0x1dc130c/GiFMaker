@@ -68,6 +68,56 @@ const info_image = sequelize.define("info_image", {
     
 }, {freezeTableName: true,timestamps: false});
 
-const models = { User, info_image };
+const comP = sequelize.define("complain", {
+    compID : {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
+    imgID : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    UserID : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    status : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    timestamp : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    detail : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
+
+
+}, {freezeTableName: true,timestamps: false});
+
+const Tag = sequelize.define("tag", {
+    tagID : {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
+    tagName : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    status : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    UserID : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+}, {freezeTableName: true,timestamps: false});
+
+const models = { User, info_image, comP, Tag};
 
 export default models;

@@ -3,10 +3,10 @@ import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(
   'gif_maker',
-  'root',
-  '',
+  'gif_maker',
+  'Z@VFcy1rhyQlD7R8',
   {
-    host: 'localhost',
+    host: 'database.devcodeth.com',
     dialect: 'mysql',
     dialectModule: require('mysql2'),
     define: {

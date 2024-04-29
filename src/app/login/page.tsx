@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Navbar from '@/components/Navbar-login';
+import Navbar from '@/components/Navbar';
 import { useCookies } from 'next-client-cookies';
 
 
