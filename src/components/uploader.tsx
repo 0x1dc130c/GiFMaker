@@ -1,10 +1,11 @@
 //app/components/uploader.tsx
-
 import { useState } from 'react';
 import axios from 'axios';
 import fetch from 'node-fetch';
 import { set } from 'animejs';
 import ShowTags from './tags';
+import { cookies } from 'next/headers'
+
 
 export default function UploadFile() {
     const [uploading, setUploading] = useState(false);
@@ -13,7 +14,8 @@ export default function UploadFile() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [tag, setTag] = useState("");
-
+    const [userID, setUserID] = useState("");
+    
     const handleNamechange  =async (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
         console.log('name : ', name);
