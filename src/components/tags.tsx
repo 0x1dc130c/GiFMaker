@@ -1,18 +1,35 @@
+
+'use client';
 import React, { useState, useEffect } from 'react';
 
-
-
-export default function DropdownExample() {
+const ShowTags = () => {
     const [isOpen, setIsOpen] = useState(false);
-
+    const [table, setTable] = useState<any[]>([]);
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
     useEffect(() => {
-        
-    }, []);
 
+        async function fetchData() {
+            try {
+                const response = await fetch("/api/Tags", {
+                    method: "POST",
+                });
+                const data = await response.json();
+
+                if (data.status === 200) {
+                    console.log('data.tableTag ----------- : ', data.tableTag);
+                    setTable(data.tableTag);
+                    console.log('table ----------- : ', table);
+                } else {
+                    console.log('data.message ----------- : ', data.message);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+    }, []);
 
     return (
         <div className="relative">
@@ -46,3 +63,5 @@ export default function DropdownExample() {
         </div>
     );
 }
+
+export default ShowTags;

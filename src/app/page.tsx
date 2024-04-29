@@ -20,7 +20,8 @@ async function CheckCookie() {
   console.log('cookieValue : ', cookieValue);
 
   try {
-    console.log('process.env.URL + "/api/Checkcookies" : ', process.env.URL + "/api/Checkcookies");
+    //'process.env.URL + "/api/Checkcookies" : ', process.env.URL + 
+    console.log("/api/Checkcookies");
     const response = await fetch(process.env.URL + "/api/Checkcookies", {
       method: "POST",
       body: JSON.stringify({ cookieName, cookieValue }),
@@ -63,11 +64,11 @@ export default async function Home() {
           <div className="row-start-3">
             <Borad gridClass="grid gap-4" />
           </div>
-          <div className="row-start-4">
+          {/* <div className="row-start-4">
             <div className="flex flex-col items-center justify-between m-2">
               <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 " onClick={ReloadImageborad}>More</button>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
       <Footer />

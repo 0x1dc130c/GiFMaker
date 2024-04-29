@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import fetch from 'node-fetch';
 import { set } from 'animejs';
-import tags from './tags';
+import ShowTags from './tags';
 
 export default function UploadFile() {
     const [uploading, setUploading] = useState(false);
@@ -95,7 +95,7 @@ export default function UploadFile() {
                     <input value={name} onChange={handleNamechange} type="text" id="default-input" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                 </div>
                 <div className="mb-6 m-2">
-                {tags()} 
+                 {ShowTags()}
                 </div>
                 <div className="mb-6 m-2">
 
