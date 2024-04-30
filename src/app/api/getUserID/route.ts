@@ -10,6 +10,9 @@ export async function POST(request: NextRequest) {
         console.log('Request method : ',request.method)
         if (request.method == 'POST') {
             const body = await request.json();
+
+            console.log('body ======================> : ',body);
+
             const { cookieName, cookieValue } = body;
             const decode = jwt.verify(cookieValue, 'secret');
             console.log('decode : ',decode);

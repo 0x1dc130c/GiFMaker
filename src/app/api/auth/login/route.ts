@@ -21,7 +21,7 @@ export async function POST(request: Request) {
         });
 
     } else {
-        const token = sign({username: (user as any).Username, role: (user as any).role},"secret", {
+        const token = sign({UserID : (user as any).UserID ,username: (user as any).Username, role: (user as any).role},"secret", {
             expiresIn: MAX_AGE,
         });
         // console.log(token);

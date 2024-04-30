@@ -3,8 +3,8 @@ import exp from "constants";
 import React, { useState, useEffect } from "react";
 
 const PopTag_ = ({ item, onclose }: { item: any, onclose: () => void }) => {
-
-    const [tagid_, setTagid] = useState(item[0].tagID); 
+    console.log('item ----------------------> : ', item);
+    const [tagid_, setTagid] = useState(item); 
 
     const handleconfirm = async (statusconfirm: string) => {
         console.log('tagid_ : ', tagid_);

@@ -15,7 +15,7 @@ const ShowTags = () => {
     };
 
     useEffect(() => {
-
+        
         async function fetchData() {
             try {
                 const response = await fetch("/api/Tags", {
@@ -24,6 +24,10 @@ const ShowTags = () => {
                 const data = await response.json();
                 if (data.status === 200) {
                     console.log('data.tableTag ----------- : ', data.tableTag);
+                    const checkUID:any = await CheckUserID();
+                    console.log('checkUID ----------- : ', checkUID);
+                    setShowPopUp('true');
+                    setUserID(checkUID);
                     setTable(data.tableTag); // Provide a default value of an empty string if uid is undefined
                     console.log('table ----------- : ', table);
                 } else {
