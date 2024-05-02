@@ -47,6 +47,46 @@ const PopUp = ({
   const [date, setDate] = useState();
   const [tag, setTag] = useState([]);
 
+  function userlike() {
+    Swal.fire({
+      title: "Loading...",
+      showConfirmButton: false,
+      willOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    const img = document.getElementById("popup") as HTMLImageElement;
+    const imgUrl = img?.getAttribute("src");
+    const img_id = imgUrl?.split("?id=")[1];
+    fetch("/api/like", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: img_id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.like){
+          setLike(like+1)
+          Swal.fire({
+            title: "Like Success",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: data.message,
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        }
+      });
+  }
+
   useEffect(() => {
     const img = document.getElementById("popup") as HTMLImageElement;
     const imgUrl = img?.getAttribute("src");
@@ -64,7 +104,7 @@ const PopUp = ({
           setLike(data.data.user_like);
           setTitle(data.data.imgName);
           setDescription(data.data.description);
-          setDate(new Date(Number(data.data.timestamp)).toLocaleString());
+          setDate(new Date(Number(data.data.timestamp)).toLocaleString() as any);
           setTag(data.data.TagNames.split(","));
         }
       });
@@ -86,7 +126,7 @@ const PopUp = ({
               {tag.map((tag, index) => (
                 <span
                   key={index}
-                  className="bg-white p-[5px] px-[8px] rounded-md border border-[#D3D5D9] m-[3px]"
+                  className="bg-white p-[5px] px-[8px] rounded-md border m-[3px] shadow-inner"
                 >
                   #{tag}
                 </span>
@@ -100,7 +140,7 @@ const PopUp = ({
         <hr />
         <div className="flex justify-between w-full mt-4">
           <div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={()=>userlike()}>
               <div className="flex items-center">
                 <AiFillLike className="mr-[4px]" /> Like{" "}
                 <span className="ml-2">{like}</span>

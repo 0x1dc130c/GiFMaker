@@ -6,7 +6,6 @@ import Navbar_login from "../components/Navbar-login";
 import Navbar_admin from "../components/Navbar-admin";
 import Footer from "../components/Footer";
 import Borad, { ReloadImageborad } from "../components/board";
-import Tags_imge from "../components/tags";
 import SearchBar from "../components/searchbar";
 import Sort from "../components/sort";
 import React, { useEffect, useState } from "react";
@@ -20,7 +19,9 @@ export default function Home() {
     setShowPopUp("");
   };
 
-  fetch("/api/Checkcookies", {
+  const address = window.location.protocol+"//"+window.location.hostname+":"+window.location.port
+  
+  fetch(address+"/api/Checkcookies", {
     method: "POST",
   })
     .then((response) => response.json())
@@ -41,6 +42,12 @@ export default function Home() {
     }
   }, []);
 
+  const [sortOrder, setSortOrder] = useState<string>('latest');
+
+  const handleSortChange = (newSortOrder: string) => {
+    setSortOrder(newSortOrder);
+  };
+
   return (
     <main>
       {String(nav) === "admin" ? (
@@ -54,15 +61,12 @@ export default function Home() {
         <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen rounded-md">
           <div className="grid p-6">
             <div>
-            <Sort />
+            <Sort onSortChange={handleSortChange}/>
             <SearchBar />
-            </div>
-            <div className="flex flwx-col float-right mr-5 relative">
-              {/* <Tags_imge /> */}
             </div>
           </div>
           <div className="row-start-3">
-            <Borad gridClass="grid gap-4" />
+            <Borad gridClass="grid gap-4" sort={sortOrder} />
           </div>
           {/* <div className="row-start-4">
             <div className="flex flex-col items-center justify-between m-2">

@@ -123,6 +123,23 @@ const Tag = sequelize.define("tag", {
     },
 }, {freezeTableName: true,timestamps: false});
 
-const models = { User, info_image, comP, Tag};
+const like_history = sequelize.define("like_history", {
+    id : {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
+    img_id : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    username : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+}, {freezeTableName: true,timestamps: false
+});
+
+const models = { User, info_image, comP, Tag, like_history};
 
 export default models;
