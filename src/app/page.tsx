@@ -1,4 +1,6 @@
-import Link from 'next/link'
+"use client";
+
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Navbar_login from "../components/Navbar-login";
 import Navbar_admin from "../components/Navbar-admin";
@@ -7,56 +9,54 @@ import Borad, { ReloadImageborad } from "../components/board";
 import Tags_imge from "../components/tags";
 import SearchBar from "../components/searchbar";
 import Sort from "../components/sort";
-import { cookies } from 'next/headers'
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import PopUp from "../components/popup";
 
-async function CheckCookie() {
-  const cookieStorage = cookies();
-  const cookie = cookieStorage.get('token');
-  const cookieName = cookie?.name;
-  const cookieValue = cookie?.value;
-  console.log('cookie : ', cookie);
-  console.log('cookieName : ', cookieName);
-  console.log('cookieValue : ', cookieValue);
+export default function Home() {
+  const [nav, setNav] = useState("");
+  const [showPopUp, setShowPopUp] = useState("");
 
-  try {
-    //'process.env.URL + "/api/Checkcookies" : ', process.env.URL + 
-    console.log("/api/Checkcookies" );
-    const response = await fetch(process.env.URL + "/api/Checkcookies", {
-      method: "POST",
-      body: JSON.stringify({ cookieName, cookieValue }),
-    });
-    const data = await response.json();
-    if (data.status === 200) {
-      console.log('status -------------- : ', data.status)
-      console.log('data ----------->>> : ', data.role === 'admin' ? 'admin' : 'user')
-      if (data.role === 'admin') {
-        console.log('data -------------- : ', data.role);
-        return 'admin';
+  const handleClose = () => {
+    setShowPopUp("");
+  };
+
+  fetch("/api/Checkcookies", {
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message == "Success") {
+        setNav(data.data.role);
       } else {
-        return 'user';
+        setNav("guest");
       }
-    } else {
-      return null;
-    }
-  } catch (error) {
-    console.error('Error in CheckCookie:', error);
-    return null;
-  }
-}
+    });
 
-export default async function Home() {
-  const nav = await CheckCookie();
-  console.log('nav >>>>>>>>>>>>>>> : ', nav);
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const page = urlParams.get("share");
+    if (page) {
+      setShowPopUp(page);
+    }
+  }, []);
 
   return (
     <main>
-      {String(nav) === 'admin' ? <Navbar_admin /> : String(nav) === 'user' ? <Navbar_login /> : <Navbar />}
+      {String(nav) === "admin" ? (
+        <Navbar_admin />
+      ) : String(nav) === "user" ? (
+        <Navbar_login />
+      ) : (
+        <Navbar />
+      )}
       <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
-        <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen">
-          <Sort />
+        <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen rounded-md">
           <div className="grid p-6">
+            <div>
+            <Sort />
             <SearchBar />
+            </div>
             <div className="flex flwx-col float-right mr-5 relative">
               {/* <Tags_imge /> */}
             </div>
@@ -72,6 +72,7 @@ export default async function Home() {
         </div>
       </main>
       <Footer />
+      {showPopUp && <PopUp imgUrl={showPopUp} onclose={handleClose} />}
     </main>
   );
 }

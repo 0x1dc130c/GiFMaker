@@ -64,8 +64,15 @@ const info_image = sequelize.define("info_image", {
         type: DataTypes.STRING,
         allowNull: false,
 
-    }
-    
+    },
+    description : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    user_like : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
 }, {freezeTableName: true,timestamps: false});
 
 const comP = sequelize.define("complain", {
@@ -94,8 +101,6 @@ const comP = sequelize.define("complain", {
         type: DataTypes.STRING,
         allowNull: false,
     }
-
-
 }, {freezeTableName: true,timestamps: false});
 
 const Tag = sequelize.define("tag", {

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import axios from 'axios'; // ต้องติดตั้ง axios ก่อนใช้งาน
+import axios from 'axios';
 import PopUp from './popup';
 import ReloadImage from './reloadImage';
 
@@ -29,7 +29,7 @@ export function ReloadImageborad() {
     useEffect(() => {
         async function fetchBlobImages() {
             try {
-                const response = await axios.get('/api/fetchBlobImages');
+                const response = await axios.get('/api/getImage');
                 const { urls } = response.data;
                 setImgURLS(urls);
 
@@ -80,7 +80,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
     useEffect(() => {
         async function fetchBlobImages() {
             try {
-                const response = await axios.get('/api/fetchBlobImages');
+                const response = await axios.get('/api/getImage');
                 const { urls } = response.data;
                 setImgURLS(urls);
 
@@ -114,6 +114,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+
             <div className={gridClass}>
                 {cols_one.map((url, index) => (
                     // console.log('col 0', url),
@@ -122,6 +123,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
                     </div>
                 ))}
             </div>
+
             <div className={gridClass}>
                 {cols_two.map((url, index) => (
                     // console.log('col 1', url),
@@ -130,6 +132,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
                     </div>
                 ))}
             </div>
+
             <div className={gridClass}>
                 {cols_three.map((url, index) => (
                     // console.log('col 2', url),
@@ -138,6 +141,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
                     </div>
                 ))}
             </div>
+
             <div className={gridClass}>
                 {cols_four.map((url, index) => (
                     // console.log('col 3', url),
@@ -146,6 +150,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass }) => {
                     </div>
                 ))}
             </div>
+
             <div className={gridClass}>
                 {cols_five.map((url, index) => (
                     // console.log('col 4', url),

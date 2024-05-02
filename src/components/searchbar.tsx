@@ -12,9 +12,10 @@ const SearchBar: React.FC = () => {
   return (
     <input
       type="text"
-      placeholder="ค้นหา"
+      placeholder="🔍ค้นหา"
       value={query}
       onChange={handleInputChange}
+      className='border border-gray-300 rounded-md p-2 w-full'
     />
   );
 };
