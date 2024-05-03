@@ -7,11 +7,11 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const { sort } = body;
         if (sort === "latest") {
-            const data = await models.info_image.findAll({attributes:["path_Img","img_ID"], order: [['timestamp', 'DESC']], raw:true }) as any;
+            const data = await models.info_image.findAll({attributes:["path_Img","img_ID"], order: [['timestamp', 'ASC']], raw:true }) as any;
             const datas = data.map((item: any) => item.path_Img+"?id="+item.img_ID);
             return NextResponse.json({ message: "Success", status: 200, img_url: datas, sort: sort});
         } else if (sort === "old") {
-            const data = await models.info_image.findAll({ attributes:["path_Img","img_ID"], order: [['timestamp', 'ASC']], raw:true }) as any;
+            const data = await models.info_image.findAll({ attributes:["path_Img","img_ID"], order: [['timestamp', 'DESC']], raw:true }) as any;
             const datas = data.map((item: any) => item.path_Img+"?id="+item.img_ID);
             return NextResponse.json({ message: "Success", status: 200, img_url: datas, sort: sort });
         } else if (sort === "popular") {

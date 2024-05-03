@@ -63,9 +63,10 @@ export function ReloadImageborad() {
 interface BoradProps {
   gridClass: string;
   sort: string;
+  search: string;
 }
 
-const Borad: React.FC<BoradProps> = ({ gridClass, sort }) => {
+const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
   const { imgURLS, setImgURLS, showPopUp, setShowPopUp } = useImgState();
 
   const handleClick = (url: string) => {
@@ -101,6 +102,25 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort }) => {
     });
   }, [sort]);
 
+  useEffect(() => {
+    cols_one.length = 0;
+    cols_two.length = 0;
+    cols_three.length = 0;
+    cols_four.length = 0;
+    cols_five.length = 0;
+    cols_more.length = 0;
+
+    setImgURLS([]);
+    
+    axios.post("/api/search", { search }).then((response) => {
+      if (response.data.status === 200) {
+        setImgURLS(response.data.img_url);
+      } else {
+        console.error("Error sorting images:", response.data.message);
+      }
+    });
+  }, [search]);
+
   for (let i = 0; i < imgURLS.length; i++) {
     if (cols_one.length <= 3) {
       cols_one.push(imgURLS[i]);
@@ -121,7 +141,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort }) => {
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
       <div className={gridClass}>
         {cols_one.map((url, index) => (
-          // console.log('col 0', url),
           <div key={index} className="w-full h-full flex">
             <img
               className="h-auto max-w-full rounded-lg object-cover"

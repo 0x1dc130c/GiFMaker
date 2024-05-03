@@ -43,9 +43,14 @@ export default function Home() {
   }, []);
 
   const [sortOrder, setSortOrder] = useState<string>('latest');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleSortChange = (newSortOrder: string) => {
     setSortOrder(newSortOrder);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
   };
 
   return (
@@ -62,17 +67,12 @@ export default function Home() {
           <div className="grid p-6">
             <div>
             <Sort onSortChange={handleSortChange}/>
-            <SearchBar />
+            <SearchBar onSearch={handleSearch} />
             </div>
           </div>
           <div className="row-start-3">
-            <Borad gridClass="grid gap-4" sort={sortOrder} />
+            <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} />
           </div>
-          {/* <div className="row-start-4">
-            <div className="flex flex-col items-center justify-between m-2">
-              <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-14 py-2.5 text-center me-2 mb-2 " onClick={ReloadImageborad}>More</button>
-            </div>
-          </div> */}
         </div>
       </main>
       <Footer />
