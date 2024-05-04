@@ -8,7 +8,7 @@ import { ImageResourcesPanel } from "./panels/ImageResourcesPanel";
 import { TextResourcesPanel } from "./panels/TextResourcesPanel";
 import { VideoResourcesPanel } from "./panels/VideoResourcesPanel";
 import { EffectsPanel } from "./panels/EffectsPanel";
-
+import { StickerPanel } from "./panels/StickerPanels";
 export const Resources = observer(() => {
   const store = React.useContext(StoreContext);
   const selectedMenuOption = store.selectedMenuOption;
@@ -17,6 +17,7 @@ export const Resources = observer(() => {
       {selectedMenuOption === "Video" ? <VideoResourcesPanel /> : null}
       {selectedMenuOption === "Image" ? <ImageResourcesPanel /> : null}
       {selectedMenuOption === "Text" ? <TextResourcesPanel /> : null}
+      {selectedMenuOption === "Sticker" ? <StickerPanel /> : null}
       {selectedMenuOption === "Effect" ? <EffectsPanel /> : null}
       {selectedMenuOption === "Export" ? <ExportVideoPanel /> : null}
       {selectedMenuOption === "Fill" ? <FillPanel /> : null}

@@ -9,13 +9,17 @@ export const CoverImage = fabric.util.createClass(fabric.Image, {
     disableCrop: false,
     cropWidth: 0,
     cropHeight: 0,
+    brightness: 0,
+    contrast: 0,
 
     initialize(element: HTMLImageElement | HTMLVideoElement, options: any) {
         options = options || {};
 
         options = Object.assign({
             cropHeight: this.height,
-            cropWidth: this.width
+            cropWidth: this.width,
+            brightness: 0,
+            contrast: 0,
         }, options);
         this.callSuper("initialize", element, options);
     },
@@ -70,6 +74,9 @@ export const CoverImage = fabric.util.createClass(fabric.Image, {
         ctx.save();
         const customFilter: EffecType = this.customFilter;
         ctx.filter = getFilterFromEffectType(customFilter);
+        console.log('this.brightness ------------------------- ', this.brightness)
+        // ctx.filter += `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
+
         ctx.drawImage(
             this._element,
             Math.max(cropX, 0),
@@ -93,13 +100,17 @@ export const CoverVideo = fabric.util.createClass(fabric.Image, {
     disableCrop: false,
     cropWidth: 0,
     cropHeight: 0,
+    brightness : 0,
+    contrast : 0,
 
     initialize(element: HTMLVideoElement, options: any) {
         options = options || {};
 
         options = Object.assign({
             cropHeight: this.height,
-            cropWidth: this.width
+            cropWidth: this.width,
+            brightness: 0,
+            contrast: 0,
         }, options);
         this.callSuper("initialize", element, options);
     },
@@ -158,6 +169,7 @@ export const CoverVideo = fabric.util.createClass(fabric.Image, {
         ctx.save();
         const customFilter: EffecType = this.customFilter;
         ctx.filter = getFilterFromEffectType(customFilter);
+        ctx.filter += `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
         ctx.drawImage(
             this._element,
             Math.max(cropX, 0) / videoScaledX,

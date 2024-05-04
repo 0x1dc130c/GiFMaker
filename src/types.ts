@@ -18,6 +18,11 @@ export type ImageEditorElement = EditorElementBase<
   { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect }
 >;
 
+export type StickerEditorElement = EditorElementBase<
+  "sticker",
+  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect}
+>;
+
 export type AudioEditorElement = EditorElementBase<
   "audio",
   { src: string; elementId: string }
@@ -28,6 +33,11 @@ export type TextEditorElement = EditorElementBase<
     text: string;
     fontSize: number;
     fontWeight: number;
+    fontFamily: string;
+    textColor: string;
+    textalign: string;
+    strokeSize: number;
+    strokeColor: string;
     splittedTexts: fabric.Text[];
   }
 >;
@@ -36,6 +46,7 @@ export type EditorElement =
   | VideoEditorElement
   | ImageEditorElement
   | AudioEditorElement
+  | StickerEditorElement
   | TextEditorElement;
 
 export type Placement = {
@@ -101,10 +112,9 @@ export type Animation =
 
 export type MenuOption =
   | "Video"
-  | "Audio"
   | "Text"
   | "Image"
   | "Export"
-  | "Animation"
   | "Effect"
+  | "Sticker"
   | "Fill";

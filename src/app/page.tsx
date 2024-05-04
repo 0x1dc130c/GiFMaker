@@ -20,7 +20,7 @@ export default function Home() {
     setShowPopUp("");
   };
 
-  fetch("/api/Checkcookies", {
+  fetch(process.env.URL + "/api/Checkcookies", {
     method: "POST",
   })
     .then((response) => response.json())

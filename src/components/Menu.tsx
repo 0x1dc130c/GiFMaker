@@ -6,12 +6,11 @@ import {
   MdDownload,
   MdVideoLibrary,
   MdImage,
-  MdTransform,
   MdTitle,
-  MdAudiotrack,
   MdOutlineFormatColorFill,
   MdMovieFilter,
 } from "react-icons/md";
+import { PiSmileyStickerBold } from "react-icons/pi";
 import { Store } from "@/store/Store";
 
 export const Menu = observer(() => {
@@ -79,7 +78,14 @@ const MENU_OPTIONS = [
     },
   },
   {
-    name: "Fill",
+  name: "Sticker",
+  icon: PiSmileyStickerBold,
+  action: (store: Store) => {
+    store.setSelectedMenuOption("Sticker");
+  },
+},
+  {
+    name: "Filter",
     icon: MdOutlineFormatColorFill,
     action: (store: Store) => {
       store.setSelectedMenuOption("Fill");

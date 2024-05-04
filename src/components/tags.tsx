@@ -26,7 +26,6 @@ const ShowTags = () => {
                     console.log('data.tableTag ----------- : ', data.tableTag);
                     const checkUID:any = await CheckUserID();
                     console.log('checkUID ----------- : ', checkUID);
-                    setShowPopUp('true');
                     setUserID(checkUID);
                     setTable(data.tableTag); // Provide a default value of an empty string if uid is undefined
                     console.log('table ----------- : ', table);

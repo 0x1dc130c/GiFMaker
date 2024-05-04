@@ -10,6 +10,8 @@ type ImageResourceProps = {
 };
 export const ImageResource = observer(
   ({ image, index }: ImageResourceProps) => {
+    console.log("image ------------------------------- img : ", image);
+    console.log("index ------------------------------- img : ", index);
     const store = React.useContext(StoreContext);
     const ref = React.useRef<HTMLImageElement>(null);
     const [resolution, setResolution] = React.useState({ w: 0, h: 0 });

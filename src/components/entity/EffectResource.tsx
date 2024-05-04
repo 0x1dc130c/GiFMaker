@@ -5,44 +5,52 @@ import { StoreContext } from "@/store";
 import { observer } from "mobx-react";
 import { VideoEditorElement, ImageEditorElement, EffecType } from "@/types";
 
+
 const EFFECT_TYPE_TO_LABEL: Record<string, string> = {
-  blackAndWhite: "Black and White",
   none: "None",
-  saturate: "Saturate",
+  blackAndWhite: "Black and White",
   sepia: "Sepia",
   invert: "Invert",
 };
 export type EffectResourceProps = {
   editorElement: VideoEditorElement | ImageEditorElement;
 };
+
 export const EffectResource = observer((props: EffectResourceProps) => {
+
+  const handleChangeEffectType = (type: EffecType) => {
+    console.log("type", type);
+    console.log('props.editorElement.id', props.editorElement.id)
+    store.updateEffect(props.editorElement.id, { type });
+  };
+
   const store = React.useContext(StoreContext);
   return (
-    <div className="rounded-lg overflow-hidden items-center bg-slate-800 m-[15px] flex flex-col relative min-h-[100px] p-2">
-      <div className="flex flex-row justify-between w-full">
-        <div className="text-white py-1 text-base text-left w-full">
-          {EFFECT_TYPE_TO_LABEL[props.editorElement.properties.effect.type]}
+    <div className="flex flex-wrap">
+      {Object.entries(EFFECT_TYPE_TO_LABEL).map(([effectType, label]) => (
+        <div
+          key={effectType}
+          className="rounded-lg overflow-hidden items-center bg-slate-800 m-[15px] flex flex-col relative min-h-[100px] p-2"
+        >
+          <div
+            className="image-container"
+            style={{
+              filter: effectType === "none" ? "none" : `grayscale(${effectType === "blackAndWhite" ? "100%" : "0%"}) sepia(${effectType === "sepia" ? "100%" : "0%"}) invert(${effectType === "invert" ? "100%" : "0%"})`,
+            }}
+          >
+            <img src="/images/imgTast.jpg" alt={label} />
+          </div>
+          <span>{label}</span>
+          <button
+            className="bg-slate-100 text-black rounded-lg px-2 py-1 ml-2 w-16 text-xs"
+            onClick={() => handleChangeEffectType(effectType as EffecType)}
+          >
+            Select
+          </button>
         </div>
-      </div>
-      {/* Select effect from drop down */}
-      <select
-        className="bg-slate-100 text-black rounded-lg px-2 py-1 ml-2 w-16 text-xs"
-        value={props.editorElement.properties.effect.type}
-        onChange={(e) => {
-          const type = e.target.value;
-          store.updateEffect(props.editorElement.id, {
-            type: type as EffecType,
-          });
-        }}
-      >
-        {Object.keys(EFFECT_TYPE_TO_LABEL).map((type) => {
-          return (
-            <option key={type} value={type}>
-              {EFFECT_TYPE_TO_LABEL[type]}
-            </option>
-          );
-        })}
-      </select>
+      ))}
     </div>
+
   );
 });
+
