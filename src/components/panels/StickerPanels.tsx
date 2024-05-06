@@ -14,6 +14,9 @@ export const StickerPanel = observer(() => {
 
     return (
         <div>
+            <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold text-xl">
+                Stickers
+            </div>
             <div>
                 {store.sticker && store.sticker.map((sticker: any, index: any) => {
                     return <Stickerentity key={sticker} sticker={sticker} index={index} />;

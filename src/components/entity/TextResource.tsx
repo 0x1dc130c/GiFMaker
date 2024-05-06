@@ -15,7 +15,7 @@ export const TextResource = observer(
     const store = React.useContext(StoreContext);
 
     return (
-      <div className="items-center m-[15px] flex flex-row">
+      <div className="items-center m-[5px] flex flex-row">
         <div
           className="flex text-black px-2 py-1"
           style={{

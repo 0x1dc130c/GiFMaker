@@ -1,5 +1,5 @@
 "use client";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { TextResource } from "../entity/TextResource";
 import ColorPicker from "./colorpicker";
@@ -11,72 +11,80 @@ import { set } from "animejs";
 
 const TEXT_RESOURCES = [
   {
-    name: "Text 1",
+    name: "Title",
     fontSize: 28,
     fontWeight: 600,
-
+  },
+  {
+    name: "Subtitle",
+    fontSize: 24,
+    fontWeight: 600,
+  },
+  {
+    name: "Body",
+    fontSize: 20,
+    fontWeight: 400,
   },
 ];
 export const TextResourcesPanel = observer(() => {
-  const [textColor_, setTextColor_] = useState("#0000FF");
+  const [textColor_, setTextColor_] = useState("#ffffff");
   const store = React.useContext(StoreContext);
 
   const handleChange = (newColor: string) => {
-    console.log('color ---------------> ', newColor)
     setTextColor_(newColor);
-    console.log('store ---------------> ', textColor_)
     store.setTextColorStore(newColor);
   }
   return (
     <div className="bg-slate-200 h-full">
-      <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold text-black">
+      <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold text-black text-xl">
         Text
       </div>
-      <div className="">
-        <div className="px-[16px] py-[8px] text-xs font-semibold text-black">
-          <h1 className="text-2xl"> Color </h1>
-          <div>
-            <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" style={{ backgroundColor: "#000000" }} onClick={() => handleChange("#000000")} />
-            <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" style={{ backgroundColor: "#0000FF" }} onClick={() => handleChange("#0000FF")} />
-            <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" style={{ backgroundColor: "#FF0000" }} onClick={() => handleChange("#FF0000")}/>
-            <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" style={{ backgroundColor: "#008000" }}onClick={() => handleChange("#008000")} />
-          </div>
-          < ColorPicker/>
+      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
+        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Color</h1>
+        <div className="flex flex-wrap gap-2">
+          <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#000000" }} onClick={() => handleChange("#000000")}>Black</button>
+          <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#0000FF" }} onClick={() => handleChange("#0000FF")}>Blue</button>
+          <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#FF0000" }} onClick={() => handleChange("#FF0000")}>Red</button>
+          <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#008000" }} onClick={() => handleChange("#008000")}>Green</button>
         </div>
+        <ColorPicker />
       </div>
+
       {/*  */}
-      <h1 className="text-2xl"> Text block </h1>
+      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
+        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Text box</h1>
+        <ul className="divide-y divide-gray-200">
+          {TEXT_RESOURCES.map((resource) => {
+            return (
+              <li key={resource.name} className="cursor-pointer">
+                <TextResource
+                  sampleText={resource.name}
+                  fontSize={resource.fontSize}
+                  textColor={textColor_}
+                  fontWeight={resource.fontWeight}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      </div>
 
-      <ul>
-        {TEXT_RESOURCES.map((resource) => {
-          return (
+      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
+        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Font</h1>
+        <FontSelect />
+      </div>
 
-            <li
-              key={resource.name}
-            >
-              <TextResource
-                sampleText={resource.name}
-                fontSize={resource.fontSize}
-                textColor={textColor_}
-                fontWeight={resource.fontWeight}
-              />
-            </li>
-          );
-        })}
-      </ul>
-      <div>
-        <h1 className="text-2xl"> Font </h1>
-        < FontSelect />
+      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
+        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Align</h1>
+        <AlignText />
       </div>
-      <div>
-        <h1 className="text-2xl"> Align </h1>
-        < AlignText />
+
+      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
+        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Stroke Color</h1>
+        <StrokeColor />
       </div>
-      <div>
-        <h1 className="text-2xl"> Stroke Color </h1>
-        < StrokeColor />
-      </div>
+
+
     </div>
-    
   );
 });

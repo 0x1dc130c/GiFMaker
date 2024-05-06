@@ -11,13 +11,13 @@ export type EditorElementBase<T extends string, P> = {
 };
 export type VideoEditorElement = EditorElementBase<
   "video",
-  { src: string; elementId: string; imageObject?: fabric.Image, effect: Effect }
+  { src: string; elementId: string; imageObject?: fabric.Image, effect: Effect,brightness:number,contrast:number }
 >;
 export type ImageEditorElement = EditorElementBase<
   "image",
-  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect }
+  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect,brightness:number,contrast:number }
+  
 >;
-
 export type StickerEditorElement = EditorElementBase<
   "sticker",
   { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect}
@@ -39,6 +39,7 @@ export type TextEditorElement = EditorElementBase<
     strokeSize: number;
     strokeColor: string;
     splittedTexts: fabric.Text[];
+    effect: Effect;
   }
 >;
 

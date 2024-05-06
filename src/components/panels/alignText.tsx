@@ -15,12 +15,17 @@ const AlignText = () => {
     };
 
     return (
-        <select value={selectedAlign} onChange={handleAlignChange}>
+        <select
+            value={selectedAlign}
+            onChange={handleAlignChange}
+            className="block w-full px-4 py-2 mt-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        >
             <option value="">Select Alignment</option>
             <option value="left">Left</option>
             <option value="center">Center</option>
             <option value="right">Right</option>
         </select>
+
     );
 };
 

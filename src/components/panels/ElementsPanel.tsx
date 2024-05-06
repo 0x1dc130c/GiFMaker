@@ -9,7 +9,7 @@ export const ElementsPanel = observer((_props: {}) => {
   return (
     <div className="bg-slate-200 h-full overflow-scroll">
       <div className="flex flex-row justify-between">
-        <div className="text-sm px-[16px] py-[7px] font-semibold">Elements</div>
+        <div className="text-sm px-[16px] py-[7px] font-semibold text-xl">Elements</div>
       </div>
       <div className="flex flex-col">
         {store.editorElements.map((element) => {

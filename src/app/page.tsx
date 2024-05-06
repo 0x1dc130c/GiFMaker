@@ -19,9 +19,8 @@ export default function Home() {
     setShowPopUp("");
   };
 
-  const address = window.location.protocol+"//"+window.location.hostname+":"+window.location.port
-  
-  fetch(address+"/api/Checkcookies", {
+  const address = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+  fetch(address + "/api/Checkcookies", {
     method: "POST",
   })
     .then((response) => response.json())
@@ -32,6 +31,7 @@ export default function Home() {
         setNav("guest");
       }
     });
+
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -66,8 +66,8 @@ export default function Home() {
         <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen rounded-md">
           <div className="grid p-6">
             <div>
-            <Sort onSortChange={handleSortChange}/>
-            <SearchBar onSearch={handleSearch} />
+              <Sort onSortChange={handleSortChange} />
+              <SearchBar onSearch={handleSearch} />
             </div>
           </div>
           <div className="row-start-3">

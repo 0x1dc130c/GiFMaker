@@ -18,8 +18,8 @@ export const CoverImage = fabric.util.createClass(fabric.Image, {
         options = Object.assign({
             cropHeight: this.height,
             cropWidth: this.width,
-            brightness: 0,
-            contrast: 0,
+            brightness: this.brightness,
+            contrast: this.contrast,
         }, options);
         this.callSuper("initialize", element, options);
     },
@@ -73,10 +73,12 @@ export const CoverImage = fabric.util.createClass(fabric.Image, {
         } = crop;
         ctx.save();
         const customFilter: EffecType = this.customFilter;
-        ctx.filter = getFilterFromEffectType(customFilter);
-        console.log('this.brightness ------------------------- ', this.brightness)
-        // ctx.filter += `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
-
+        if (customFilter === "none") {
+            ctx.filter = `brightness(${this.brightness}%) contrast(${this.contrast * 2}%)`;
+        } else {
+            ctx.filter = getFilterFromEffectType(customFilter);
+            ctx.filter += `brightness(${this.brightness}%) contrast(${this.contrast * 2}%)`;
+        }
         ctx.drawImage(
             this._element,
             Math.max(cropX, 0),
@@ -109,8 +111,8 @@ export const CoverVideo = fabric.util.createClass(fabric.Image, {
         options = Object.assign({
             cropHeight: this.height,
             cropWidth: this.width,
-            brightness: 0,
-            contrast: 0,
+            brightness: this.brightness,
+            contrast: this.contrast,
         }, options);
         this.callSuper("initialize", element, options);
     },
@@ -168,8 +170,15 @@ export const CoverVideo = fabric.util.createClass(fabric.Image, {
 
         ctx.save();
         const customFilter: EffecType = this.customFilter;
-        ctx.filter = getFilterFromEffectType(customFilter);
-        ctx.filter += `brightness(${this.brightness}%) contrast(${this.contrast}%)`;
+        
+
+        
+        if (customFilter === "none") {
+            ctx.filter = `brightness(${this.brightness}%) contrast(${this.contrast * 2}%)`;
+        } else {
+            ctx.filter = getFilterFromEffectType(customFilter);
+            ctx.filter += `brightness(${this.brightness}%) contrast(${this.contrast * 2}%)`;
+        }
         ctx.drawImage(
             this._element,
             Math.max(cropX, 0) / videoScaledX,

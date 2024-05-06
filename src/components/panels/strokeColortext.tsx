@@ -13,7 +13,11 @@ const StrokeColor = () => {
     };
 
     return (
-        <select value={selectedStrokeColor} onChange={handleStrokeColorChange}>
+        <select
+            value={selectedStrokeColor}
+            onChange={handleStrokeColorChange}
+            className="block w-full px-4 py-2 mt-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        >
             <option value="">Select Stroke Color</option>
             <option value="black">Black</option>
             <option value="red">Red</option>

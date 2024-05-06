@@ -50,12 +50,12 @@ export class Store {
     this.editorElements = [];
     this.backgroundColor = '#111111';
     this.textalign = 'center';
-    this.textColor = '#008000';
+    this.textColor = '#FFFFFF';
     this.fontFamily = 'Arial';
     this.strokeSzie = 0;
     this.storkColor = '';
-    this.brightness = 0;
-    this.contrast = 0;
+    this.brightness = 100;
+    this.contrast = 50;
     this.maxTime = 5 * 1000;
     this.minTime = this.maxTime / 5;
     this.playing = false;
@@ -69,6 +69,7 @@ export class Store {
     makeAutoObservable(this);
   }
 
+  
   get currentTimeInMs() {
     return this.currentKeyFrame * 1000 / this.fps;
   }
@@ -96,11 +97,6 @@ export class Store {
   }
 
   setTextColorStore(textColor: string) {
-
-    console.log('this image list -------------? ', this.images)
-
-    console.log('setTextColorStore textColor ---------------> ', textColor)
-    console.log('setTextColorStore selectedElement  ---------------> ', this.selectedElemen?.id)
     this.textColor = textColor;
     console.log('setTextColor selectedElement  ---------------> ', this.selectedElement)
     if(this.selectedElement && this.selectedElement.type === 'text') {
@@ -111,7 +107,6 @@ export class Store {
 
 
   setFontFamily(fontFamily: string) {
-    console.log('setFontFamily fontFamily ---------------> ', fontFamily)
     this.fontFamily = fontFamily;
     if (this.selectedElement && this.selectedElement.type === 'text') {
       this.updateEditorElement(this.selectedElement);
@@ -141,16 +136,19 @@ export class Store {
 
   setBrightness(brightness: number) {
     this.brightness = brightness;
-    if (this.selectedElement && this.selectedElement.type === 'video') {
+    console.log('setBrightness brightness store ---------------> ', this.brightness)
+    if (this.selectedElement && this.selectedElement.type === 'image') {
       this.updateEditorElement(this.selectedElement);
     }
+    this.refreshElements();
   }
 
   setContrast(contrast: number) {
     this.contrast = contrast;
-    if (this.selectedElement && this.selectedElement.type === 'video') {
+    if (this.selectedElement && this.selectedElement.type === 'image') {
       this.updateEditorElement(this.selectedElement);
     }
+    this.refreshElements();
   }
 
 
@@ -160,6 +158,15 @@ export class Store {
     const element = this.editorElements[index];
     if (isEditorVideoElement(element) || isEditorImageElement(element)) {
       element.properties.effect = effect;
+    }
+    this.refreshElements();
+  }
+
+  updateFilter(id: string, filter: string) {
+    const index = this.editorElements.findIndex((element) => element.id === id);
+    const element = this.editorElements[index];
+    if (isEditorVideoElement(element) || isEditorImageElement(element)) {
+      // element.properties.effect.filter = filter;
     }
     this.refreshElements();
   }
@@ -535,7 +542,9 @@ export class Store {
           src: videoElement.src,
           effect: {
             type: "none",
-          }
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
         },
       },
     );
@@ -572,7 +581,9 @@ export class Store {
           src: imageElement.src,
           effect: {
             type: "none",
-          }
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
         },
       },
     );
@@ -610,7 +621,10 @@ export class Store {
           src: stickerElement.src,
           effect: {
             type: "none",
-          }
+        
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
         },
       },
     );
@@ -659,6 +673,10 @@ export class Store {
           strokeSize: options.strokeSzie,
           strokeColor: options.textColor,
           splittedTexts: [],
+          effect: {
+            type: "none",
+          }
+          
         },
       },
     );
@@ -861,6 +879,8 @@ export class Store {
             // filters: filters,
             // @ts-ignore
             customFilter: element.properties.effect.type,
+            brightness: this.brightness,
+            contrast: this.contrast,
           });
 
           element.fabricObject = videoObject;
@@ -920,7 +940,11 @@ export class Store {
             // filters
             // @ts-ignore
             customFilter: element.properties.effect.type,
+            brightness: this.brightness,
+            contrast: this.contrast,
           });
+          console.log('element.id ---------------> ', element.id)
+          console.log('elment.brightness --------> ', this.brightness)
           // imageObject.applyFilters();
           element.fabricObject = imageObject;
           element.properties.imageObject = imageObject;

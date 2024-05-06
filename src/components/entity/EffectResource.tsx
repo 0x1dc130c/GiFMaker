@@ -26,11 +26,12 @@ export const EffectResource = observer((props: EffectResourceProps) => {
 
   const store = React.useContext(StoreContext);
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap ">
       {Object.entries(EFFECT_TYPE_TO_LABEL).map(([effectType, label]) => (
         <div
           key={effectType}
-          className="rounded-lg overflow-hidden items-center bg-slate-800 m-[15px] flex flex-col relative min-h-[100px] p-2"
+          className="rounded-lg overflow-hidden bg-slate-100 m-2 flex flex-col relative min-h-[100px] shadow-md p-2 cursor-pointer"
+          onClick={() => handleChangeEffectType(effectType as EffecType)}
         >
           <div
             className="image-container"
@@ -38,18 +39,13 @@ export const EffectResource = observer((props: EffectResourceProps) => {
               filter: effectType === "none" ? "none" : `grayscale(${effectType === "blackAndWhite" ? "100%" : "0%"}) sepia(${effectType === "sepia" ? "100%" : "0%"}) invert(${effectType === "invert" ? "100%" : "0%"})`,
             }}
           >
-            <img src="/images/imgTast.jpg" alt={label} />
+            <img src="/images/imgTast.jpg" alt={label} className="w-full h-auto" />
           </div>
-          <span>{label}</span>
-          <button
-            className="bg-slate-100 text-black rounded-lg px-2 py-1 ml-2 w-16 text-xs"
-            onClick={() => handleChangeEffectType(effectType as EffecType)}
-          >
-            Select
-          </button>
+          <span className="text-black text-sm mt-2">{label}</span>
         </div>
       ))}
     </div>
+
 
   );
 });

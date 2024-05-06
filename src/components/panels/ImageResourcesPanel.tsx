@@ -14,8 +14,8 @@ export const ImageResourcesPanel = observer(() => {
   };
   return (
     <>
-      <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold">
-        Images
+      <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold text-black text-xl">
+        Images 
       </div>
       <UploadButton
         accept="image/*"

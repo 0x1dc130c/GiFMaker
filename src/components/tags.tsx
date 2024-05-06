@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import PopPopTag_ from './popaddTags';
 import CheckUserID from './GetUID';
-
 const ShowTags = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [table, setTable] = useState<any[]>([]);
@@ -37,13 +36,36 @@ const ShowTags = () => {
             }
         };
 
+        async function fethuserID() {
+            try{
+                const response = await fetch("/api/Check", {
+                    method: "POST",
+                });
+                const data = await response.json();
+                if (data.status === 200) {
+                    console.log('data ----------- : ', data);
+                    setUserID(data.data.UserID); // Provide a default value of an empty string if uid is undefined
+                    console.log('UserID ----------- : ', userid);
+                } else {
+                    console.log('data.message ----------- : ', data.message);
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+            // const checkUID:any = await CheckUserID();
+            // console.log('checkUID ----------- : ', checkUID);
+            // setUserID(checkUID);
+        }
+
         fetchData();
+        fethuserID();
     }, []);
 
     
     const handleAddTag = async () => {
         console.log('--------------------------- Add Tag cookie : ', userid);
-
+    
     }
 
     const handleClose = () => {
