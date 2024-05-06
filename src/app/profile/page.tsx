@@ -1,26 +1,72 @@
+"use client"
+
 import Navbar from "@/components/Navbar-login";
 import Footer from "@/components/Footer";
+import { useState } from "react";
+import { FaImage,FaCloudUploadAlt } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import Portfolio  from "./portfolio";
+import Changepass from "./changepass";
+
 export default function Admin() {
-    return (
-        <div>
-            <Navbar />
-            <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
-                <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen">
-                    <div className="grid p-6">
-                        <div className="flex row-span-1 justify-center m-auto">
-                            <h1 className="text-5xl text-center"> profile user </h1>
-                        </div>
-                        <div className="flex flwx-col float-right mr-5 relative row-span-3">
-                            <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-                                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                    Pink to orange
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </main>
-            <Footer />
+    const [activeButton, setActiveButton] = useState("portfolio");
+  return (
+    <div>
+      <Navbar />
+      <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
+        <div className="flex flex-col bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen rounded-md">
+          <ul className="hidden text-sm font-medium text-center text-gray-500 rounded-md  sm:flex dark:divide-gray-700 dark:text-gray-400 mb-[20px] ">
+            <li className="w-full focus-within:z-10">
+              <a
+                href="#"
+                onClick={() => {
+                  setActiveButton("portfolio");
+                }}
+                className={`w-full flex justify-center items-center p-4 rounded-md ${
+                  activeButton === "portfolio"
+                    ? "bg-gray-300 text-gray-900"
+                    : "bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                } border-r border-gray-200 dark:border-gray-700`}
+              >
+                <FaImage className="mr-[5px]"/> ผลงานของฉัน
+              </a>
+            </li>
+            <li className="w-full focus-within:z-10 mx-[10px]">
+              <a
+                href="#"
+                onClick={() => {
+                  setActiveButton("changeprofile");
+                }}
+                className={`flex justify-center items-center w-full p-4 rounded-md ${
+                  activeButton === "changeprofile"
+                    ? "bg-gray-300 text-gray-900"
+                    : "bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                } border-r border-gray-200 dark:border-gray-700`}
+              >
+                <FaCloudUploadAlt className="mr-[5px]"/> อัพโหลดรูปไปรไฟล์
+              </a>
+            </li>
+            <li className="w-full focus-within:z-10">
+              <a
+                href="#"
+                onClick={() => {
+                  setActiveButton("changepassword");
+                }}
+                className={`flex justify-center items-center w-full p-4 rounded-md ${
+                  activeButton === "changepassword"
+                    ? "bg-gray-300 text-gray-900"
+                    : "bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                } border-r border-gray-200 dark:border-gray-700`}
+              >
+               <RiLockPasswordFill className="mr-[5px]"/> เปลียนรหัสผ่าน
+              </a>
+            </li>
+          </ul>
+          {activeButton === "portfolio" && <Portfolio gridClass="grid gap-4" />}
+          {activeButton === "changepassword" && <Changepass/>}
         </div>
-    );
-};
+      </main>
+      <Footer />
+    </div>
+  );
+}
