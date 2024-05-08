@@ -30,16 +30,13 @@ export const TextResourcesPanel = observer(() => {
   const [textColor_, setTextColor_] = useState("#ffffff");
   const store = React.useContext(StoreContext);
 
-  const handleChange = (newColor: string) => {
-    setTextColor_(newColor);
-    store.setTextColorStore(newColor);
-  }
+  
   return (
     <div className="bg-slate-200 h-full">
       <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold text-black text-xl">
         Text
       </div>
-      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
+      {/* <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
         <h1 className="text-2xl text-gray-800 font-semibold mb-4">Color</h1>
         <div className="flex flex-wrap gap-2">
           <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#000000" }} onClick={() => handleChange("#000000")}>Black</button>
@@ -48,7 +45,7 @@ export const TextResourcesPanel = observer(() => {
           <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#008000" }} onClick={() => handleChange("#008000")}>Green</button>
         </div>
         <ColorPicker />
-      </div>
+      </div> */}
 
       {/*  */}
       <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
@@ -68,23 +65,6 @@ export const TextResourcesPanel = observer(() => {
           })}
         </ul>
       </div>
-
-      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
-        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Font</h1>
-        <FontSelect />
-      </div>
-
-      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
-        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Align</h1>
-        <AlignText />
-      </div>
-
-      <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
-        <h1 className="text-2xl text-gray-800 font-semibold mb-4">Stroke Color</h1>
-        <StrokeColor />
-      </div>
-
-
     </div>
   );
 });

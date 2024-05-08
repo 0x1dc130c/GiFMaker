@@ -995,9 +995,6 @@ export class Store {
           break;
         }
         case "text": {
-          console.log('element ---------------> ', element.id)
-          console.log('element.properties.text ---------------> ', element.properties.text)
-          console.log('textColor : ---------------> ', this.textColor)
           const textObject = new fabric.Textbox(element.properties.text, {
             name: element.id,
             left: element.placement.x,

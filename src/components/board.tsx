@@ -143,7 +143,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
         {cols_one.map((url, index) => (
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -157,7 +157,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
           // console.log('col 1', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -171,7 +171,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
           // console.log('col 2', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -185,7 +185,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
           // console.log('col 3', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -199,7 +199,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
           // console.log('col 4', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}

@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
         const token = cookie.toString().split("=")[1];
         const decoded = jwt.verify(token, "secret") as JwtPayload;
         if (decoded) {     
-          return NextResponse.json({ message: "Success", status: 200, data:{role:decoded.role,username:decoded.username,UserID:decoded.UserID}});
+          return NextResponse.json({ message: "Success", status: 200, data:{role:decoded.role,username:decoded.username,UserID:decoded.UserID, path_profile:decoded.pathProfile, name:decoded.name}});
         } else {
           return NextResponse.json({ message: "Error", status: 500 });
         }

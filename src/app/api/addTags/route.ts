@@ -3,25 +3,29 @@ import { sign } from 'jsonwebtoken';
 import models from "../../utils/models";
 
 export async function POST(request: Request) {
-
-    try{
-
+    try {
         const body = await request.json();
-        const {tagName, status, tagID} = body;
+        const { tagid_, tags, statusconfirm } = body;
+        console.log('body ------------------------------------ : ', body);
         
-        const tableTag = await models.Tag.create({});
-        console.log('table Tag  : ',tableTag);
-        return NextResponse.json({
-            tableTag,
-            status: 200,
-        });
+        // Create Tag and capture the result
+        const newTag = await models.Tag.create({ tagName:tags, status:statusconfirm, UserID: tagid_ });
 
+        // Check if Tag was created successfully
+        if (newTag) {
+            return NextResponse.json({
+                message: "Success",
+                status: 200,
+            });
+        } else {
+            throw new Error("Failed to create Tag");
+        }
     } catch (error) {
         const message = "Error during fetch data";
+        console.error(error);
         return NextResponse.json({
             message,
             status: 500,
         });
-
     }
 }

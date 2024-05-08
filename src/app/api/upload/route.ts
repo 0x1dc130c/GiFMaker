@@ -1,25 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { NextApiRequest } from 'next';
 import models from "../../utils/models";
+import jwt, { JwtPayload  } from "jsonwebtoken";
 import { BlobServiceClient, BlockBlobUploadOptions, StorageSharedKeyCredential } from '@azure/storage-blob';
 import { where } from 'sequelize';
 const storageAccountName = 'gifmakerstorage';
 const storageAccountKey = 'GTVRTSAC2UtTOCgVoWuRtAQ6G6w4LWvbyT/TzWlHKA1uJWZro/CU+sQZPIfA6QtHJQZmlrClfAY7+AStc6Ax0g==';
 const containerName = 'gifstorage';
 
-async function UploadMysql(nameImg : string, time : number, url : string){  
+
+
+
+async function UploadMysql(uID: number, nameImg : string, time : number, url : string, description : string, tagname : string){  
   const timstamp = time.toString();
   const status = 'public';
-  const TagName = 'GIF';
-  const Userid = 104;
+  const Userid = uID;
+  const TagName = tagname;
+  const user_like = 0
   console.log('nameImg : ', nameImg);
   console.log('timestamp : ', timstamp);
   console.log('url : ', url); 
   console.log('UserID : ', Userid);
   console.log('status : ', status);
-  console.log('TagNames : ', TagName);
+  console.log('TagNames : ', tagname);
   try {
-    const data = await models.info_image.create({imgName: nameImg, timestamp: timstamp, path_Img: url, UserID: Userid, status_img: status, TagNames: TagName});
+    const data = await models.info_image.create({imgName: nameImg, timestamp: timstamp, path_Img: url, UserID: Userid, status_img: status, TagNames: TagName, user_like: user_like, description: description});
     console.log('data : ', data);
 
   } catch (error) {
@@ -31,15 +36,34 @@ async function UploadMysql(nameImg : string, time : number, url : string){
 };
 
 export async function POST(request : NextRequest){
+
+  async function userid(){
+    try{
+      const cookie = request.cookies;
+      const token = cookie.toString().split("=")[1];
+      const decoded = jwt.verify(token, "secret") as JwtPayload;
+      if (decoded) {
+        return decoded.UserID;
+      } else {
+        return null;
+      }
+
+    } catch (error) {
+      console.log('Error in userid : ', error);
+    }
+   
+  }
+
   if (request.method === 'POST') {
     try {
       const data = await request.formData();
       const file : File = data.get('image') as unknown as File;
       const nameFile = data.get('name') as string;
+      const tag = data.get('tag') as string;
+      const uID = await userid();
       const description = data.get('description') as string;
       console.log('nameFile : ', nameFile);
       console.log('description : ', description);
-
 
       const blob = file;
       console.log('Uploading image api blob :', blob);
@@ -55,7 +79,7 @@ export async function POST(request : NextRequest){
 
       const ImgUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blobName}`;
       
-      UploadMysql(nameFile, Date.now(),  ImgUrl);
+      UploadMysql(uID, nameFile, Date.now(),  ImgUrl, description, tag);
 
       // อัปโหลด Blob
       await blockBlobClient.uploadData(await blob.arrayBuffer(), options);

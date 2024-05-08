@@ -24,12 +24,20 @@ const cols_more: string[] = [];
 
 const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
   const { imgURLS, setImgURLS } = useImgState();
-
+  
   useEffect(() => {
     axios.post("/api/portfolio").then((res) => {
       setImgURLS(res.data.img_url);
     });
   }, []);
+
+  const notimg = () => {
+    Swal.fire({
+      icon: "error",
+      title: "คุณยังไม่มีรูปใน Store ของคุณ",
+    });
+    return null; // Return null instead of void
+  }
 
   const handleClick = (url: string) => {
     Swal.fire({
@@ -51,29 +59,15 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
     });
   };       
 
-  for (let i = 0; i < imgURLS.length; i++) {
-    if (cols_one.length <= 3) {
-      cols_one.push(imgURLS[i]);
-    } else if (cols_two.length <= 3) {
-      cols_two.push(imgURLS[i]);
-    } else if (cols_three.length <= 3) {
-      cols_three.push(imgURLS[i]);
-    } else if (cols_four.length <= 3) {
-      cols_four.push(imgURLS[i]);
-    } else if (cols_five.length <= 3) {
-      cols_five.push(imgURLS[i]);
-    } else {
-      cols_more.push(imgURLS[i]);
-    }
-  }
-
   return (
+    
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      {imgURLS.length === 0 && notimg()}
       <div className={gridClass}>
         {cols_one.map((url, index) => (
-          <div key={index} className="w-full h-full flex">
+          <div key={index} className="w-full h-full flex ">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -87,7 +81,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
           // console.log('col 1', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -101,7 +95,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
           // console.log('col 2', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -115,7 +109,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
           // console.log('col 3', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}
@@ -129,7 +123,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
           // console.log('col 4', url),
           <div key={index} className="w-full h-full flex">
             <img
-              className="h-auto max-w-full rounded-lg object-cover"
+              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
               src={url}
               alt=""
               onClick={() => handleClick(url)}

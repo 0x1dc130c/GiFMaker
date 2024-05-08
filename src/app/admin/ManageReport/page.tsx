@@ -48,14 +48,12 @@ const Admin = () => {
     return (
         <div>
             <Navbar />
-            <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
-                <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen">
-                    <div className="grid p-6">
-                        <div className="flex row-span-1 justify-center m-auto">
-                            <h1 className="text-5xl text-center">Manage Report</h1>
+            <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-900">
+                <div className="flex flex-col bg-gray-800 m-[20px] p-14 w-[80rem] min-h-screen rounded-lg">
+                    <div className="p-6">
+                        <div className="flex justify-center">
+                            <h1 className="text-5xl text-center text-white font-semibold m-5">Manage Report</h1>
                         </div>
-
-
                         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -87,7 +85,6 @@ const Admin = () => {
                                         <th scope="col" className="px-6 py-3">
                                             Action
                                         </th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -120,7 +117,6 @@ const Admin = () => {
                                                 <div className="text-sm text-gray-900 dark:text-gray-100">
                                                     {item.detail.length > 100 ? `${item.detail.substring(0, 20)}...` : item.detail}
                                                 </div>
-
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <a onClick={() => handlecheck(item)} className="text-indigo-600 hover:text-indigo-900 cursor-pointer">examine</a>
@@ -130,11 +126,11 @@ const Admin = () => {
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
-                    {showPopUp === 'true' && <Popreport item={datauser} onclose={() => setShowPopUp('')} />}          
+                    {showPopUp === 'true' && <Popreport item={datauser} onclose={() => setShowPopUp('')} />}
                 </div>
             </main>
+
             <Footer />
         </div>
     );

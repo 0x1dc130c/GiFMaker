@@ -12,8 +12,9 @@ export async function POST(request: Request) {
     // ค้นหาผู้ใช้งานจากฐานข้อมูล
     const user = await models.User.findOne({where: {Username: username, Password: password}, raw: true});
     console.log('User Login : ', (user as any).role);
+    console.log('User Login ------------------------------------------------ : ', user);
     const role = (user as any).role;
-
+    const path_profile = (user as any).path_profile;
     if (!user) {
         return NextResponse.json({
             message: "ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง",
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
         });
 
     } else {
-        const token = sign({UserID : (user as any).UserID ,username: (user as any).Username, role: (user as any).role},"secret", {
+        const token = sign({UserID : (user as any).UserID ,username: (user as any).Username, role: (user as any).role, pathProfile : (user as any).path_profile, name: (user as any).name},"secret", {
             expiresIn: MAX_AGE,
         });
         // console.log(token);
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
             message: "เข้าสู่ระบบสำเร็จ",
             token,
             role: role,
+            path_profile,
             status: 200,
         });
     }

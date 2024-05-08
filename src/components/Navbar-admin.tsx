@@ -7,14 +7,13 @@ import { Modal } from 'flowbite';
 function Navbar() {
     const pathname = usePathname();
     const isActive = (href: string) => {
-        return pathname === href ? 'text-blue-700 md:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white' : 'text-gray-900 md:text-gray-900 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white';
-    };
+        return pathname === href ? 'text-blue-700 md:text-fuchsia-200 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white' : 'text-gray-900 md:text-fuchsia-400 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white';
+      };
     return (
-        <nav className="bg-white border-gray-200 dark:bg-gray-900">
+        <nav className="bg-indigo-900 border-gray-200 dark:bg-gray-900">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    {/* <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo"/> */}
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">GIFMaker</span>
+                    <img src="logogif.png" className="h-[85px] w-[290px]" alt="Logo" />
                 </a>
                 <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     <Link href="/admin/profile">
@@ -31,18 +30,18 @@ function Navbar() {
                     </button>
                 </div>
                 <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
-                    <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                        <li>
-                            <Link href="/" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700${isActive('/')}`}>หน้าหลัก</Link>
+                    <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                        <li className='bg-indigo-900'>
+                            <Link href="/" className={`text-2xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300 ${isActive('/')}`}>Home</Link>
                         </li>
-                        <li >
-                            <Link href="/admin/manageAccount" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700 ${isActive('/create')}`}>จัดการผู้ใช้งาน</Link>
+                        <li className="bg-indigo-900">
+                            <Link href="/admin/manageAccount" className={`text-2xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300 ${isActive('/admin/manageAccount')}`}>Manage users</Link>
                         </li>
-                        <li>
-                            <Link href="/admin/ManageReport" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700 ${isActive('/upload')}`}>จัดการรายงาน</Link>
+                        <li className="bg-indigo-900">
+                            <Link href="/admin/ManageReport" className={`text-2xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300 ${isActive('/admin/ManageReport')}`}>Manage reports</Link>
                         </li>
-                        <li>
-                            <Link href="/admin/tagEdit" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700 ${isActive('/about')}`}>จัดการคำร้องขอแท็ก</Link>
+                        <li className="bg-indigo-900">
+                            <Link href="/admin/tagEdit" className={`text-2xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300${isActive('/admin/tagEdit')}`}>Manage tag requests</Link>
                         </li>
                     </ul>
                 </div>

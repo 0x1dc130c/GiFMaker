@@ -17,13 +17,13 @@ export const Menu = observer(() => {
   const store = React.useContext(StoreContext);
 
   return (
-    <ul className="bg-white h-full flex flex-col md:p-0 p-4">
+    <ul className="bg-gray-800 h-full flex flex-col md:p-0 p-4 ">
       {MENU_OPTIONS.map((option) => {
         const isSelected = store.selectedMenuOption === option.name;
         return (
           <li
             key={option.name}
-            className={`h-[72px] w-[72px] flex flex-col items-center justify-center ${isSelected ? "bg-slate-200" : ""}`}
+            className={`h-[72px] w-[72px] flex flex-col items-center justify-center ${isSelected ? "bg-gray-500" : ""}`}
           >
             <button
               onClick={() => option.action(store)}

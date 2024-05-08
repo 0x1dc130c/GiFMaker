@@ -72,6 +72,7 @@
     "@types/cookies": "^0.9.0",
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/gif.js": "^0.2.5",
+    "@types/jquery": "^3.5.29",
     "@types/js-cookie": "^3.0.6",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/mysql": "^2.15.26",

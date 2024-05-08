@@ -32,6 +32,10 @@ const User = sequelize.define("user_", {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    path_profile: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
 },{freezeTableName: true,timestamps: false});
 
 const info_image = sequelize.define("info_image", {

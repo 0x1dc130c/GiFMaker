@@ -50,14 +50,14 @@ export const Editor = observer(() => {
   return (
     <div>
       <Navbar />
-      <div className="grid grid-rows-[500px] grid-cols-[1fr_72px_250px]">
-        <div id="grid-canvas-container" className="col-start-1 bg-slate-100 flex justify-center items-center">
-          <canvas id="canvas" className="h-[500px] w-[800px] row" />
+      <div className="grid grid-rows-[500px] grid-cols-[_72px_300px_1fr]">
+        <div id="grid-canvas-container" className="col-start-3 bg-slate-100 flex justify-center items-center">
+          <canvas id="canvas" className="h-[500px] w-[100px] row" />
         </div>
-        <div className="tile row-start-1 col-start-2 flex flex-col">
+        <div className="tile row-start-1 col-start-1 flex flex-col">
           <Menu />
         </div>
-        <div className=" col-start-3 row-start-1 flex flex-col overflow-scroll">
+        <div className=" col-start-2 row-start-1 flex flex-col overflow-scroll">
           <Resources />
         </div>
       </div>
@@ -72,21 +72,3 @@ export const Editor = observer(() => {
     </div>
   );
 });
-
-{/* <div className="grid grid-rows-[600px_1fr] grid-cols-[72px_300px_1fr_250px] h-[100svh]">
-        <div className="tile row-span-1 col-span-1 flex flex-col">
-          <Menu />
-        </div>
-        <div className="row-span-2 flex flex-col overflow-scroll bg-">
-          <Resources />
-        </div>
-        <div id="grid-canvas-container" className="col-start-3 bg-slate-300 flex justify-center items-center">
-          <canvas id="canvas" className="h-[600px] w-[800px] row mt-10" />
-        </div>
-        <div className="col-start-4 row-start-1">
-          <ElementsPanel />
-        </div>
-        <div className="col-start-3 row-start-2 col-span-2 relative px-[10px] py-[4px] overflow-scroll bg-yellow-100">
-          <TimeLine />
-        </div>
-      </div> */}

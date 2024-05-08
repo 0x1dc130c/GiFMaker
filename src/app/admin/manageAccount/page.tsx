@@ -44,7 +44,7 @@ const Admin = () => {
         setDatauser([item]);
     }
 
-    
+
 
     const handleClose = () => {
         setShowPopUp('');
@@ -53,13 +53,13 @@ const Admin = () => {
     return (
         <div>
             <Navbar />
-            <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
-                <div className="grid bg-gray-500 m-[20px] p-14 w-[80rem] min-h-screen">
-                    <div className="grid p-6">
-                        <div className="flex row-span-1 justify-center m-auto">
-                            <h1 className="text-5xl text-center">Manage Account</h1>
+            <main className="flex min-h-screen flex-col items-center justify-between p-10 bg-gray-900 ">
+                <div className="flex flex-col bg-gray-800 m-[20px] p-14 w-[80rem] min-h-screen rounded-md">
+                    <div className="p-6">
+                        <div className="flex justify-center">
+                            <h1 className="text-5xl font-semibold text-white m-5">Manage Account</h1>
                         </div>
-                        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <div className="overflow-x-auto shadow-md sm:rounded-lg">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
@@ -73,19 +73,18 @@ const Admin = () => {
                                             Email
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            status
+                                            Status
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Name
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            change
+                                            Change
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {table.map((item, index) => (
-                                        console.log('item userID ========================> : ', item.UserID),
                                         <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                 {item.Username}
@@ -110,7 +109,6 @@ const Admin = () => {
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                     {showPopUp === 'true' ? <PopEdit item={datauser} onclose={() => setShowPopUp('')} /> : null}
                 </div>

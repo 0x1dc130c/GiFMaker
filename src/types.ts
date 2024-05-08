@@ -119,3 +119,6 @@ export type MenuOption =
   | "Effect"
   | "Sticker"
   | "Fill";
+
+
+//CheckedItems is a dictionary of tag names and their checked status

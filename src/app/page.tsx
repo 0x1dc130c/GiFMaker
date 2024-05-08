@@ -14,7 +14,7 @@ import PopUp from "../components/popup";
 export default function Home() {
   const [nav, setNav] = useState("");
   const [showPopUp, setShowPopUp] = useState("");
-
+  const [profile, setProfile] = useState({} as any);
   const handleClose = () => {
     setShowPopUp("");
   };
@@ -27,6 +27,7 @@ export default function Home() {
     .then((data) => {
       if (data.message == "Success") {
         setNav(data.data.role);
+        setProfile(data.data.path_profile);
       } else {
         setNav("guest");
       }
@@ -62,12 +63,16 @@ export default function Home() {
       ) : (
         <Navbar />
       )}
-      <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
-        <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen rounded-md">
-          <div className="grid p-6">
-            <div>
+      <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-900">
+      <div className="grid bg-gray-800 m-[20px] p-14 min-h-[90vh] rounded-md min-w-screen">
+          <div className="grid p-6 grid-cols-2">
+            <div className="col-start-2">
               <Sort onSortChange={handleSortChange} />
-              <SearchBar onSearch={handleSearch} />
+              <div className="flex justify-end">
+                <div className="m-2 w-[300px] ">
+                  <SearchBar onSearch={handleSearch} />
+                </div>
+              </div>
             </div>
           </div>
           <div className="row-start-3">
