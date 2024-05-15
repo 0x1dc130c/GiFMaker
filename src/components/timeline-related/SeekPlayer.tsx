@@ -10,13 +10,13 @@ import { ScaleRangeInput } from "./ScaleRangeInput";
 const MARKINGS = [
   {
     interval: 1000,
-    color: 'black',
+    color: 'white',
     size: 8,
     width: 1
   },
   {
     interval: 5000,
-    color: 'black',
+    color: 'white',
     size: 18,
     width: 3
   },
@@ -25,12 +25,12 @@ const MARKINGS = [
 const TextMarkings = [
   {
     text: "0:00",
-    color: "black",
+    color: "white",
     size: 8,
   },
   {
     text: "0:05",
-    color: "black",
+    color: "white",
     size: 8,
   },
   {
@@ -54,13 +54,14 @@ export const SeekPlayer = observer((_props: SeekPlayerProps) => {
           className="w-[80px] rounded  px-2 py-2"
           onClick={() => {
             store.setPlaying(!store.playing);
+            // store.setPlaying(true);
           }}
         >
-          <Icon size="40"></Icon>
+          <Icon size="40" style={{ color: "white"}}></Icon>
         </button>
-        <span className="font-mono">{formattedTime}</span>
+        <span className="font-semibold text-white">{formattedTime}</span>
         <div className="w-[1px] h-[25px] bg-slate-300 mx-[10px]"></div>
-        <span className="font-mono">{formattedMaxTime}</span>
+        <span className="font-semibold text-white">{formattedMaxTime}</span>
       </div>
       <ScaleRangeInput
         max={store.maxTime}
@@ -70,7 +71,7 @@ export const SeekPlayer = observer((_props: SeekPlayerProps) => {
         }}
         height={40}
         markings={MARKINGS}
-        backgroundColor="white"
+        backgroundColor="#111827"
         textMarkings={TextMarkings}
       />
     </div>

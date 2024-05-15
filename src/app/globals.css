@@ -16,7 +16,10 @@ body {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --scrollbar-thumb-color: #8a9a5b; /* สีของแถบเลื่อน */
+  --scrollbar-track-color: #000000; /* สีพื้นหลังของแถบเลื่อน */
 }
+
 
 /* @media (prefers-color-scheme: dark) {
   :root {

@@ -17,7 +17,7 @@ export const VideoResource = observer(
       React.useState("00:00");
 
     return (
-      <div className="rounded-lg overflow-hidden items-center bg-slate-800 m-[15px] flex flex-col relative cursor-pointer" onClick={() => store.addVideo(index)}>
+      <div className="rounded-lg overflow-hidden items-center m-[15px] flex flex-col relative cursor-pointer bg-gray-700 p-4" onClick={() => store.addVideo(index)}>
         <div className="bg-[rgba(0,0,0,.25)] text-white py-1 absolute text-base top-2 right-2">
           {formatedVideoLength}
         </div>

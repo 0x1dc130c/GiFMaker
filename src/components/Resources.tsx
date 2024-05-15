@@ -13,14 +13,14 @@ export const Resources = observer(() => {
   const store = React.useContext(StoreContext);
   const selectedMenuOption = store.selectedMenuOption;
   return (
-    <div className="bg-slate-200 h-full">
+    <div className="bg-gray-800 h-full">
       {selectedMenuOption === "Video" ? <VideoResourcesPanel /> : null}
       {selectedMenuOption === "Image" ? <ImageResourcesPanel /> : null}
       {selectedMenuOption === "Text" ? <TextResourcesPanel /> : null}
       {selectedMenuOption === "Sticker" ? <StickerPanel /> : null}
-      {selectedMenuOption === "Effect" ? <EffectsPanel /> : null}
+      {selectedMenuOption === "Filter" ? <EffectsPanel /> : null}
       {selectedMenuOption === "Export" ? <ExportVideoPanel /> : null}
-      {selectedMenuOption === "Fill" ? <FillPanel /> : null}
+      {/* {selectedMenuOption === "Fill" ? <FillPanel /> : null} */}
     </div>
   );
 });

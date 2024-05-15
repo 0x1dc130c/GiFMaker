@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import Navbar_login from "../components/Navbar-login";
 import Navbar_admin from "../components/Navbar-admin";
 import Footer from "../components/Footer";
-import Borad, { ReloadImageborad } from "../components/board";
+import Borad from "../components/board";
 import SearchBar from "../components/searchbar";
 import Sort from "../components/sort";
 import React, { useEffect, useState } from "react";
@@ -78,6 +78,12 @@ export default function Home() {
           <div className="row-start-3">
             <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} />
           </div>
+          {/* <div className="row-start-4 m-4 justify-center flex">
+          <button type="button" className="text-white text-3xl font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 " 
+          onClick={Reloadimg}
+          >
+            More</button>
+          </div> */}
         </div>
       </main>
       <Footer />

@@ -11,8 +11,6 @@ export async function POST(request: Request) {
 
     // ค้นหาผู้ใช้งานจากฐานข้อมูล
     const user = await models.User.findOne({where: {Username: username, Password: password}, raw: true});
-    console.log('User Login : ', (user as any).role);
-    console.log('User Login ------------------------------------------------ : ', user);
     const role = (user as any).role;
     const path_profile = (user as any).path_profile;
     if (!user) {

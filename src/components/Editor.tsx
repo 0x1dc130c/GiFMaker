@@ -50,9 +50,9 @@ export const Editor = observer(() => {
   return (
     <div>
       <Navbar />
-      <div className="grid grid-rows-[500px] grid-cols-[_72px_300px_1fr]">
-        <div id="grid-canvas-container" className="col-start-3 bg-slate-100 flex justify-center items-center">
-          <canvas id="canvas" className="h-[500px] w-[100px] row" />
+      <div className="grid grid-rows-[500px] grid-cols-[_72px_300px_1fr] bg-gray-900">
+        <div id="grid-canvas-container" className="col-start-3 bg-gray-900 flex justify-center items-center">
+          <canvas id="canvas" className="h-[500px] w-[100px] row bg-gray-900" />
         </div>
         <div className="tile row-start-1 col-start-1 flex flex-col">
           <Menu />

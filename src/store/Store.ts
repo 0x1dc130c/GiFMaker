@@ -61,7 +61,7 @@ export class Store {
     this.playing = false;
     this.currentKeyFrame = 0;
     this.selectedElement = null;
-    this.fps = 120;
+    this.fps = 60;
     this.animations = [];
     this.animationTimeLine = anime.timeline();
     this.selectedMenuOption = 'Image';
@@ -237,15 +237,7 @@ export class Store {
           break
         }
         case "slideIn": {
-          // const direction = animation.properties.direction;
-          // const targetPosition = {
-          //     left: (this.canvas?.width - editorElement.placement.width) / 2,
-          //     top: (this.canvas?.height - editorElement.placement.height) / 2,
-          // };
-          // const startPosition = {
-          //     left: (direction === "left" ? -editorElement.placement.width : direction === "right" ? this.canvas?.width : targetPosition.left),
-          //     top: (direction === "top" ? -editorElement.placement.height : direction === "bottom" ? this.canvas?.height : targetPosition.top),
-          // };
+          
           const direction = animation.properties.direction;
           const targetPosition = {
             left: editorElement.placement.x,
@@ -480,7 +472,7 @@ export class Store {
     this.updateTimeTo(newTime);
     if (newTime > this.maxTime) {
       this.currentKeyFrame = 0;
-      this.setPlaying(false);
+      this.setPlaying(true);
     } else {
       requestAnimationFrame(() => {
         this.playFrames();
@@ -550,7 +542,49 @@ export class Store {
     );
   }
 
+  addStickers(index: number) {
+    console.log('add sticker >>>>>>>>>>>>>>>>>>>> ', index)
+    const stickerElement = document.getElementById(`sticker-${index}`)
+    console.log('addStickers stickerElement ---------------> ', stickerElement)
+    if (!isHtmlImageElement(stickerElement)) {
+      return;
+    }
+    const aspectRatio = stickerElement.naturalWidth / stickerElement.naturalHeight;
+    const id = getUid();
+    console.log('addStickers id ---------------> ', id)
+    this.addEditorElement(
+      {
+        id,
+        name: `Media(sticker) ${index + 1}`,
+        type: "image",
+        placement: {
+          x: 300,
+          y: 300,
+          width: 100 * aspectRatio,
+          height: 100,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+        },
+        timeFrame: {
+          start: 0,
+          end: this.maxTime,
+        },
+        properties: {
+          elementId: `sticker-${id}`,
+          src: stickerElement.src,
+          effect: {
+            type: "none",
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
+        },
+      },
+    );
+  }
+
   addImage(index: number) {
+    console.log('add image >>>>>>>>>>>>>>>>>>>> ', index)
     const imageElement = document.getElementById(`image-${index}`)
     console.log('addImage imageElement ---------------> ', imageElement)
     if (!isHtmlImageElement(imageElement)) {

@@ -5,7 +5,6 @@ import { StoreContext } from "@/store";
 import { observer } from "mobx-react";
 import { VideoEditorElement, ImageEditorElement, EffecType } from "@/types";
 
-
 const EFFECT_TYPE_TO_LABEL: Record<string, string> = {
   none: "None",
   blackAndWhite: "Black and White",
@@ -26,11 +25,11 @@ export const EffectResource = observer((props: EffectResourceProps) => {
 
   const store = React.useContext(StoreContext);
   return (
-    <div className="flex flex-wrap ">
+    <div className="flex flex-wrap bg-gray-800">
       {Object.entries(EFFECT_TYPE_TO_LABEL).map(([effectType, label]) => (
         <div
           key={effectType}
-          className="rounded-lg overflow-hidden bg-slate-100 m-2 flex flex-col relative min-h-[100px] shadow-md p-2 cursor-pointer"
+          className="rounded-lg overflow-hidden bg-gray-700 m-2 flex flex-col relative min-h-[100px] shadow-md p-2 cursor-pointer"
           onClick={() => handleChangeEffectType(effectType as EffecType)}
         >
           <div
@@ -41,7 +40,7 @@ export const EffectResource = observer((props: EffectResourceProps) => {
           >
             <img src="/images/imgTast.jpg" alt={label} className="w-full h-auto" />
           </div>
-          <span className="text-black text-sm mt-2">{label}</span>
+          <span className="text-white text-sm font-semibold text-xl mt-2">{label}</span>
         </div>
       ))}
     </div>

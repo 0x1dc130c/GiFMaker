@@ -23,8 +23,12 @@ export async function POST(request: Request) {
         const status = 1;
         const role = "user";
 
-
-        if (blob !== null) {
+        // console.log('username', username, 'password', password, 'cpassword', cpassword, 'email', email, 'name', name, 'profileimg', profileimg, 'blob', blob, 'status', status, 'role', role);
+        console.log('blob check ------------------------------ ', blob)
+        console.log('blob check ------------------------------ ', blob !== null)
+        console.log('blob check ------------------------------ ', blob.type)
+        if (blob instanceof Blob ){
+            console.log("blob if ------------------------------ ", blob);
             const options: BlockBlobUploadOptions = {
                 blobHTTPHeaders: { blobContentType: blob.type }
             };
@@ -38,16 +42,16 @@ export async function POST(request: Request) {
             const imgURL = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blobName}`;
 
             models.User.create({ Username: username, Password: password, email: email, status: status, role: role, name: name, path_profile: imgURL });
+            return NextResponse.json({ message: { username, email, password }, status: 200 });
 
         } else {
-            models.User.create({ Username: username, Password: password, email: email, status: status, role: role, name: name, path_profile: null });
+            console.log("blob else ------------------------------ ", blob);
+            models.User.create({ Username: username, Password: password, email: email, status: status, role: role, name: name, path_profile: 'null'});
+            return NextResponse.json({ message: { username, email, password }, status: 200 });
         }
 
-        console.log("username", username, "email", email, "password", password, "name", name, "status", status, "role", role, "profile", profileimg)
-        // models.User.create({Username : username, Password : password, email : email, status : status, role : role , name : name, path_profile : profileimg});
-        return NextResponse.json({ message: { username, email, password }, status: 200 });
-
     } catch (error) {
+        console.log("error ================================= ", error)
         return NextResponse.json({ message: "Error in registration", status: 500 });
     }
 }

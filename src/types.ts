@@ -116,9 +116,9 @@ export type MenuOption =
   | "Text"
   | "Image"
   | "Export"
-  | "Effect"
+  | "Filter"
   | "Sticker"
-  | "Fill";
+  ;
 
 
 //CheckedItems is a dictionary of tag names and their checked status

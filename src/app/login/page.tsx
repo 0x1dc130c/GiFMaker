@@ -45,6 +45,12 @@ function Login() {
         body: JSON.stringify({ username, password }),
       })
         .then((res) => {
+          if (!res.ok) {
+            return res.json().then((data) => {
+              throw new Error(data.message);
+            });
+          }
+
           return res.json();
         })
         .then((data) => {
@@ -66,8 +72,31 @@ function Login() {
               console.log("User Login Successfully");
             });
           } else {
-            console.log("User Login Failed");
+            Swal.fire({
+              title: "เข้าสู่ระบบไม่สำเร็จ",
+              text: data.message,
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
           }
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "เข้าสู่ระบบไม่สำเร็จ",
+            text: error.message,
+            icon: "error",
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            backdrop: `
+            bg-red-500
+            url('/images/nyan-cat.gif')
+            center left
+            no-repeat
+  ` //
+          });
         });
     } catch (error) {
       console.log("Error During login : ", error);
@@ -136,7 +165,7 @@ function Login() {
             </div>
             <button
               type="submit"
-              className="w-full text-white bg-rose-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="w-full text-white bg-rose-500 hover:bg-rose-800 focus:ring-4 focus:outline-none focus:ring-rose-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800"
             >
               Login to your account
             </button>

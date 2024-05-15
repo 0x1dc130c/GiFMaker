@@ -15,7 +15,7 @@ export const ImageResource = observer(
     const [resolution, setResolution] = React.useState({ w: 0, h: 0 });
 
     return (
-      <div className="rounded-lg overflow-hidden items-center bg-slate-800 m-[15px] flex flex-col relative cursor-pointer" onClick={() => store.addImage(index)}>
+      <div className="rounded-lg overflow-hidden items-center m-[15px] flex flex-col relative cursor-pointer bg-gray-700 p-5" onClick={() => store.addImage(index)}>
         <div className="bg-[rgba(0,0,0,.25)] text-white py-1 absolute text-base top-2 right-2">
           {resolution.w}x{resolution.h}
         </div>

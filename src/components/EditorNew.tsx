@@ -60,23 +60,23 @@ export const EditorNew = observer(() => {
                 <div className="tile row-start-1 col-start-1 flex flex-col ">
                     <Menu />
                 </div>
-                <div className=" col-start-2 row-start-1 flex flex-col overflow-scroll">
+                <div className="h-full flex flex-col md:p-0 p-4 bg-gray-800 overflow-scroll scrollbar-thumb-rose-500 scrollbar-track-gray-700 scrollbar-thin ">
                     <Resources />
                 </div>
-                <div id="grid-canvas-container" className="col-start-3 bg-slate-100 flex justify-center items-center overflow-hidden">
+                <div id="grid-canvas-container" className="col-start-3 bg-gray-600 flex justify-center items-center overflow-hidden">
                     <div className="canvas-container" style={{ border: '1px solid black' }}>
                         <canvas id="canvas" style={{ width: `${canvasWidth}px`, height: `${canvasHeight}px` }} />
                     </div>
                 </div>
-                <div className="col-start-4 row-start-1 flex flex-col justify-center items-center bg-slate-200 overflow-scroll">
+                <div className="col-start-4 row-start-1 flex flex-col justify-center items-center bg-gray-800 overflow-scroll scrollbar-thumb-rose-500 scrollbar-track-gray-700 scrollbar-thin ">
                     <Toolsobject />
                 </div>
             </div>
-            <div className="grid grid-rows-[500px] grid-cols-[322px_1fr]">
-                <div className="col-start-2 row-start-1 relative px-[10px] py-[4px] overflow-scroll bg-slate-200">
+            <div className="grid grid-rows-[352px] grid-cols-[372px_1fr] bg-gray-900">
+                <div className="col-start-2 row-start-1 relative px-[10px] py-[4px] overflow-scroll scrollbar-thumb-rose-500 scrollbar-track-gray-700 scrollbar-thin  bg-gray-800">
                     <TimeLine />
                 </div>
-                <div className="col-start-1 row-start-1">
+                <div className="col-start-1 row-start-1 ">
                     <ElementsPanel />
                 </div>
             </div>
