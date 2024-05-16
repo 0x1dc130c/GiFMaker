@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 import { set } from 'animejs';
 import ShowTags from './tags';
 import { cookies } from 'next/headers'
-
+import Swal from 'sweetalert2';
 interface CheckedItems {
     [key: string]: boolean;
 }
@@ -53,7 +53,6 @@ export default function UploadFile() {
         }
 
         // อัปเดต state ด้วยการรวม array เดิมและ array ใหม่
-        console.log('tag >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', selectedKeys);
         setUploading(true);
         if (selectedImage && selectedFile) {
             try {
@@ -68,26 +67,61 @@ export default function UploadFile() {
                     console.log('image for formData : ', formData.get('image'));
                 }
                 console.log('formData client : ', formData);
+                Swal.fire({
+                    title: "Uploading",
+                    text: "Please wait...",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
                 const { data } = await axios.post('/api/upload', formData);
                 console.log('data : ', data);
                 if (data.status === 200) {
                     console.log('File uploaded successfully');
+                    Swal.fire({
+                        title: "Success!",
+                        text: "File uploaded successfully",
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
                     setSelectedImage("");
                     setSetSelectedFile(undefined);
                     setName("");
                     setDescription("");
-
+                    setCheckedItems({});
                 } else {
                     console.log('Error uploading file');
+                    Swal.fire({
+                        title: "Error",
+                        text: "Failed to upload file",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
                 }
                 setUploading(false);
                 // Handle success
             } catch (error) {
                 console.error('Error uploading file:', error);
+                Swal.fire({
+                    title: "Error",
+                    text: "Failed to upload file",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
                 // Handle error
             }
         } else {
             console.log('No image selected');
+            Swal.fire({
+                title: "Error",
+                text: "No image selected",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
         }
     };
 
@@ -98,8 +132,6 @@ export default function UploadFile() {
         setSelectedImage(file ? URL.createObjectURL(file) : ""); // Add type assertion to ensure file is not null
         setSetSelectedFile(file || undefined); // Update to handle null case
     };
-
-
 
     return (
 

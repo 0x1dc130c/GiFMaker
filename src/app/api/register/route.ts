@@ -20,7 +20,7 @@ export async function POST(request: Request) {
         const profileimg = body.get('file');
         // const img = profileimg !== null ? profileimg.split(";") : null;
         const blob = profileimg as File;
-        const status = 1;
+        const status = 'active';
         const role = "user";
 
         // console.log('username', username, 'password', password, 'cpassword', cpassword, 'email', email, 'name', name, 'profileimg', profileimg, 'blob', blob, 'status', status, 'role', role);
@@ -41,7 +41,19 @@ export async function POST(request: Request) {
             await blockBlobClient.uploadData(await blob.arrayBuffer(), options);
             const imgURL = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blobName}`;
 
-            models.User.create({ Username: username, Password: password, email: email, status: status, role: role, name: name, path_profile: imgURL });
+            models.User.create({
+                Username: username,
+                Password: password,
+                email: email,
+                status: status,
+                role: role,
+                name: name,
+                path_profile: imgURL
+              }).then(user => {
+                console.log("User created successfully:", user);
+              }).catch(error => {
+                console.error("Error creating user:", error);
+              });
             return NextResponse.json({ message: { username, email, password }, status: 200 });
 
         } else {

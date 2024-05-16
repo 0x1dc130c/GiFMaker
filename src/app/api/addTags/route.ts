@@ -6,7 +6,6 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         const { tagid_, tags, statusconfirm } = body;
-        console.log('body ------------------------------------ : ', body);
         
         // Create Tag and capture the result
         const newTag = await models.Tag.create({ tagName:tags, status:statusconfirm, UserID: tagid_ });

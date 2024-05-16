@@ -5,7 +5,7 @@ import PopUp from "./popup";
 import ReloadImage from "./reloadImage";
 import { set } from "animejs";
 import { FcLike } from "react-icons/fc";
-
+import Swal from "sweetalert2";
 interface BoradProps {
   gridClass: string;
 }
@@ -54,12 +54,18 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
     cols_five.length = 0;
     cols_more.length = 0;
 
+    Swal.fire({
+      title: "Loading...",
+      html: "<div class='text-center'><div class='spinner-border' role='status'></div></div>",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
     axios.post("/api/sortImage", { sort }).then((response) => {
       if (response.data.status === 200) {
         for (let i = 0; i < response.data.img_url.length; i++) {
           setImgURLS(response.data.img_url);
         }
-
+        Swal.close();
 
       } else {
         console.error("Error sorting images:", response.data.message);
@@ -75,13 +81,19 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
     cols_five.length = 0;
     cols_more.length = 0;
 
-
+    Swal.fire({
+      title: "Loading...",
+      html: "<div class='text-center'><div class='spinner-border' role='status'></div></div>",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
     axios.post("/api/search", { search }).then((response) => {
       if (response.data.status === 200) {
         for (let i = 0; i < response.data.img_url.length; i++) {
           console.log('data forloop search ---------->>>>> ', response.data.img_url[i]);
           // setImgURLS(response.data.img_url[i]);
         }
+        Swal.close();
       } else {
         console.error("Error sorting images:", response.data.message);
       }

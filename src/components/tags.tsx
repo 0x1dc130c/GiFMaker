@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import PopPopTag_ from './popaddTags';
 import CheckUserID from './GetUID';
-
+import Swal from "sweetalert2";
 interface CheckedItems {
     [key: string]: boolean;
 }
@@ -27,12 +27,22 @@ const ShowTags: React.FC<ShowTagsProps> = ({ setCheckedItems }) => {
     useEffect(() => {
         async function fetchData() {
             try {
+                Swal.fire({
+                    title: "Loading tags",
+                    text: "Please wait...",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
                 const response = await fetch("/api/Tags", {
                     method: "POST",
                 });
                 const data = await response.json();
                 if (data.status === 200) {
                     const checkUID:any = await CheckUserID();
+                    Swal.close();
                     setUserID(checkUID);
                     setTable(data.tableTag);
                 } else {

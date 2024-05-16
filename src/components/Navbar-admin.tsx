@@ -13,7 +13,7 @@ function Navbar() {
         <nav className="bg-indigo-900 border-gray-200 dark:bg-gray-900">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="logogif.png" className="h-[85px] w-[290px]" alt="Logo" />
+                    <img src="/logogif.png" className="h-[85px] w-[290px]" alt="Logo" />
                 </a>
                 <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     <Link href="/admin/profile">

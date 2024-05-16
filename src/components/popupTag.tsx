@@ -2,14 +2,23 @@
 import { set } from "animejs";
 import exp from "constants";
 import React, { useState, useEffect } from "react";
-
+import Swal from "sweetalert2";
 
 const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
 
     const [tagid_, setTagid] = useState(item[0].tagID); 
 
     const handleconfirm = async (statusconfirm: string) => {
-        
+        Swal.fire({
+            title: "Adding tag",
+            text: "Please wait...",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
         await fetch("/api/manageTag", {
             method: "POST",
             body: JSON.stringify({tagid_, statusconfirm}),
@@ -17,11 +26,19 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
             .then((data) => {
                 console.log(data);
                 if (data.status === 200) {
-                    onclose();
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Tag added successfully",
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    }).then(() => {
+                        onclose();
+                    });
                 } else {
                     console.log('data.message : ', data.message);
                 }
-
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -30,7 +47,15 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
 
 
     const handleDelete = async (statusdelete: string) => {
-
+        Swal.fire({
+            title: "Deleting tag",
+            text: "Please wait...",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
         await fetch("/api/deleteTag", {
             method: "POST",
             body: JSON.stringify({tagid_, statusdelete}),
@@ -38,7 +63,16 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
             .then((data) => {
                 console.log(data);
                 if (data.status === 200) {
-                    onclose();
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Tag deleted successfully",
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    }).then(() => {
+                        onclose();
+                    });
                 } else {
                     console.log('data.message : ', data.message);
                 }

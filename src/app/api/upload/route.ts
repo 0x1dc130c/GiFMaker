@@ -85,7 +85,7 @@ export async function POST(request : NextRequest){
       await blockBlobClient.uploadData(await blob.arrayBuffer(), options);
 
       console.log('file : ', file);
-      return NextResponse.json({ message: 'File uploaded successfully',  });
+      return NextResponse.json({ message: 'File uploaded successfully',  status: 200});
     } catch (error) {
       console.error('Error uploading file : ', error);
       return NextResponse.json({ message: ' REQ == POST. Error in file upload ', status: 500 });

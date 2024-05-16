@@ -543,20 +543,19 @@ export class Store {
   }
 
   addStickers(index: number) {
-    console.log('add sticker >>>>>>>>>>>>>>>>>>>> ', index)
     const stickerElement = document.getElementById(`sticker-${index}`)
-    console.log('addStickers stickerElement ---------------> ', stickerElement)
-    if (!isHtmlImageElement(stickerElement)) {
+    if (!isHtmlVideoElement(stickerElement)) {
       return;
     }
-    const aspectRatio = stickerElement.naturalWidth / stickerElement.naturalHeight;
+    const stickerDurationMs = stickerElement.duration * 1000;
+    const aspectRatio = stickerElement.videoWidth / stickerElement.videoWidth;
     const id = getUid();
-    console.log('addStickers id ---------------> ', id)
+
     this.addEditorElement(
       {
         id,
         name: `Media(sticker) ${index + 1}`,
-        type: "image",
+        type: "video",
         placement: {
           x: 300,
           y: 300,
@@ -568,7 +567,7 @@ export class Store {
         },
         timeFrame: {
           start: 0,
-          end: this.maxTime,
+          end: stickerDurationMs,
         },
         properties: {
           elementId: `sticker-${id}`,

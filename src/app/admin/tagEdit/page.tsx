@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar-admin";
 import Footer from "@/components/Footer";
 import PopTag from "@/components/popupTag";
-
+import Swal from "sweetalert2";
 const Admin = () => {
     const [table, setTable] = useState<any[]>([]);
     const [showPopUp, setShowPopUp] = useState('');
@@ -13,20 +13,50 @@ const Admin = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+
+                Swal.fire({
+                    title: "Loading",
+                    text: "Please wait...",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                });
+
                 const response = await fetch("/api/showTag", {
                     method: "POST",
                 });
                 const data = await response.json();
 
                 if (data.status === 200) {
-                    console.log('data.tableTag ----------- : ', data.tableTag);
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Data loaded successfully",
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
                     setTable(data.tableTag);
-                    console.log('table ----------- : ', table);
+                    
                 } else {
                     console.log('data.message ----------- : ', data.message);
+                    Swal.fire({
+                        title: "Error",
+                        text: data.message || "An error occurred",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    });
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
+                Swal.fire({
+                    title: "Error",
+                    text: "An error occurred",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
             }
         };
 
@@ -56,7 +86,7 @@ const Admin = () => {
     <div className="flex flex-col bg-gray-800 m-[20px] p-14 w-[80rem] min-h-screen rounded-mg">
         <div className="p-6">
             <div className="flex justify-center">
-                <h1 className="text-5xl text-center test-white font-semibold m-5">Tag Edit</h1>
+                <h1 className="text-5xl text-center text-white font-semibold m-5">Tag Edit</h1>
             </div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

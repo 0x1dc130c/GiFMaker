@@ -29,29 +29,29 @@ export const Toolsobject = observer(((_props: {}) => {
   return (
     <div className="m-2 h-full">
     <div className={hidden_}>
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
-          <h1 className="text-2xl text-gray-800 font-semibold mb-4">Color</h1>
+        <div className="bg-gray-700 p-6 rounded-lg shadow-md m-2">
+          <h1 className="text-2xl text-white font-semibold mb-4">Color</h1>
           <div className="flex flex-wrap gap-2">
             <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#000000" }} onClick={() => handleChange("#000000")}>Black</button>
             <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#0000FF" }} onClick={() => handleChange("#0000FF")}>Blue</button>
             <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#FF0000" }} onClick={() => handleChange("#FF0000")}>Red</button>
             <button className="text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2" style={{ backgroundColor: "#008000" }} onClick={() => handleChange("#008000")}>Green</button>
+            <ColorPicker />
           </div>
-          <ColorPicker />
         </div>
 
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
-          <h1 className="text-2xl text-gray-800 font-semibold mb-4">Font</h1>
+        <div className="bg-gray-700 p-6 rounded-lg shadow-md m-2">
+          <h1 className="text-2xl text-white font-semibold mb-4">Font</h1>
           <FontSelect />
         </div>
 
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
-          <h1 className="text-2xl text-gray-800 font-semibold mb-4">Align</h1>
+        <div className="bg-gray-700 p-6 rounded-lg shadow-md m-2">
+          <h1 className="text-2xl text-white font-semibold mb-4">Align</h1>
           <AlignText />
         </div>
 
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md m-2">
-          <h1 className="text-2xl text-gray-800 font-semibold mb-4">Stroke Color</h1>
+        <div className="bg-gray-700 p-6 rounded-lg shadow-md m-2">
+          <h1 className="text-2xl text-white font-semibold mb-4">Stroke Color</h1>
           <StrokeColor />
         </div>
       </div>

@@ -45,12 +45,12 @@ const ColorPicker = () =>{
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <button
         type="button"
-        className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center me-2 mb-2"
+        className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center me-2 mb-2 border-2 border-white p-4"
         style={{ backgroundColor: color }}
         onClick={toggleColorPicker}
       >
         <svg
-          className="w-6 h-6 text-gray-800 dark:text-white"
+          className="w-6 h-6 text-white dark:text-white "
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="16"
