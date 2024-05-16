@@ -11,11 +11,16 @@ export type EditorElementBase<T extends string, P> = {
 };
 export type VideoEditorElement = EditorElementBase<
   "video",
-  { src: string; elementId: string; imageObject?: fabric.Image, effect: Effect }
+  { src: string; elementId: string; imageObject?: fabric.Image, effect: Effect,brightness:number,contrast:number }
 >;
 export type ImageEditorElement = EditorElementBase<
   "image",
-  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect }
+  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect,brightness:number,contrast:number }
+  
+>;
+export type StickerEditorElement = EditorElementBase<
+  "sticker",
+  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect}
 >;
 
 export type AudioEditorElement = EditorElementBase<
@@ -28,7 +33,13 @@ export type TextEditorElement = EditorElementBase<
     text: string;
     fontSize: number;
     fontWeight: number;
+    fontFamily: string;
+    textColor: string;
+    textalign: string;
+    strokeSize: number;
+    strokeColor: string;
     splittedTexts: fabric.Text[];
+    effect: Effect;
   }
 >;
 
@@ -36,6 +47,7 @@ export type EditorElement =
   | VideoEditorElement
   | ImageEditorElement
   | AudioEditorElement
+  | StickerEditorElement
   | TextEditorElement;
 
 export type Placement = {
@@ -101,10 +113,12 @@ export type Animation =
 
 export type MenuOption =
   | "Video"
-  | "Audio"
   | "Text"
   | "Image"
   | "Export"
-  | "Animation"
-  | "Effect"
-  | "Fill";
+  | "Filter"
+  | "Sticker"
+  ;
+
+
+//CheckedItems is a dictionary of tag names and their checked status

@@ -6,20 +6,31 @@ import { MenuOption, EditorElement, Animation, TimeFrame, VideoEditorElement, Au
 import { FabricUitls } from '@/utils/fabric-utils';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { toBlobURL } from '@ffmpeg/util';
+import { cookies } from 'next/dist/client/components/headers';
 
 export class Store {
+  [x: string]: any;
   canvas: fabric.Canvas | null
 
   backgroundColor: string;
+  textalign: string;
+  textColor: string;
+  fontFamily: string;
+  strokeSzie: number;
+  storkColor: string;
+  brightness: number;
+  contrast: number;
 
   selectedMenuOption: MenuOption;
   audios: string[]
   videos: string[]
   images: string[]
+  sticker : string[]
   editorElements: EditorElement[]
   selectedElement: EditorElement | null;
 
   maxTime: number
+  minTime: number
   animations: Animation[]
   animationTimeLine: anime.AnimeTimelineInstance;
   playing: boolean;
@@ -27,17 +38,26 @@ export class Store {
   currentKeyFrame: number;
   fps: number;
 
-  possibleVideoFormats: string[] = ['mp4', 'webm'];
-  selectedVideoFormat: 'mp4' | 'webm';
+  possibleVideoFormats: string[] = ['mp4', 'gif'];
+  selectedVideoFormat: 'mp4' | 'gif';
 
   constructor() {
     this.canvas = null;
     this.videos = [];
     this.images = [];
+    this.sticker = [];
     this.audios = [];
     this.editorElements = [];
     this.backgroundColor = '#111111';
-    this.maxTime = 10 * 1000;
+    this.textalign = 'center';
+    this.textColor = '#FFFFFF';
+    this.fontFamily = 'Arial';
+    this.strokeSzie = 0;
+    this.storkColor = '';
+    this.brightness = 100;
+    this.contrast = 50;
+    this.maxTime = 5 * 1000;
+    this.minTime = this.maxTime / 5;
     this.playing = false;
     this.currentKeyFrame = 0;
     this.selectedElement = null;
@@ -49,6 +69,7 @@ export class Store {
     makeAutoObservable(this);
   }
 
+  
   get currentTimeInMs() {
     return this.currentKeyFrame * 1000 / this.fps;
   }
@@ -75,11 +96,77 @@ export class Store {
     }
   }
 
+  setTextColorStore(textColor: string) {
+    this.textColor = textColor;
+    console.log('setTextColor selectedElement  ---------------> ', this.selectedElement)
+    if(this.selectedElement && this.selectedElement.type === 'text') {
+      this.updateEditorElement(this.selectedElement);
+
+    }
+  }
+
+
+  setFontFamily(fontFamily: string) {
+    this.fontFamily = fontFamily;
+    if (this.selectedElement && this.selectedElement.type === 'text') {
+      this.updateEditorElement(this.selectedElement);
+    }
+  }
+
+  setTextAlign(textalign: string) {
+    this.textalign = textalign;
+    if (this.selectedElement && this.selectedElement.type === 'text') {
+      this.updateEditorElement(this.selectedElement);
+    }
+  }
+
+  setStrokeSize(strokeSzie: number) {
+    this.strokeSzie = strokeSzie;
+    if (this.selectedElement && this.selectedElement.type === 'text') {
+      this.updateEditorElement(this.selectedElement);
+    }
+  }
+
+  setStrokeColor(strokeColor: string) {
+    this.storkColor = strokeColor;
+    if (this.selectedElement && this.selectedElement.type === 'text') {
+      this.updateEditorElement(this.selectedElement);
+    }
+  }
+
+  setBrightness(brightness: number) {
+    this.brightness = brightness;
+    console.log('setBrightness brightness store ---------------> ', this.brightness)
+    if (this.selectedElement && this.selectedElement.type === 'image') {
+      this.updateEditorElement(this.selectedElement);
+    }
+    this.refreshElements();
+  }
+
+  setContrast(contrast: number) {
+    this.contrast = contrast;
+    if (this.selectedElement && this.selectedElement.type === 'image') {
+      this.updateEditorElement(this.selectedElement);
+    }
+    this.refreshElements();
+  }
+
+
+
   updateEffect(id: string, effect: Effect) {
     const index = this.editorElements.findIndex((element) => element.id === id);
     const element = this.editorElements[index];
     if (isEditorVideoElement(element) || isEditorImageElement(element)) {
       element.properties.effect = effect;
+    }
+    this.refreshElements();
+  }
+
+  updateFilter(id: string, filter: string) {
+    const index = this.editorElements.findIndex((element) => element.id === id);
+    const element = this.editorElements[index];
+    if (isEditorVideoElement(element) || isEditorImageElement(element)) {
+      // element.properties.effect.filter = filter;
     }
     this.refreshElements();
   }
@@ -98,6 +185,12 @@ export class Store {
     this.images = [...this.images, image];
     console.log(this.images);
     console.log("image added");
+  }
+
+  addStickerResource(sticker: string) {
+    this.sticker = [...this.sticker, sticker];
+    console.log(this.sticker);
+    console.log("sticker added");
   }
 
   addAnimation(animation: Animation) {
@@ -144,15 +237,7 @@ export class Store {
           break
         }
         case "slideIn": {
-          // const direction = animation.properties.direction;
-          // const targetPosition = {
-          //     left: (this.canvas?.width - editorElement.placement.width) / 2,
-          //     top: (this.canvas?.height - editorElement.placement.height) / 2,
-          // };
-          // const startPosition = {
-          //     left: (direction === "left" ? -editorElement.placement.width : direction === "right" ? this.canvas?.width : targetPosition.left),
-          //     top: (direction === "top" ? -editorElement.placement.height : direction === "bottom" ? this.canvas?.height : targetPosition.top),
-          // };
+          
           const direction = animation.properties.direction;
           const targetPosition = {
             left: editorElement.placement.x,
@@ -342,6 +427,9 @@ export class Store {
 
 
   addEditorElement(editorElement: EditorElement) {
+
+    console.log('addEditorElement : editorElement ---------------> ', editorElement)
+
     this.setEditorElements([...this.editorElements, editorElement]);
     this.refreshElements();
     this.setSelectedElement(this.editorElements[this.editorElements.length - 1]);
@@ -384,7 +472,7 @@ export class Store {
     this.updateTimeTo(newTime);
     if (newTime > this.maxTime) {
       this.currentKeyFrame = 0;
-      this.setPlaying(false);
+      this.setPlaying(true);
     } else {
       requestAnimationFrame(() => {
         this.playFrames();
@@ -429,8 +517,8 @@ export class Store {
         name: `Media(video) ${index + 1}`,
         type: "video",
         placement: {
-          x: 0,
-          y: 0,
+          x: 300,
+          y: 300,
           width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
@@ -446,14 +534,59 @@ export class Store {
           src: videoElement.src,
           effect: {
             type: "none",
-          }
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
+        },
+      },
+    );
+  }
+
+  addStickers(index: number) {
+    console.log('add sticker >>>>>>>>>>>>>>>>>>>> ', index)
+    const stickerElement = document.getElementById(`sticker-${index}`)
+    console.log('addStickers stickerElement ---------------> ', stickerElement)
+    if (!isHtmlImageElement(stickerElement)) {
+      return;
+    }
+    const aspectRatio = stickerElement.naturalWidth / stickerElement.naturalHeight;
+    const id = getUid();
+    console.log('addStickers id ---------------> ', id)
+    this.addEditorElement(
+      {
+        id,
+        name: `Media(sticker) ${index + 1}`,
+        type: "image",
+        placement: {
+          x: 300,
+          y: 300,
+          width: 100 * aspectRatio,
+          height: 100,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+        },
+        timeFrame: {
+          start: 0,
+          end: this.maxTime,
+        },
+        properties: {
+          elementId: `sticker-${id}`,
+          src: stickerElement.src,
+          effect: {
+            type: "none",
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
         },
       },
     );
   }
 
   addImage(index: number) {
+    console.log('add image >>>>>>>>>>>>>>>>>>>> ', index)
     const imageElement = document.getElementById(`image-${index}`)
+    console.log('addImage imageElement ---------------> ', imageElement)
     if (!isHtmlImageElement(imageElement)) {
       return;
     }
@@ -465,8 +598,8 @@ export class Store {
         name: `Media(image) ${index + 1}`,
         type: "image",
         placement: {
-          x: 100,
-          y: 100,
+          x: 300,
+          y: 300,
           width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
@@ -482,61 +615,32 @@ export class Store {
           src: imageElement.src,
           effect: {
             type: "none",
-          }
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
         },
       },
     );
   }
 
-  addAudio(index: number) {
-    const audioElement = document.getElementById(`audio-${index}`)
-    if (!isHtmlAudioElement(audioElement)) {
+  addSticker(index: number) {
+    const stickerElement = document.getElementById(`sticker-${index}`)
+    console.log('addSticker stickerElement ---------------> ', stickerElement)
+    if (!isHtmlImageElement(stickerElement)) {
       return;
     }
-    const audioDurationMs = audioElement.duration * 1000;
+    const aspectRatio = stickerElement.naturalWidth / stickerElement.naturalHeight;
     const id = getUid();
+    console.log('addSticker id ---------------> ', id)
     this.addEditorElement(
       {
         id,
-        name: `Media(audio) ${index + 1}`,
-        type: "audio",
+        name: `Media(sticker) ${index + 1}`,
+        type: "image",
         placement: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100,
-          rotation: 0,
-          scaleX: 1,
-          scaleY: 1,
-        },
-        timeFrame: {
-          start: 0,
-          end: audioDurationMs,
-        },
-        properties: {
-          elementId: `audio-${id}`,
-          src: audioElement.src,
-        }
-      },
-    );
-
-  }
-  addText(options: {
-    text: string,
-    fontSize: number,
-    fontWeight: number,
-  }) {
-    const id = getUid();
-    const index = this.editorElements.length;
-    this.addEditorElement(
-      {
-        id,
-        name: `Text ${index + 1}`,
-        type: "text",
-        placement: {
-          x: 0,
-          y: 0,
-          width: 100,
+          x: 300,
+          y: 300,
+          width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
           scaleX: 1,
@@ -547,10 +651,66 @@ export class Store {
           end: this.maxTime,
         },
         properties: {
+          elementId: `sticker-${id}`,
+          src: stickerElement.src,
+          effect: {
+            type: "none",
+        
+          },
+          brightness: this.brightness,
+          contrast: this.contrast
+        },
+      },
+    );
+  }
+
+  
+  addText(options: {
+    text: string,
+    fontSize: number,
+    textColor: string,
+    fontWeight: number,
+    textalign: string,
+    fontFamily: string,
+    strokeSzie: number,
+    strokeColor: string
+
+  }) {
+    // console.log('options ---------------> ', options)
+    const id = getUid();
+    const index = this.editorElements.length;
+    this.addEditorElement(
+      {
+        id,
+        name: `Text ${index + 1}`,
+        type: "text",
+        placement: {
+          x: 250,
+          y: 200,
+          width: 100,
+          height: 100,
+          rotation: 0,
+          scaleX: 1,
+          scaleY: 1,
+        },
+        timeFrame: {
+          start: 0,
+          end: this.minTime,
+        },
+        properties: {
           text: options.text,
           fontSize: options.fontSize,
           fontWeight: options.fontWeight,
+          textColor: options.textColor,
+          fontFamily: options.fontFamily,
+          textalign: options.textalign,
+          strokeSize: options.strokeSzie,
+          strokeColor: options.textColor,
           splittedTexts: [],
+          effect: {
+            type: "none",
+          }
+          
         },
       },
     );
@@ -620,7 +780,7 @@ export class Store {
 
   // }
 
-  setVideoFormat(format: 'mp4' | 'webm') {
+  setVideoFormat(format: 'mp4' | 'gif') {
     this.selectedVideoFormat = format;
   }
 
@@ -687,10 +847,25 @@ export class Store {
           a.click();
 
         } else {
-          const url = URL.createObjectURL(blob);
+          const data = new Uint8Array(await (blob).arrayBuffer());
+          const ffmpeg = new FFmpeg();
+          const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.2/dist/umd"
+          await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+            // workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, 'text/javascript'),
+          });
+          await ffmpeg.writeFile('video.webm', data);
+          await ffmpeg.exec(["-y", "-i", "video.webm", "-c", "copy", "video.mp4"]);
+          await ffmpeg.exec(["-i", "video.mp4", "videogif.gif"])
+          // await ffmpeg.exec(["-y", "-i", "video.webm", "-c:v", "libx264", "video.mp4"]);
+
+          const output = await ffmpeg.readFile('videogif.gif');
+          const outputBlob = new Blob([output], { type: "image/gif" });
+          const outputUrl = URL.createObjectURL(outputBlob);
           const a = document.createElement("a");
-          a.href = url;
-          a.download = "video.webm";
+          a.download = "video-test.gif";
+          a.href = outputUrl;
           a.click();
         }
       };
@@ -703,6 +878,7 @@ export class Store {
   }
 
   refreshElements() {
+    console.log('refreshElements color ---------------> ', this.textColor)
     const store = this;
     if (!store.canvas) return;
     const canvas = store.canvas;
@@ -711,7 +887,7 @@ export class Store {
       const element = store.editorElements[index];
       switch (element.type) {
         case "video": {
-          console.log("elementid", element.properties.elementId);
+          console.log("elementid --------------------> ", element.properties.elementId);
           if (document.getElementById(element.properties.elementId) == null)
             continue;
           const videoElement = document.getElementById(
@@ -737,6 +913,8 @@ export class Store {
             // filters: filters,
             // @ts-ignore
             customFilter: element.properties.effect.type,
+            brightness: this.brightness,
+            contrast: this.contrast,
           });
 
           element.fabricObject = videoObject;
@@ -796,7 +974,11 @@ export class Store {
             // filters
             // @ts-ignore
             customFilter: element.properties.effect.type,
+            brightness: this.brightness,
+            contrast: this.contrast,
           });
+          console.log('element.id ---------------> ', element.id)
+          console.log('elment.brightness --------> ', this.brightness)
           // imageObject.applyFilters();
           element.fabricObject = imageObject;
           element.properties.imageObject = imageObject;
@@ -861,7 +1043,11 @@ export class Store {
             objectCaching: false,
             selectable: true,
             lockUniScaling: true,
-            fill: "#ffffff",
+            textAlign: this.textalign,
+            fill: this.textColor, // text color
+            fontFamily: this.fontFamily,
+            stroke: this.storkColor,
+            // strokeWidth: this.strokeSzie,
           });
           element.fabricObject = textObject;
           canvas.add(textObject);
@@ -932,6 +1118,11 @@ export function isEditorImageElement(
   return element.type === "image";
 }
 
+export function isEditorTextElement(
+  element: EditorElement
+): element is TextEditorElement {
+  return element.type === "text";
+}
 
 function getTextObjectsPartitionedByCharacters(textObject: fabric.Text, element: TextEditorElement): fabric.Text[] {
   let copyCharsObjects: fabric.Text[] = [];
@@ -954,7 +1145,9 @@ function getTextObjectsPartitionedByCharacters(textObject: fabric.Text, element:
       top: lineIndex * lineHeight * scaleY + (element.placement.y),
       fontSize: textObject.fontSize,
       fontWeight: textObject.fontWeight,
-      fill: '#fff',
+      textAlign: element.properties.textalign,
+      fill: element.properties.textColor,
+      fontFamily: element.properties.fontFamily,
     });
     copyCharsObjects.push(charTextObject);
   }
