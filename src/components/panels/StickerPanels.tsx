@@ -4,9 +4,25 @@ import { StoreContext } from '@/store';
 import { Stickerentity } from '../entity/stickerEntity';
 export const StickerPanel = observer(() => {
     const store = React.useContext(StoreContext);
-    const stickerImages = ['giphy6.gif'];
+    // const stickerImages = ['giphy6.gif'];
+
+    const [stickers, setstickers] = useState<string[]>([]);
+
+    useEffect(() => {
+        const fetchStickers = async () => {
+            const res = await fetch('/api/stickers',{
+                method: "POST",
+            });
+            const data = await res.json();
+            console.log('data.stickers >>>>>>>>>>>>>>>>>>>> : ', data.stickers);
+            setstickers(data.stickers);
+        };
+        fetchStickers();
+    } , []);
+
     if(store.sticker.length === 0) {
-        stickerImages.forEach((image, index) => {
+        stickers.forEach((image, index) => {
+            console.log(' img ----------------------------- ',image);
             store.addStickerResource('/stickers/'+image);
             // store.addSticker(index);
             // store.addImage(index); // เรียกใช้งาน store.addImage(index) ที่นี่หรือในที่อื่นที่เหมาะสม

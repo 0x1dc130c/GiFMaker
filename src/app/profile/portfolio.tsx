@@ -7,12 +7,11 @@ interface PortfolioProps {
   gridClass: string;
 }
 
-function useImgState() {
-  const [imgURLS, setImgURLS] = useState<string[]>([]);
-  const [showPopUp, setShowPopUp] = useState("");
+// function useImgState() {
+  
 
-  return { imgURLS, setImgURLS, showPopUp, setShowPopUp };
-}
+//   return { imgURLS, setImgURLS, showPopUp, setShowPopUp };
+// }
 
 // const imgURLS: string[] = [];
 const cols_one: string[] = [];
@@ -23,13 +22,70 @@ const cols_five: string[] = [];
 const cols_more: string[] = [];
 
 const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
-  const { imgURLS, setImgURLS } = useImgState();
-  
+  // const { imgURLS, setImgURLS } = useImgState();
+  const [imgURLS, setImgURLS] = useState<string[]>([]);
+  const [showPopUp, setShowPopUp] = useState("");
+  const [count, setCount] = useState(3);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    axios.post("/api/portfolio").then((res) => {
-      setImgURLS(res.data.img_url);
+    setLoading(true);  // เริ่มการโหลด
+    Swal.fire({
+      title: 'กำลังโหลดรูปภาพ...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
     });
-  }, []);
+
+    axios.post("/api/portfolio")
+      .then((res: any) => {
+        console.log('res.data.img_url --------------------------------------', res.data.img_url);
+        setImgURLS(res.data.img_url);
+
+        if (res.data.img_url.length === 0) {
+          Swal.fire({
+            icon: "error",
+            title: "คุณยังไม่มีรูปใน Store ของคุณ",
+          });
+        } else {
+          Swal.close();  // ปิดการแจ้งเตือนเมื่อโหลดเสร็จและมีรูปภาพ
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาดในการดึงข้อมูล",
+          text: error.message,
+        });
+      })
+      .finally(() => {
+        setLoading(false);  // จบการโหลดไม่ว่าจะสำเร็จหรือล้มเหลว
+      });
+  }, [setImgURLS]);
+
+  for (let i = 0; i < imgURLS.length; i++) {
+
+    if (cols_one.length <= count) {
+      
+      cols_one.push(imgURLS[i]);
+    } else if (cols_two.length <= count) {
+
+      cols_two.push(imgURLS[i]);
+    } else if (cols_three.length <= count) {
+
+      cols_three.push(imgURLS[i]);
+    } else if (cols_four.length <= count) {
+      
+      cols_four.push(imgURLS[i]);
+    } else if (cols_five.length <= count) {
+      
+      cols_five.push(imgURLS[i]);
+    } else {
+      cols_more.push(imgURLS[i]);
+    }
+  }
 
   const notimg = () => {
     Swal.fire({
@@ -59,10 +115,20 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
     });
   };       
 
+  
+  if(imgURLS.length > 0){
+    console.log('imgURLS count --------------------------- ', imgURLS.length);
+  } else {
+    console.log('not imgURLS count --------------------------- ', imgURLS.length);
+  }
+
+  for (let i = 0; i < cols_one.length; i++) {
+    console.log('cols_one  --------------------------- ', cols_one[i]);
+  }
+
+  
   return (
-    
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-      {imgURLS.length === 0 && notimg()}
       <div className={gridClass}>
         {cols_one.map((url, index) => (
           <div key={index} className="w-full h-full flex ">
@@ -131,7 +197,9 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
           </div>
         ))}
       </div>
+      {/* {imgURLS.length === 0 && notimg()} */}
     </div>
+    
   );
 };
 

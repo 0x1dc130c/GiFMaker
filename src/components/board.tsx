@@ -151,9 +151,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
     const img = JSON.stringify(imgURLS_tests[i]);
     const img_ = img.split("|");
     const imgUrlPart = img_[0].split("?")[2];
-
-    // console.log('user DATA ----------------',user);
-    // console.log("img- index 0 ------------------------", img_[0].split('!')[1].split('Imgurl=').pop() ?? "");
     console.log('img- index 0 ------------------------', img_[1].split('"') ?? "");
     const data = img_[1].split('=') ?? ""
     console.log("img-index 1 path :--------------------->", data[1])

@@ -41,7 +41,6 @@ const TextMarkings = [
 ];
 export type SeekPlayerProps = {};
 
-
 export const SeekPlayer = observer((_props: SeekPlayerProps) => {
   const store = useContext(StoreContext);
   const Icon = store.playing ? MdPause : MdPlayArrow;
@@ -71,7 +70,7 @@ export const SeekPlayer = observer((_props: SeekPlayerProps) => {
         }}
         height={40}
         markings={MARKINGS}
-        backgroundColor="#111827"
+        backgroundColor="#111827" //#111827
         textMarkings={TextMarkings}
       />
     </div>

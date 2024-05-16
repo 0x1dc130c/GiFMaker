@@ -48,7 +48,7 @@ function Navbar() {
   const handleMouseLeave = () => {
     timeoutRef.current = window.setTimeout(() => {
       setDropdownVisible(false);
-    }, 300); // หน่วงเวลาการซ่อน dropdown 300 มิลลิวินาที (คุณสามารถปรับเวลาได้ตามต้องการ)
+    }, 100); // หน่วงเวลาการซ่อน dropdown 300 มิลลิวินาที (คุณสามารถปรับเวลาได้ตามต้องการ)
   };
 
   const isActive = (href: string) => {
@@ -59,12 +59,12 @@ function Navbar() {
     <nav className="bg-indigo-900 border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="logogif.png" className="h-[85px] w-[290px]" alt="Logo" />
+          <img src="/logogif.png" className="h-[85px] w-[290px]" alt="Logo" />
         </a>
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative">
+        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse relative cursor-pointer">
           <Link href="/profile" legacyBehavior>
             <div
-              className="flex items-center p-2 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-700 relative"
+              className="flex items-center p-2 rounded-lg hover:bg-indigo-700 dark:hover:bg-indigo-700 relative "
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
@@ -72,20 +72,20 @@ function Navbar() {
               <span className="m-2 hidden md:block text-2xl text-white font-semibold">{name}</span>
               {dropdownVisible && (
                 <div
-                  className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20 transition-transform duration-300 ease-in-out"
+                  className="absolute right-0 top-full mt-2 w-48 bg-indigo-700 rounded-md shadow-lg py-2 z-20 transition-transform duration-300 ease-in-out"
                   style={{
                     transform: dropdownVisible ? 'translateY(0)' : 'translateY(-10px)',
                     opacity: dropdownVisible ? 1 : 0,
                   }}
                 >
                   <Link href="/profile" legacyBehavior>
-                    <a className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+                    <a className="block px-4 py-2 text-fuchsia-300 hover:text-fuchsia-500 text-xl font-semibold hover:bg-indigo-800 ">My Work</a>
                   </Link>
-                  <Link href="/settings" legacyBehavior>
-                    <a className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Settings</a>
+                  <Link href="/profile/account" legacyBehavior>
+                    <a className="block px-4 py-2 text-fuchsia-300 hover:text-fuchsia-500 text-xl font-semibold hover:bg-indigo-800">Account</a>
                   </Link>
-                  <Link href="/logout" legacyBehavior>
-                    <a className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+                  <Link href="/login" legacyBehavior>
+                    <a className="block px-4 py-2 text-fuchsia-300 hover:text-fuchsia-500 text-xl font-semibold hover:bg-indigo-800">Logout</a>
                   </Link>
                 </div>
               )}
