@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AiFillLike } from "react-icons/ai";
-import { FaShareAlt } from "react-icons/fa";
+// import { FaShareAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { FaFacebook, FaInstagram, FaTwitter, FaShareAlt } from 'react-icons/fa';
 
 function Share() {
   const img = document.getElementById("popup") as HTMLImageElement;
@@ -57,13 +58,17 @@ const PopUp = ({
     });
     const img = document.getElementById("popup") as HTMLImageElement;
     const imgUrl = img?.getAttribute("src");
-    const img_id = imgUrl?.split("?id=")[1];
+    const img_id = imgUrl?.split("?")[1].split("=")[1];
+    console.log('img_id like ------------------------: ', img_id);
+    console.log('img.type like ------------------------: ', typeof Number(img_id));
+    const IMGID = Number(img_id);
+    console.log('IMGID like ------------------------: ', IMGID);
     fetch("/api/like", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: img_id }),
+      body: JSON.stringify({ id: IMGID }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -112,15 +117,15 @@ const PopUp = ({
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg max-w-[865px]">
-        <div className="text-2xl font-bold mb-[10px] flex items-center justify-center">
+      <div className="bg-gray-700 p-8 rounded-lg max-w-[865px]">
+        <div className="text-2xl font-bold mb-[10px] flex items-center justify-center text-white">
           {title}
         </div>
         <hr className="mb-[10px]" />
         <img id="popup" src={imgUrl} alt="" className="w-full h-auto rounded" />
         <div className="w-full">
-          <p className="mt-4">Description</p>
-          <p className="text-gray-500 text-wrap">{Description}</p>
+          <p className="mt-4 text-white">Description</p>
+          <p className="text-white text-wrap">{Description}</p>
           {tag.length > 0 && (
             <div className="bg-slate-300 px-[10px] py-[10px] mt-[10px] rounded">
               {tag.map((tag, index) => (
@@ -134,13 +139,13 @@ const PopUp = ({
             </div>
           )}
           <div className="flex justify-end mt-[3px]">
-            <span className="text-sm">{date}</span>
+            <span className="text-sm text-white">{date}</span>
           </div>
         </div>
         <hr />
         <div className="flex justify-between w-full mt-4">
           <div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={()=>userlike()}>
+            <button className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-800" onClick={()=>userlike()}>
               <div className="flex items-center">
                 <AiFillLike className="mr-[4px]" /> Like{" "}
                 <span className="ml-2">{like}</span>
@@ -148,7 +153,7 @@ const PopUp = ({
             </button>
             <button
               onClick={Share}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg ml-3"
+              className="bg-rose-500 text-white px-4 py-2 rounded-lg ml-3 hover:bg-rose-800"
             >
               <div className="flex items-center">
                 <FaShareAlt className="mr-[4px]" /> Share
@@ -157,7 +162,7 @@ const PopUp = ({
           </div>
           <button
             onClick={onclose}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-800"
           >
             <div className="flex items-center">
               <IoClose className="mr-[4px]" /> Close

@@ -24,8 +24,6 @@ export const StickerPanel = observer(() => {
         stickers.forEach((image, index) => {
             console.log(' img ----------------------------- ',image);
             store.addStickerResource('/stickers/'+image);
-            // store.addSticker(index);
-            // store.addImage(index); // เรียกใช้งาน store.addImage(index) ที่นี่หรือในที่อื่นที่เหมาะสม
         });
     }
 

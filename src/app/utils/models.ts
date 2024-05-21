@@ -145,15 +145,8 @@ const like_history = sequelize.define("like_history", {
 }, {freezeTableName: true,timestamps: false
 });
 
-User.hasMany(comP, { foreignKey: 'UserID' });
-comP.belongsTo(User, { foreignKey: 'UserID' });
-
-info_image.belongsTo(User, { foreignKey: 'UserID' });
-User.hasMany(info_image, { foreignKey: 'UserID' });
-
-info_image.hasMany(like_history, { foreignKey: 'img_id' });
-like_history.belongsTo(info_image, { foreignKey: 'img_id' });
-
+User.hasMany(info_image, {foreignKey: 'UserID'});
+info_image.belongsTo(User, {foreignKey: 'UserID'});
 
 const models = { User, info_image, comP, Tag, like_history};
 

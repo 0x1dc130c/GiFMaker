@@ -11,11 +11,11 @@ export type EditorElementBase<T extends string, P> = {
 };
 export type VideoEditorElement = EditorElementBase<
   "video",
-  { src: string; elementId: string; imageObject?: fabric.Image, effect: Effect,brightness:number,contrast:number }
+  { src: string; elementId: string; imageObject?: fabric.Image, effect: Effect,brightness:number,contrast:number, hue:number, pixelate:number}
 >;
 export type ImageEditorElement = EditorElementBase<
   "image",
-  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect,brightness:number,contrast:number }
+  { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect,brightness:number,contrast:number, hue:number, pixelate:number}
   
 >;
 export type StickerEditorElement = EditorElementBase<
@@ -73,6 +73,7 @@ export type BlackAndWhiteEffect = EffectBase<"none"> |
 EffectBase<"blackAndWhite"> | 
 EffectBase<"sepia"> | 
 EffectBase<"invert"> |
+EffectBase<"polaroid"> |
 EffectBase<"saturate"> ;
 export type Effect = BlackAndWhiteEffect;
 export type EffecType = Effect["type"];

@@ -19,16 +19,18 @@ export class Store {
   strokeSzie: number;
   storkColor: string;
   brightness: number;
+  pixelate: number;
+  hue : number;
   contrast: number;
 
   selectedMenuOption: MenuOption;
   audios: string[]
   videos: string[]
   images: string[]
-  sticker : string[]
+  sticker: string[]
   editorElements: EditorElement[]
   selectedElement: EditorElement | null;
-
+  element : EditorElement[] | undefined = [];
   maxTime: number
   minTime: number
   animations: Animation[]
@@ -40,6 +42,8 @@ export class Store {
 
   possibleVideoFormats: string[] = ['mp4', 'gif'];
   selectedVideoFormat: 'mp4' | 'gif';
+
+  
 
   constructor() {
     this.canvas = null;
@@ -55,6 +59,8 @@ export class Store {
     this.strokeSzie = 0;
     this.storkColor = '';
     this.brightness = 100;
+    this.hue = 0;
+    this.pixelate = 0;
     this.contrast = 50;
     this.maxTime = 5 * 1000;
     this.minTime = this.maxTime / 5;
@@ -69,13 +75,20 @@ export class Store {
     makeAutoObservable(this);
   }
 
-  
   get currentTimeInMs() {
     return this.currentKeyFrame * 1000 / this.fps;
   }
 
   setCurrentTimeInMs(time: number) {
     this.currentKeyFrame = Math.floor(time / 1000 * this.fps);
+  }
+
+  setElements(elements: EditorElement[]) {
+    this.elements = elements;
+  }
+
+  removeElement(id: string) {
+    this.elements = this.elements.filter((element: EditorElement) => element.id !== id);
   }
 
   setSelectedMenuOption(selectedMenuOption: MenuOption) {
@@ -99,13 +112,11 @@ export class Store {
   setTextColorStore(textColor: string) {
     this.textColor = textColor;
     console.log('setTextColor selectedElement  ---------------> ', this.selectedElement)
-    if(this.selectedElement && this.selectedElement.type === 'text') {
+    if (this.selectedElement && this.selectedElement.type === 'text') {
       this.updateEditorElement(this.selectedElement);
 
     }
   }
-
-
   setFontFamily(fontFamily: string) {
     this.fontFamily = fontFamily;
     if (this.selectedElement && this.selectedElement.type === 'text') {
@@ -151,7 +162,22 @@ export class Store {
     this.refreshElements();
   }
 
+  setHue(hue : number){
+    this.hue = hue;
+    if (this.selectedElement && this.selectedElement.type === 'image') {
+      this.updateEditorElement(this.selectedElement);
+    }
+    this.refreshElements();
+  }
 
+  setPixelate(pixelate: number) {
+    console.log('setPixelate pixelate store ---------------> ', pixelate)
+    this.pixelate = pixelate;
+    if (this.selectedElement && this.selectedElement.type === 'image') {
+      this.updateEditorElement(this.selectedElement);
+    }
+    this.refreshElements();
+  }
 
   updateEffect(id: string, effect: Effect) {
     const index = this.editorElements.findIndex((element) => element.id === id);
@@ -237,7 +263,7 @@ export class Store {
           break
         }
         case "slideIn": {
-          
+
           const direction = animation.properties.direction;
           const targetPosition = {
             left: editorElement.placement.x,
@@ -427,9 +453,7 @@ export class Store {
 
 
   addEditorElement(editorElement: EditorElement) {
-
     console.log('addEditorElement : editorElement ---------------> ', editorElement)
-
     this.setEditorElements([...this.editorElements, editorElement]);
     this.refreshElements();
     this.setSelectedElement(this.editorElements[this.editorElements.length - 1]);
@@ -439,6 +463,7 @@ export class Store {
     this.setEditorElements(this.editorElements.filter(
       (editorElement) => editorElement.id !== id
     ));
+    
     this.refreshElements();
   }
 
@@ -504,21 +529,30 @@ export class Store {
   }
 
   addVideo(index: number) {
-    const videoElement = document.getElementById(`video-${index}`)
+    const videoElement = document.getElementById(`video-${index}`);
     if (!isHtmlVideoElement(videoElement)) {
       return;
     }
     const videoDurationMs = videoElement.duration * 1000;
     const aspectRatio = videoElement.videoWidth / videoElement.videoHeight;
     const id = getUid();
+
+    const canvasWidth = this.canvas?.getWidth() ?? 0;
+    const canvasHeight = this.canvas?.getHeight() ?? 0;
+    const videoWidth = canvasHeight * aspectRatio;
+    const videoHeight = canvasHeight;
+
+    const placementX = (canvasWidth - videoWidth) / 2;
+    const placementY = (canvasHeight - videoHeight) / 2;
+
     this.addEditorElement(
       {
         id,
         name: `Media(video) ${index + 1}`,
         type: "video",
         placement: {
-          x: 300,
-          y: 300,
+          x: placementX,
+          y: placementY,
           width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
@@ -536,51 +570,77 @@ export class Store {
             type: "none",
           },
           brightness: this.brightness,
-          contrast: this.contrast
+          contrast: this.contrast,
+          hue: this.hue,
+          pixelate: this.pixelate,
         },
       },
     );
   }
 
   addStickers(index: number) {
-    const stickerElement = document.getElementById(`sticker-${index}`)
+    console.log('add stickers store >>>>>>>>>>>>>>>>>>>> ', index)
+    const stickerElement = document.getElementById(`sticker-${index}`);
     if (!isHtmlVideoElement(stickerElement)) {
       return;
     }
-    const stickerDurationMs = stickerElement.duration * 1000;
-    const aspectRatio = stickerElement.videoWidth / stickerElement.videoWidth;
-    const id = getUid();
 
-    this.addEditorElement(
-      {
-        id,
-        name: `Media(sticker) ${index + 1}`,
-        type: "video",
-        placement: {
-          x: 300,
-          y: 300,
-          width: 100 * aspectRatio,
-          height: 100,
-          rotation: 0,
-          scaleX: 1,
-          scaleY: 1,
-        },
-        timeFrame: {
-          start: 0,
-          end: stickerDurationMs,
-        },
-        properties: {
-          elementId: `sticker-${id}`,
-          src: stickerElement.src,
-          effect: {
-            type: "none",
-          },
-          brightness: this.brightness,
-          contrast: this.contrast
-        },
+    // Calculate the duration in milliseconds
+    const stickerDurationMs = stickerElement.duration * 1000;
+    const aspectRatio = stickerElement.videoWidth / stickerElement.videoHeight; // Correct aspect ratio calculation
+    const id = getUid();
+    // Function to loop the sticker video
+    const loopSticker = () => {
+      stickerElement.currentTime = 0;
+      stickerElement.play();
+    };
+    // Set interval to ensure the sticker video loops within the timeframe
+    const intervalId = setInterval(loopSticker, stickerDurationMs);
+    // Set a timeout to clear the interval after the timeframe ends
+    setTimeout(() => clearInterval(intervalId), 5000);
+    // Set up the editor element
+    const canvasWidth = this.canvas?.getWidth() ?? 0;
+    const canvasHeight = this.canvas?.getHeight() ?? 0;
+    const videoWidth = canvasHeight * aspectRatio;
+    const videoHeight = canvasHeight;
+
+    const placementX = (canvasWidth - videoWidth) / 2;
+    const placementY = (canvasHeight - videoHeight) / 2;
+
+    this.addEditorElement({
+      id,
+      name: `Media(sticker) ${index + 1}`,
+      type: "video",
+      placement: {
+        x: placementX,
+        y: placementY,
+        width: 100 * aspectRatio,
+        height: 100,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
       },
-    );
+      timeFrame: {
+        start: 0,
+        end: stickerDurationMs, // 5 seconds timeframe
+      },
+      properties: {
+        elementId: `sticker-${id}`,
+        src: stickerElement.src,
+        effect: {
+          type: "none",
+        },
+        brightness: this.brightness,
+        contrast: this.contrast,
+        hue: this.hue,
+        pixelate: this.pixelate,
+      },
+    });
+
+    // Start playing the sticker video
+    stickerElement.play();
   }
+
 
   addImage(index: number) {
     console.log('add image >>>>>>>>>>>>>>>>>>>> ', index)
@@ -591,14 +651,22 @@ export class Store {
     }
     const aspectRatio = imageElement.naturalWidth / imageElement.naturalHeight;
     const id = getUid();
+
+    const canvasWidth = this.canvas?.getWidth() ?? 0;
+    const canvasHeight = this.canvas?.getHeight() ?? 0;
+    const placementX = (canvasWidth - 100 * aspectRatio) / 2;
+    const placementY = (canvasHeight - 100) / 2;
+
+
+
     this.addEditorElement(
       {
         id,
         name: `Media(image) ${index + 1}`,
         type: "image",
         placement: {
-          x: 300,
-          y: 300,
+          x: placementX,
+          y: placementY,
           width: 100 * aspectRatio,
           height: 100,
           rotation: 0,
@@ -616,54 +684,14 @@ export class Store {
             type: "none",
           },
           brightness: this.brightness,
-          contrast: this.contrast
+          contrast: this.contrast,
+          hue:this.hue,
+          pixelate: this.pixelate,
         },
       },
     );
   }
 
-  addSticker(index: number) {
-    const stickerElement = document.getElementById(`sticker-${index}`)
-    console.log('addSticker stickerElement ---------------> ', stickerElement)
-    if (!isHtmlImageElement(stickerElement)) {
-      return;
-    }
-    const aspectRatio = stickerElement.naturalWidth / stickerElement.naturalHeight;
-    const id = getUid();
-    console.log('addSticker id ---------------> ', id)
-    this.addEditorElement(
-      {
-        id,
-        name: `Media(sticker) ${index + 1}`,
-        type: "image",
-        placement: {
-          x: 300,
-          y: 300,
-          width: 100 * aspectRatio,
-          height: 100,
-          rotation: 0,
-          scaleX: 1,
-          scaleY: 1,
-        },
-        timeFrame: {
-          start: 0,
-          end: this.maxTime,
-        },
-        properties: {
-          elementId: `sticker-${id}`,
-          src: stickerElement.src,
-          effect: {
-            type: "none",
-        
-          },
-          brightness: this.brightness,
-          contrast: this.contrast
-        },
-      },
-    );
-  }
-
-  
   addText(options: {
     text: string,
     fontSize: number,
@@ -678,14 +706,20 @@ export class Store {
     // console.log('options ---------------> ', options)
     const id = getUid();
     const index = this.editorElements.length;
+    const canvasWidth = this.canvas?.getWidth() ?? 0;
+    const canvasHeight = this.canvas?.getHeight() ?? 0;
+    const placementX = (canvasWidth - 100) / 2;
+    const placementY = (canvasHeight - 100) / 2;
+
+
     this.addEditorElement(
       {
         id,
         name: `Text ${index + 1}`,
         type: "text",
         placement: {
-          x: 250,
-          y: 200,
+          x: placementX,
+          y: placementY,
           width: 100,
           height: 100,
           rotation: 0,
@@ -709,7 +743,7 @@ export class Store {
           effect: {
             type: "none",
           }
-          
+
         },
       },
     );
@@ -877,7 +911,6 @@ export class Store {
   }
 
   refreshElements() {
-    console.log('refreshElements color ---------------> ', this.textColor)
     const store = this;
     if (!store.canvas) return;
     const canvas = store.canvas;
@@ -914,6 +947,8 @@ export class Store {
             customFilter: element.properties.effect.type,
             brightness: this.brightness,
             contrast: this.contrast,
+            hue: this.hue,
+            pixelate: this.pixelate
           });
 
           element.fabricObject = videoObject;
@@ -975,9 +1010,9 @@ export class Store {
             customFilter: element.properties.effect.type,
             brightness: this.brightness,
             contrast: this.contrast,
+            hue: this.hue,
+            pixelate: this.pixelate
           });
-          console.log('element.id ---------------> ', element.id)
-          console.log('elment.brightness --------> ', this.brightness)
           // imageObject.applyFilters();
           element.fabricObject = imageObject;
           element.properties.imageObject = imageObject;

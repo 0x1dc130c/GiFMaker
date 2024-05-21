@@ -7,6 +7,16 @@ const storageAccountName = 'gifmakerstorage';
 const storageAccountKey = 'GTVRTSAC2UtTOCgVoWuRtAQ6G6w4LWvbyT/TzWlHKA1uJWZro/CU+sQZPIfA6QtHJQZmlrClfAY7+AStc6Ax0g==';
 const containerName = 'profilestores';
 
+async function createUser( userDetails: any ) {
+    try{
+        const newUser = await models.User.create(userDetails);
+    }   catch (error) {
+        console.log("Error creating user: ", error);
+    }
+   
+
+}
+
 export async function POST(request: Request) {
     try {
         const body = await request.formData();
@@ -41,6 +51,17 @@ export async function POST(request: Request) {
             await blockBlobClient.uploadData(await blob.arrayBuffer(), options);
             const imgURL = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blobName}`;
 
+            const newUserDetails = {
+                Username : username,
+                Password : password,
+                email : email,
+                status : status,
+                role : role,
+                name : name,
+                path_profile : imgURL
+            }
+
+            // createUser(newUserDetails);
             models.User.create({
                 Username: username,
                 Password: password,
@@ -67,3 +88,4 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "Error in registration", status: 500 });
     }
 }
+

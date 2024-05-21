@@ -47,6 +47,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleSortChange = (newSortOrder: string) => {
+    console.log(' Sort order ------------------------------------ ',newSortOrder);
     setSortOrder(newSortOrder);
   };
 

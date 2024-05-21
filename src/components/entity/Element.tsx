@@ -62,19 +62,6 @@ export const Element = observer((props: ElementProps) => {
             id={element.properties.elementId}
           ></img>
         ) : null}
-        {element.type === "audio" ? (
-          <audio
-            className="opacity-0 max-w-[20px] max-h-[20px]"
-            src={element.properties.src}
-            onLoad={() => {
-              store.refreshElements();
-            }}
-            onLoadedData={() => {
-              store.refreshElements();
-            }}
-            id={element.properties.elementId}
-          ></audio>
-        ) : null}
       </div>
       <button
         className="bg-white hover:bg-rose-700 hover:text-white text-rose-500 mr-2 text-xl py-1 px-3 rounded "
