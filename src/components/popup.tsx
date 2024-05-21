@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AiFillLike } from "react-icons/ai";
-// import { FaShareAlt } from "react-icons/fa";
+import ReactDOMServer from 'react-dom/server';
 import { IoClose } from "react-icons/io5";
-import { FaFacebook, FaInstagram, FaTwitter, FaShareAlt } from 'react-icons/fa';
+import { FaShareAlt } from 'react-icons/fa';
+import { MdOutlineReportProblem } from "react-icons/md";
+import Popreport from "./popupReport";
+import ReactDOM from 'react-dom';
 
 function Share() {
   const img = document.getElementById("popup") as HTMLImageElement;
@@ -12,11 +15,69 @@ function Share() {
     window.location.origin + "/?share=" + imgUrl || ""
   );
   Swal.fire({
-    title: "คัดลอกลิงค์สำเร็จ",
+    title: "Link copied successfully",
     icon: "success",
     showConfirmButton: false,
     timer: 1500,
   });
+}
+
+function Report(img_id: any) {
+  const item = {
+    imgID: img_id,
+  };
+
+  Swal.fire({
+    title: 'Loading...',
+    showConfirmButton: false,
+    willOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  fetch('/api/useReport', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(item),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.status === 200) {
+        Swal.fire({
+          title: 'Report',
+          html: '<div id="report-container"></div>',
+          showConfirmButton: false,
+          didOpen: () => {
+            ReactDOM.render(
+              <Popreport item={data.data} />,
+              document.getElementById('report-container')
+            );
+          },
+          willClose: () => {
+            const reportContainer = document.getElementById('report-container');
+            if (reportContainer) {
+              ReactDOM.unmountComponentAtNode(reportContainer);
+            }
+          }
+        });
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to load report data',
+          icon: 'error',
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching report data:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to fetch report data',
+        icon: 'error',
+      });
+    });
 }
 
 const PopUp = ({
@@ -45,8 +106,10 @@ const PopUp = ({
       </div>
     </div>
   );
-  const [date, setDate] = useState();
+  const [date, setDate] = useState("");
   const [tag, setTag] = useState([]);
+  const [report, setReport] = useState(false);
+  const [img_id_, setImg_id] = useState(0);
 
   function userlike() {
     Swal.fire({
@@ -59,10 +122,8 @@ const PopUp = ({
     const img = document.getElementById("popup") as HTMLImageElement;
     const imgUrl = img?.getAttribute("src");
     const img_id = imgUrl?.split("?")[1].split("=")[1];
-    console.log('img_id like ------------------------: ', img_id);
-    console.log('img.type like ------------------------: ', typeof Number(img_id));
     const IMGID = Number(img_id);
-    console.log('IMGID like ------------------------: ', IMGID);
+
     fetch("/api/like", {
       method: "POST",
       headers: {
@@ -72,14 +133,14 @@ const PopUp = ({
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.like){
-          setLike(like+1)
+        if (data.like) {
+          setLike(like + 1);
           Swal.fire({
             title: "Like Success",
             icon: "success",
             showConfirmButton: false,
             timer: 1500,
-          })
+          });
         } else {
           Swal.fire({
             title: "Error",
@@ -87,7 +148,7 @@ const PopUp = ({
             icon: "error",
             showConfirmButton: false,
             timer: 1500,
-          })
+          });
         }
       });
   }
@@ -95,7 +156,9 @@ const PopUp = ({
   useEffect(() => {
     const img = document.getElementById("popup") as HTMLImageElement;
     const imgUrl = img?.getAttribute("src");
-    const img_id = imgUrl?.split("?id=")[1];
+    const img_id = imgUrl?.split("?")[1].split("=")[1];
+    setImg_id(Number(img_id));
+
     fetch("/api/getimgdata", {
       method: "POST",
       headers: {
@@ -109,7 +172,7 @@ const PopUp = ({
           setLike(data.data.user_like);
           setTitle(data.data.imgName);
           setDescription(data.data.description);
-          setDate(new Date(Number(data.data.timestamp)).toLocaleString() as any);
+          setDate(new Date(Number(data.data.timestamp)).toLocaleString());
           setTag(data.data.TagNames.split(","));
         }
       });
@@ -123,9 +186,9 @@ const PopUp = ({
         </div>
         <hr className="mb-[10px]" />
         <img id="popup" src={imgUrl} alt="" className="w-full h-auto rounded" />
-        <div className="w-full">
-          <p className="mt-4 text-white">Description</p>
-          <p className="text-white text-wrap">{Description}</p>
+        <div className="w-full mt-4">
+          <p className="text-white">Description</p>
+          <div className="text-white">{Description}</div>
           {tag.length > 0 && (
             <div className="bg-slate-300 px-[10px] py-[10px] mt-[10px] rounded">
               {tag.map((tag, index) => (
@@ -145,7 +208,7 @@ const PopUp = ({
         <hr />
         <div className="flex justify-between w-full mt-4">
           <div>
-            <button className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-800" onClick={()=>userlike()}>
+            <button className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-800" onClick={userlike}>
               <div className="flex items-center">
                 <AiFillLike className="mr-[4px]" /> Like{" "}
                 <span className="ml-2">{like}</span>
@@ -157,6 +220,14 @@ const PopUp = ({
             >
               <div className="flex items-center">
                 <FaShareAlt className="mr-[4px]" /> Share
+              </div>
+            </button>
+            <button
+              onClick={() => Report(img_id_)}
+              className="bg-rose-500 text-white px-4 py-2 rounded-lg ml-3 hover:bg-rose-800"
+            >
+              <div className="flex items-center">
+                <MdOutlineReportProblem className="mr-[4px]" /> Report
               </div>
             </button>
           </div>
