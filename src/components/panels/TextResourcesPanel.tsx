@@ -61,7 +61,7 @@ export const TextResourcesPanel = observer(() => {
       <div className="px-[16px] pt-[16px] pb-[8px] font-semibold text-2xl text-white bg-gray-900">
         Text
       </div>
-      <ul className="divide-y divide-gray-200">
+      <ul className="divide-y divide-rose-200">
         {TEXT_RESOURCES.map((resource) => (
           <li key={resource.name} className="cursor-pointer">
             <TextResource
@@ -73,7 +73,11 @@ export const TextResourcesPanel = observer(() => {
             />
           </li>
         ))}
+        <div className="px-[16px] pt-[16px] pb-[8px] font-semibold text-2xl text-white bg-gray-900">
+         Font Family
+        </div>
         {TextFontfamily.map((resource) => (
+          
           <li key={resource.name} className="cursor-pointer">
             <TextResource
               sampleText={resource.name}
@@ -83,6 +87,7 @@ export const TextResourcesPanel = observer(() => {
               fontFamily={resource.fontFamily}
             />
           </li>
+          
         ))}
       </ul>
     </div>

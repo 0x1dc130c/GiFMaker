@@ -46,7 +46,6 @@ export const TextResource = observer(
       })
       
     };
-
     return (
       <div className="items-center m-[5px] flex flex-row">
         <div
@@ -58,7 +57,7 @@ export const TextResource = observer(
           }}
         >
           <div
-            className="bg-rose-500 hover:bg-gray-400 text-white font-bold text-center mx-2 py-2 px-4 rounded cursor-pointer"
+            className="bg-rose-500 hover:bg-rose-700 text-white font-bold text-center mx-2 py-2 px-4 rounded cursor-pointer"
             onClick={() => {
               if (sampleText === 'Arial') {
                 changeFontFamily(fontFamily);
