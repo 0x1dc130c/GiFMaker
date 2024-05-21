@@ -11,7 +11,40 @@ const Popreport = ({ item }: { item: any }) => {
     };
 
     const handleSave = () => {
-        
+        Swal.fire({
+            title: 'Saving report...',
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading();
+            },
+        });
+        fetch('/api/addComplain', {
+            method: 'POST',
+            body: JSON.stringify({ img_ID: item.img_ID, details: Details }),
+        }).then((res) => res.json())
+            .then((data) => {
+                if (data.status === 200) {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Report saved successfully',
+                        icon: 'success',
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to save report',
+                        icon: 'error',
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Error saving report:', error);
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Failed to save report',
+                    icon: 'error',
+                });
+            });
         Swal.close();
     };
 

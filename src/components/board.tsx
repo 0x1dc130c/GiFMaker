@@ -28,7 +28,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
 
   function Reloadimg() {
     setCount((prevCount: number) => prevCount + 3);
-    console.log("value Reloadimg : --------------------------------------------- ", count);
   }
 
   const [imgURLS, setImgURLS] = useState<string[]>([]);
@@ -46,7 +45,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
   };
 
   useEffect(() => {
-    console.log("sort : --------------------------------------------- ", sort);
     cols_one.length = 0;
     cols_two.length = 0;
     cols_three.length = 0;
@@ -100,7 +98,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
     });
   }, [count, search]);
 
-  console.log('imgURLS all : ---------------------------------- || ', imgURLS);
   for (let i = 0; i < imgURLS.length; i++) {
 
     if (cols_one.length <= count) {
@@ -153,11 +150,11 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
     // เพิ่มข้อมูล URL ที่ต้องการ
   ];
 
-  for (let i = 0; i < cols_two.length; i++) {
-    console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[0].split('?')[2].split('=')[1]);
-    console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[1].split(',')[2]);
-    console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[1].split(',')[1].split('?')[0]);
-  }
+  // for (let i = 0; i < cols_two.length; i++) {
+  //   console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[0].split('?')[2].split('=')[1]);
+  //   console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[1].split(',')[2]);
+  //   console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[1].split(',')[1].split('?')[0]);
+  // }
 
   for (let i = 0; i < imgURLS_tests.length; i++) {
     const img = JSON.stringify(imgURLS_tests[i]);

@@ -47,7 +47,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleSortChange = (newSortOrder: string) => {
-    console.log(' Sort order ------------------------------------ ',newSortOrder);
+    console.log(' Sort order ------------------------------------ ', newSortOrder);
     setSortOrder(newSortOrder);
   };
 
@@ -65,8 +65,19 @@ export default function Home() {
         <Navbar />
       )}
       <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-900">
-      <div className="grid bg-gray-800 m-[20px] p-14 min-h-[90vh] rounded-md min-w-screen">
+        <div className="grid bg-gray-800 m-[20px] p-14 min-h-[90vh] rounded-md min-w-screen">
           <div className="grid p-6 grid-cols-2">
+            <div className="col-start-1">
+              <h1 className="text-4xl font-bold text-white">Categories</h1>
+
+              <div className="grid grid-cols-4 gap-1 mt-4">
+                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 1</a>
+                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 2</a>
+                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 3</a>
+                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 4</a>
+              </div>
+
+            </div>
             <div className="col-start-2">
               <Sort onSortChange={handleSortChange} />
               <div className="flex justify-end">
