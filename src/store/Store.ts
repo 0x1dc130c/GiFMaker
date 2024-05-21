@@ -539,11 +539,8 @@ export class Store {
 
     const canvasWidth = this.canvas?.getWidth() ?? 0;
     const canvasHeight = this.canvas?.getHeight() ?? 0;
-    const videoWidth = canvasHeight * aspectRatio;
-    const videoHeight = canvasHeight;
-
-    const placementX = (canvasWidth - videoWidth) / 2;
-    const placementY = (canvasHeight - videoHeight) / 2;
+    const placementX = (canvasWidth - 100 * aspectRatio) / 2;
+    const placementY = (canvasHeight - 100) / 2;
 
     this.addEditorElement(
       {
@@ -579,12 +576,10 @@ export class Store {
   }
 
   addStickers(index: number) {
-    console.log('add stickers store >>>>>>>>>>>>>>>>>>>> ', index)
     const stickerElement = document.getElementById(`sticker-${index}`);
     if (!isHtmlVideoElement(stickerElement)) {
       return;
     }
-
     // Calculate the duration in milliseconds
     const stickerDurationMs = stickerElement.duration * 1000;
     const aspectRatio = stickerElement.videoWidth / stickerElement.videoHeight; // Correct aspect ratio calculation
@@ -601,11 +596,8 @@ export class Store {
     // Set up the editor element
     const canvasWidth = this.canvas?.getWidth() ?? 0;
     const canvasHeight = this.canvas?.getHeight() ?? 0;
-    const videoWidth = canvasHeight * aspectRatio;
-    const videoHeight = canvasHeight;
-
-    const placementX = (canvasWidth - videoWidth) / 2;
-    const placementY = (canvasHeight - videoHeight) / 2;
+    const placementX = (canvasWidth - 100 * aspectRatio) / 2;
+    const placementY = (canvasHeight - 100) / 2;
 
     this.addEditorElement({
       id,
