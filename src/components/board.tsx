@@ -145,28 +145,22 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
     }
   }
 
-  const imgURLS_tests = [
-    "imgURLS_test : !Imgurl=https://gifmakerstorage.blob.core.windows.net/gifstorage/foldergif/giphy15.gif?id=44?like=9|path_profilee=https://gifmakerstorage.blob.core.windows.net/profilestores/vitor.png?name=0X1DC130C"
-    // เพิ่มข้อมูล URL ที่ต้องการ
-  ];
+  // const imgURLS_tests = [
+  //   "imgURLS_test : !Imgurl=https://gifmakerstorage.blob.core.windows.net/gifstorage/foldergif/giphy15.gif?id=44?like=9|path_profilee=https://gifmakerstorage.blob.core.windows.net/profilestores/vitor.png?name=0X1DC130C"
+  //   // เพิ่มข้อมูล URL ที่ต้องการ
+  // ];
 
-  // for (let i = 0; i < cols_two.length; i++) {
-  //   console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[0].split('?')[2].split('=')[1]);
-  //   console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[1].split(',')[2]);
-  //   console.log('cols_two >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : ', cols_two[i].split("|")[1].split(',')[1].split('?')[0]);
+
+  // for (let i = 0; i < imgURLS_tests.length; i++) {
+  //   const img = JSON.stringify(imgURLS_tests[i]);
+  //   const img_ = img.split("|");
+  //   const imgUrlPart = img_[0].split("?")[2];
+  //   console.log('img- index 0 ------------------------', img_[1].split('"') ?? "");
+  //   const data = img_[1].split('=') ?? ""
+  //   console.log("img-index 1 path :--------------------->", data[1])
+  //   console.log('Img_ DATA name  ----------------', data[2]);
+  //   // console.log('cols_one : ', cols_one[i].split('?'));
   // }
-
-  for (let i = 0; i < imgURLS_tests.length; i++) {
-    const img = JSON.stringify(imgURLS_tests[i]);
-    const img_ = img.split("|");
-    const imgUrlPart = img_[0].split("?")[2];
-    console.log('img- index 0 ------------------------', img_[1].split('"') ?? "");
-    const data = img_[1].split('=') ?? ""
-    console.log("img-index 1 path :--------------------->", data[1])
-    console.log('Img_ DATA name  ----------------', data[2]);
-    // console.log('cols_one : ', cols_one[i].split('?'));
-  }
-
 
   return (
     <>

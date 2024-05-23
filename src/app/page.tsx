@@ -19,20 +19,23 @@ export default function Home() {
     setShowPopUp("");
   };
 
-  const address = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
-  fetch(address + "/api/Checkcookies", {
-    method: "POST",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.message == "Success") {
-        setNav(data.data.role);
-        setProfile(data.data.path_profile);
-      } else {
-        setNav("guest");
-      }
-    });
-
+  useEffect(() => {
+    const address = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+    fetch(address + "/api/Checkcookies", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", data);
+        if (data.status === 200) {  
+          console.log("cookie is set",data);
+          setNav(data.data.role);
+          setProfile(data.data.path_profile);
+        } else {
+          setNav("guest");
+        }
+      });
+  }, []);
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -47,7 +50,6 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleSortChange = (newSortOrder: string) => {
-    console.log(' Sort order ------------------------------------ ', newSortOrder);
     setSortOrder(newSortOrder);
   };
 
@@ -60,6 +62,7 @@ export default function Home() {
       {String(nav) === "admin" ? (
         <Navbar_admin />
       ) : String(nav) === "user" ? (
+
         <Navbar_login />
       ) : (
         <Navbar />
@@ -90,12 +93,6 @@ export default function Home() {
           <div className="row-start-3">
             <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} />
           </div>
-          {/* <div className="row-start-4 m-4 justify-center flex">
-          <button type="button" className="text-white text-3xl font-semibold bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg px-5 py-2.5 text-center me-2 mb-2 " 
-          onClick={Reloadimg}
-          >
-            More</button>
-          </div> */}
         </div>
       </main>
       <Footer />

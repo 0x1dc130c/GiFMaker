@@ -2,15 +2,24 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar-admin";
 import Footer from "@/components/Footer";
-import Popreport from "@/components/popupReport";
+import PManageReport from "@/components/popManageReport";
+import Swal from "sweetalert2";
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
 
 const Admin = () => {
     const [table, setTable] = useState<any[]>([]);
-    const [showPopUp, setShowPopUp] = useState('');
+    const [showPopUp, setShowPopUp] = useState(false);
     const [datauser, setDatauser] = useState<any[]>([]);
-
-
+    const [getCompID, setCompID] = useState("");
     useEffect(() => {
+        MySwal.fire({
+            title: 'Loading...',
+            showConfirmButton: false,
+            willOpen: () => {
+                MySwal.showLoading()
+            },
+        });
         const fetchData = async () => {
             try {
                 const response = await fetch("/api/showReport", {
@@ -18,71 +27,78 @@ const Admin = () => {
                 });
                 const data = await response.json();
 
-                if (data.status === 200) {
-                    console.log('data.tableUser ----------- : ', data.tablecomp);
+                if (data.status === 200) {     
                     setTable(data.tablecomp);
-                    console.log('table ----------- : ', table);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 } else {
-                    console.log('data.message ----------- : ', data.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error show report status 500',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             } catch (error) {
-                console.error('Error fetching data:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    showConfirmButton: false,
+                    timer: 1500
+                });    
             }
         };
 
         fetchData();
     }, []);
 
-    const useEditState = () => {
-        return { showPopUp, setShowPopUp, datauser, setDatauser };
-    }
-
     const handlecheck = (item: any) => {
-        setShowPopUp('true');
+        setShowPopUp(true);
         setDatauser([item]);
     }
 
     const handleClose = () => {
-        setShowPopUp('');
+        setShowPopUp(false);
     };
+
     return (
-        <div>
+        <div className="bg-gray-900 h-screen">
             <Navbar />
-            <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-900">
-                <div className="flex flex-col bg-gray-800 m-[20px] p-14 w-[80rem] min-h-screen rounded-lg">
+            <main className="flex flex-col items-center justify-between p-14">
+                <div className="flex flex-col bg-gray-800 m-[20px] p-14 w-full rounded-lg">
                     <div className="p-6">
                         <div className="flex justify-center">
                             <h1 className="text-5xl text-center text-white font-semibold m-5">Manage Report</h1>
                         </div>
-                        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full">
                             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" className="p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label htmlFor="checkbox-all-search" className="sr-only">checkbox</label>
-                                            </div>
+                        
+                                        <th scope="col" className="px-6 py-3 text-2xl">
+                                            Complain ID
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            compID
+                                        <th scope="col" className="px-6 py-3 text-2xl">
+                                            Image ID
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            ImgID
+                                        <th scope="col" className="px-6 py-3 text-2xl">
+                                            User ID
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            UserID
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
+                                        <th scope="col" className="px-6 py-3 text-2xl">
                                             Status
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
+                                        <th scope="col" className="px-6 py-3 text-2xl">
                                             TimeStamp
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
+                                        <th scope="col" className="px-6 py-3 text-2xl">
                                             Detail
                                         </th>
-                                        <th scope="col" className="px-6 py-3">
+                                        <th scope="col" className="px-6 py-3 text-2xl">
                                             Action
                                         </th>
                                     </tr>
@@ -90,36 +106,30 @@ const Admin = () => {
                                 <tbody>
                                     {table.map((item, index) => (
                                         <tr key={index} className="bg-gray-100 dark:bg-gray-800">
-                                            <td className="p-4">
-                                                <div className="flex items-center">
-                                                    <input id={`checkbox-${index}`} type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label htmlFor={`checkbox-${index}`} className="sr-only">checkbox</label>
-                                                </div>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="text-xl text-gray-900 dark:text-gray-100">{item.compID}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900 dark:text-gray-100">{item.compID}</div>
+                                                <div className="text-xl text-gray-900 dark:text-gray-100">{item.img_ID}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900 dark:text-gray-100">{item.imgID}</div>
+                                                <div className="text-xl text-gray-900 dark:text-gray-100">{item.UserID}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900 dark:text-gray-100">{item.UserID}</div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100">
+                                                <span className="px-2 inline-flex text-xl leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100">
                                                     {item.status}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900 dark:text-gray-100">{item.timestamp}</div>
+                                                <div className="text-xl text-gray-900 dark:text-gray-100">{item.Timestamp}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900 dark:text-gray-100">
-                                                    {item.detail.length > 100 ? `${item.detail.substring(0, 20)}...` : item.detail}
+                                                <div className="text-xl text-gray-900 dark:text-gray-100">
+                                                    {item.detail.length > 20 ? `${item.detail.substring(0, 20)}...` : item.detail}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <a onClick={() => handlecheck(item)} className="text-indigo-600 hover:text-indigo-900 cursor-pointer">examine</a>
+                                                <a onClick={() => handlecheck(item)} className="text-indigo-600 hover:text-indigo-900 cursor-pointer text-xl">examine</a>
                                             </td>
                                         </tr>
                                     ))}
@@ -127,14 +137,11 @@ const Admin = () => {
                             </table>
                         </div>
                     </div>
-                    {showPopUp === 'true' && <Popreport item={datauser} onclose={() => setShowPopUp('')} />}
+                    {showPopUp && <PManageReport item={datauser} handleClose={handleClose} />}
                 </div>
             </main>
-
-            <Footer />
         </div>
     );
-
 };
 
 export default Admin;

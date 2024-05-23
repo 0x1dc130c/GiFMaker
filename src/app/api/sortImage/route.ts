@@ -6,11 +6,13 @@ export async function POST(request: NextRequest) {
     if (request.method == "POST") {
       const body = await request.json();
       const { sort } = body;
-      console.log("sort =================== : ", sort);
       if (sort === "latest") {
-        // ดึงข้อมูลรูปภาพ
+        // ดึงข้อมูลรูปภาพที่มี status เป็น public
         const imageData = await models.info_image.findAll({
           attributes: ["path_Img", "img_ID", "user_like", "UserID"],
+          where: {
+            status_img: 'public' // เงื่อนไขการเช็คค่า status
+          },
           order: [['timestamp', 'ASC']],
           raw: true
         }) as any;
@@ -38,7 +40,7 @@ export async function POST(request: NextRequest) {
           const matchedUser = userData.find((userItem: any) => userItem.UserID === imageItem.UserID);
           if (matchedUser) {
             matchedData.push({
-              imageUrl:"!Imgurl="+imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like+"|path_profile="+matchedUser.path_profile + "?name=" + matchedUser.name,
+              imageUrl: "!Imgurl=" + imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like + "|path_profile=" + matchedUser.path_profile + "?name=" + matchedUser.name,
             });
           }
         });
@@ -52,6 +54,9 @@ export async function POST(request: NextRequest) {
 
         const imageData = await models.info_image.findAll({
           attributes: ["path_Img", "img_ID", "user_like", "UserID"],
+          where: {
+            status_img: 'public' // เงื่อนไขการเช็คค่า status
+          },
           order: [['user_like', 'DESC']],
           raw: true
         }) as any;
@@ -84,7 +89,7 @@ export async function POST(request: NextRequest) {
             //   imageUrl: `'!Imgurl='${imageItem.path_Img}?id=${imageItem.img_ID}&like=${imageItem.user_like}'|path_profile'${matchedUser.path_profile}?name=${matchedUser.name}`
             // });
             matchedData.push({
-              imageUrl:"!Imgurl="+imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like+"|path_profile="+matchedUser.path_profile + "?name=" + matchedUser.name,
+              imageUrl: "!Imgurl=" + imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like + "|path_profile=" + matchedUser.path_profile + "?name=" + matchedUser.name,
             });
           }
         });

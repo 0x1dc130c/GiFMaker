@@ -8,6 +8,27 @@ import { MdOutlineReportProblem } from "react-icons/md";
 import Popreport from "./popupReport";
 import ReactDOM from 'react-dom';
 
+function checkCookie(callback: any) {
+  fetch("/api/Checkcookies", {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.status === 200) {
+        
+        console.log("cookie is set");
+        callback(true);
+      } else {
+        console.log("cookie is not set", data);
+        callback(false);
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching cookie data:', error);
+      callback(false);
+    });
+}
+
 function Share() {
   const img = document.getElementById("popup") as HTMLImageElement;
   const imgUrl = img?.getAttribute("src");
@@ -22,7 +43,9 @@ function Share() {
   });
 }
 
+
 function Report(img_id: any) {
+
   const item = {
     imgID: img_id,
   };
@@ -110,6 +133,14 @@ const PopUp = ({
   const [tag, setTag] = useState([]);
   const [report, setReport] = useState(false);
   const [img_id_, setImg_id] = useState(0);
+
+  const [hasCookie, setHasCookie] = useState(false);
+
+  useEffect(() => {
+    checkCookie((cookieValue: any) => {
+      setHasCookie(cookieValue);
+    });
+  }, []);
 
   function userlike() {
     Swal.fire({
@@ -207,13 +238,17 @@ const PopUp = ({
         </div>
         <hr />
         <div className="flex justify-between w-full mt-4">
+
           <div>
-            <button className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-800" onClick={userlike}>
-              <div className="flex items-center">
-                <AiFillLike className="mr-[4px]" /> Like{" "}
-                <span className="ml-2">{like}</span>
-              </div>
-            </button>
+            {hasCookie ? (
+              <button className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-800" onClick={userlike}>
+                <div className="flex items-center">
+                  <AiFillLike className="mr-[4px]" /> Like{""}
+                  <span className="ml-2">{like}</span>
+                </div>
+              </button>
+            ) : null}
+
             <button
               onClick={Share}
               className="bg-rose-500 text-white px-4 py-2 rounded-lg ml-3 hover:bg-rose-800"
@@ -222,14 +257,16 @@ const PopUp = ({
                 <FaShareAlt className="mr-[4px]" /> Share
               </div>
             </button>
-            <button
-              onClick={() => Report(img_id_)}
-              className="bg-rose-500 text-white px-4 py-2 rounded-lg ml-3 hover:bg-rose-800"
-            >
-              <div className="flex items-center">
-                <MdOutlineReportProblem className="mr-[4px]" /> Report
-              </div>
-            </button>
+            {hasCookie ? (
+              <button
+                onClick={() => Report(img_id_)}
+                className="bg-rose-500 text-white px-4 py-2 rounded-lg ml-3 hover:bg-rose-800"
+              >
+                <div className="flex items-center">
+                  <MdOutlineReportProblem className="mr-[4px]" /> Report
+                </div>
+              </button>
+            ) : null}
           </div>
           <button
             onClick={onclose}

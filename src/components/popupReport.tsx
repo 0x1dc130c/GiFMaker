@@ -20,7 +20,7 @@ const Popreport = ({ item }: { item: any }) => {
         });
         fetch('/api/addComplain', {
             method: 'POST',
-            body: JSON.stringify({ img_ID: item.img_ID, details: Details }),
+            body: JSON.stringify({ img_ID: item.img_ID, details: Details, path_img: item.path_Img}),
         }).then((res) => res.json())
             .then((data) => {
                 if (data.status === 200) {
@@ -45,7 +45,6 @@ const Popreport = ({ item }: { item: any }) => {
                     icon: 'error',
                 });
             });
-        Swal.close();
     };
 
     const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

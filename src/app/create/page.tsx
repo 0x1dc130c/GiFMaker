@@ -1,20 +1,19 @@
 'use client';
 
-import dynamic from 'next/dynamic'
-// const DynmicEditor = dynamic(() => import('../../components/Editor').then(a => a.EditorWithStore), {
-//   ssr: false,
-// })
+import dynamic from 'next/dynamic';
 
-const DynmicEditorNew = dynamic(() => import('../../components/EditorNew').then(a => a.EditorWithStore), {
-  ssr: false,
-})
-
+// ใช้ dynamic import เพื่อโหลดคอมโพเนนท์ EditorWithStore เฉพาะฝั่งไคลเอนต์
+const DynamicEditor = dynamic(() => import('../../components/Editor').then(mod => mod.EditorWithStore), {
+  ssr: false, // ปิดการ SSR
+});
 function EditorPage() {
   return (
-      <DynmicEditorNew />
+    <div>
+      <DynamicEditor />
+    </div>
   );
 }
 
-EditorPage.diplsayName = "EditorPage";
+EditorPage.displayName = "EditorPage";
 
 export default EditorPage;
