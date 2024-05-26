@@ -11,20 +11,21 @@ interface BoradProps {
 }
 
 // const imgURLS: string[] = [];
-const cols_one: string[] = [];
-const cols_two: string[] = [];
-const cols_three: string[] = [];
-const cols_four: string[] = [];
-const cols_five: string[] = [];
-const cols_more: string[] = [];
+let cols_one: string[] = [];
+let cols_two: string[] = [];
+let cols_three: string[] = [];
+let cols_four: string[] = [];
+let cols_five: string[] = [];
+let cols_more: string[] = [];
 
 interface BoradProps {
   gridClass: string;
   sort: string;
   search: string;
+  refecth: boolean;
 }
 
-const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
+const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
   function Reloadimg() {
     setCount((prevCount: number) => prevCount + 3);
@@ -43,6 +44,21 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
   const handleClose = () => {
     setShowPopUp("");
   };
+
+  function Refecth() {
+    if(refecth){
+      console.log('refecth if ----------------------------- ', refecth);
+      cols_one = [];
+      cols_two = [];
+      cols_three = [];
+      cols_four = [];
+      cols_five = [];
+      cols_more = [];
+      
+    } else {
+      console.log('refecth else ------------------------------ ', refecth);
+    }
+  } 
 
   useEffect(() => {
     cols_one.length = 0;
@@ -63,6 +79,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
         for (let i = 0; i < response.data.img_url.length; i++) {
           setImgURLS(response.data.img_url);
         }
+        Refecth();
         Swal.close();
 
       } else {
@@ -145,29 +162,12 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
     }
   }
 
-  // const imgURLS_tests = [
-  //   "imgURLS_test : !Imgurl=https://gifmakerstorage.blob.core.windows.net/gifstorage/foldergif/giphy15.gif?id=44?like=9|path_profilee=https://gifmakerstorage.blob.core.windows.net/profilestores/vitor.png?name=0X1DC130C"
-  //   // เพิ่มข้อมูล URL ที่ต้องการ
-  // ];
-
-
-  // for (let i = 0; i < imgURLS_tests.length; i++) {
-  //   const img = JSON.stringify(imgURLS_tests[i]);
-  //   const img_ = img.split("|");
-  //   const imgUrlPart = img_[0].split("?")[2];
-  //   console.log('img- index 0 ------------------------', img_[1].split('"') ?? "");
-  //   const data = img_[1].split('=') ?? ""
-  //   console.log("img-index 1 path :--------------------->", data[1])
-  //   console.log('Img_ DATA name  ----------------', data[2]);
-  //   // console.log('cols_one : ', cols_one[i].split('?'));
-  // }
-
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className={gridClass}>
           {cols_one.map((url, index) => (
-            
+
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -202,31 +202,31 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search }) => {
           {cols_two.map((url, index) => (
             // console.log('col 1', url),
             <div key={index} className="w-full h-full flex relative">
-            <img
-              className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
-              src={url}
-              alt=""
-            />
-            <div
-              className="text-white rounded-lg opacity-0 absolute top-0 left-0 right-0 bottom-0 flex items-end p-4 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 cursor-pointer"
-              onClick={() => handleClick(url)}
-            >
-              <div className="flex flex-col space-y-2">
-                <div className="flex items-center">
-                  <FcLike className="text-2xl mr-2" />
-                  {typeof url === 'string' ? url.split("|")[0].split('?')[2].split('=')[1] ?? "" : ""}
-                </div>
-                <div className="flex items-center">
-                  <img
-                    src={typeof url === 'string' ? url.split("|")[1].split(',')[1].split('?')[0] ?? "" : ""}
-                    className="w-8 h-8 rounded-full mr-4"
-                    onError={(e) => { e.currentTarget.src = "/images/profile.png" }}
-                  />
-                  {typeof url === 'string' ? url.split("|")[1].split(',')[2] ?? "" : ""}
+              <img
+                className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
+                src={url}
+                alt=""
+              />
+              <div
+                className="text-white rounded-lg opacity-0 absolute top-0 left-0 right-0 bottom-0 flex items-end p-4 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 cursor-pointer"
+                onClick={() => handleClick(url)}
+              >
+                <div className="flex flex-col space-y-2">
+                  <div className="flex items-center">
+                    <FcLike className="text-2xl mr-2" />
+                    {typeof url === 'string' ? url.split("|")[0].split('?')[2].split('=')[1] ?? "" : ""}
+                  </div>
+                  <div className="flex items-center">
+                    <img
+                      src={typeof url === 'string' ? url.split("|")[1].split(',')[1].split('?')[0] ?? "" : ""}
+                      className="w-8 h-8 rounded-full mr-4"
+                      onError={(e) => { e.currentTarget.src = "/images/profile.png" }}
+                    />
+                    {typeof url === 'string' ? url.split("|")[1].split(',')[2] ?? "" : ""}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           ))}
         </div>
 

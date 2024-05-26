@@ -35,6 +35,7 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
                         showConfirmButton: false,
                     }).then(() => {
                         onclose();
+                        window.location.reload();
                     });
                 } else {
                     console.log('data.message : ', data.message);

@@ -10,11 +10,13 @@ import SearchBar from "../components/searchbar";
 import Sort from "../components/sort";
 import React, { useEffect, useState } from "react";
 import PopUp from "../components/popup";
-
+import BoardCategories from "../components/boardCategories";
 export default function Home() {
   const [nav, setNav] = useState("");
   const [showPopUp, setShowPopUp] = useState("");
   const [profile, setProfile] = useState({} as any);
+  const [categories, setCategories] = useState<{ tagID: number, tagName: string }[]>([]);
+  const [boardCategories_, setBoardCategories_] = useState<string>("");
   const handleClose = () => {
     setShowPopUp("");
   };
@@ -26,9 +28,8 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("data>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", data);
-        if (data.status === 200) {  
-          console.log("cookie is set",data);
+        if (data.status === 200) {
+          console.log("cookie is set", data);
           setNav(data.data.role);
           setProfile(data.data.path_profile);
         } else {
@@ -46,9 +47,26 @@ export default function Home() {
     }
   }, []);
 
+  useEffect(() => {
+    fetch("/api/categories", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          setCategories(data.data);
+        } else {
+          console.error("Failed to fetch categories");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
   const [sortOrder, setSortOrder] = useState<string>('latest');
   const [searchQuery, setSearchQuery] = useState<string>('');
-
+  const [refecth, setRefetch] = useState<boolean>(false);
   const handleSortChange = (newSortOrder: string) => {
     setSortOrder(newSortOrder);
   };
@@ -57,12 +75,18 @@ export default function Home() {
     setSearchQuery(query);
   };
 
+  const handleClickCategories = (categories_: any) => {
+    setRefetch(true);
+    setBoardCategories_(categories_);
+  }
+
+  console.log("boardCategories_ board : ------------------------------ ", boardCategories_)
+
   return (
     <main>
       {String(nav) === "admin" ? (
         <Navbar_admin />
       ) : String(nav) === "user" ? (
-
         <Navbar_login />
       ) : (
         <Navbar />
@@ -74,15 +98,20 @@ export default function Home() {
               <h1 className="text-4xl font-bold text-white">Categories</h1>
 
               <div className="grid grid-cols-4 gap-1 mt-4">
-                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 1</a>
-                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 2</a>
-                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 3</a>
-                <a className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl">Category 4</a>
+                {categories.map((category) => (
+                  <Link key={category.tagID} href={`/?category=${category.tagName}`} passHref>
+                    <div className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl" onClick={() => handleClickCategories(category.tagName)}>
+                      {category.tagName}
+                    </div>
+                  </Link>
+                ))}
               </div>
-
             </div>
             <div className="col-start-2">
-              <Sort onSortChange={handleSortChange} />
+              {
+                <Sort onSortChange={handleSortChange} onCategoryChange={setBoardCategories_} onRefetch={setRefetch} />
+              }
+              
               <div className="flex justify-end">
                 <div className="m-2 w-[300px] ">
                   <SearchBar onSearch={handleSearch} />
@@ -91,7 +120,11 @@ export default function Home() {
             </div>
           </div>
           <div className="row-start-3">
-            <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} />
+            {
+              boardCategories_ === "" ?
+                <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} refecth={refecth} />
+                : <BoardCategories gridClass="grid gap-4" categories={boardCategories_} refecth={refecth} />
+            }
           </div>
         </div>
       </main>

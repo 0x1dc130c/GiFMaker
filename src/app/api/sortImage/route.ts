@@ -75,8 +75,6 @@ export async function POST(request: NextRequest) {
           raw: true
         }) as any;
 
-        // สร้าง URL สำหรับโปรไฟล์ผู้ใช้
-        // const userUrls = userData.map((item: any) => `${item.path_profile}?name=${item.name}`);
         const userUrls = userData.map((item: any) => item.path_profile + "?name=" + item.name);
 
         // สร้างรายการสำหรับเก็บข้อมูลที่ UserID ตรงกัน
@@ -85,9 +83,6 @@ export async function POST(request: NextRequest) {
         imageData.forEach((imageItem: any) => {
           const matchedUser = userData.find((userItem: any) => userItem.UserID === imageItem.UserID);
           if (matchedUser) {
-            // matchedData.push({
-            //   imageUrl: `'!Imgurl='${imageItem.path_Img}?id=${imageItem.img_ID}&like=${imageItem.user_like}'|path_profile'${matchedUser.path_profile}?name=${matchedUser.name}`
-            // });
             matchedData.push({
               imageUrl: "!Imgurl=" + imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like + "|path_profile=" + matchedUser.path_profile + "?name=" + matchedUser.name,
             });
