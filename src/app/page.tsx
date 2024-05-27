@@ -11,12 +11,15 @@ import Sort from "../components/sort";
 import React, { useEffect, useState } from "react";
 import PopUp from "../components/popup";
 import BoardCategories from "../components/boardCategories";
+
 export default function Home() {
   const [nav, setNav] = useState("");
   const [showPopUp, setShowPopUp] = useState("");
   const [profile, setProfile] = useState({} as any);
   const [categories, setCategories] = useState<{ tagID: number, tagName: string }[]>([]);
   const [boardCategories_, setBoardCategories_] = useState<string>("");
+  const [checkSortimg, setCheckSortimg] = useState('latest');
+
   const handleClose = () => {
     setShowPopUp("");
   };
@@ -66,21 +69,27 @@ export default function Home() {
 
   const [sortOrder, setSortOrder] = useState<string>('latest');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [refecth, setRefetch] = useState<boolean>(false);
+  const [refetch, setRefetch] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   const handleSortChange = (newSortOrder: string) => {
     setSortOrder(newSortOrder);
+    // setRefetch(true); // Trigger refetch
+    setCheckSortimg(newSortOrder);
   };
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+    setRefetch(true); // Trigger refetch
   };
 
   const handleClickCategories = (categories_: any) => {
-    setRefetch(true);
     setBoardCategories_(categories_);
-  }
-
-  console.log("boardCategories_ board : ------------------------------ ", boardCategories_)
+    setSelectedCategory(categories_);
+    setRefetch(true); // Trigger refetch
+  };
+  console.log('checkSortimg ............................. ', checkSortimg)
+  console.log('sortOrder ............................. ', sortOrder)
 
   return (
     <main>
@@ -96,11 +105,14 @@ export default function Home() {
           <div className="grid p-6 grid-cols-2">
             <div className="col-start-1">
               <h1 className="text-4xl font-bold text-white">Categories</h1>
-
-              <div className="grid grid-cols-4 gap-1 mt-4">
+              <div className="grid grid-cols-5 gap-2 mt-4">
                 {categories.map((category) => (
                   <Link key={category.tagID} href={`/?category=${category.tagName}`} passHref>
-                    <div className="bg-gray-700 p-2 rounded-md text-white font-semibold text-center text-xl" onClick={() => handleClickCategories(category.tagName)}>
+                    <div
+                      className={`p-2 rounded-md text-white font-semibold text-center text-xl cursor-pointer transform transition-transform duration-300 ease-in-out ${selectedCategory === category.tagName ? 'bg-gray-900' : 'bg-gray-700'
+                        } hover:bg-gray-600 hover:scale-105`}
+                      onClick={() => handleClickCategories(category.tagName)}
+                    >
                       {category.tagName}
                     </div>
                   </Link>
@@ -108,12 +120,9 @@ export default function Home() {
               </div>
             </div>
             <div className="col-start-2">
-              {
-                <Sort onSortChange={handleSortChange} onCategoryChange={setBoardCategories_} onRefetch={setRefetch} />
-              }
-              
+              <Sort onSortChange={handleSortChange} onCategoryChange={setBoardCategories_} onRefetch={setRefetch} />
               <div className="flex justify-end">
-                <div className="m-2 w-[300px] ">
+                <div className="m-2 w-[300px]">
                   <SearchBar onSearch={handleSearch} />
                 </div>
               </div>
@@ -121,9 +130,13 @@ export default function Home() {
           </div>
           <div className="row-start-3">
             {
-              boardCategories_ === "" ?
-                <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} refecth={refecth} />
-                : <BoardCategories gridClass="grid gap-4" categories={boardCategories_} refecth={refecth} />
+              boardCategories_ === "" ? (
+                (checkSortimg === "latest" || checkSortimg === "popular") && (
+                  <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} refecth={refetch} />
+                )
+              ) : (
+                <BoardCategories gridClass="grid gap-4" categories={boardCategories_} refecth={refetch} />
+              )
             }
           </div>
         </div>

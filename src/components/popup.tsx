@@ -174,8 +174,8 @@ const PopUp = ({
           });
         } else {
           Swal.fire({
-            title: "Error",
-            text: data.message,
+            title: "Like Failed",
+            text: 'You have already liked this image',
             icon: "error",
             showConfirmButton: false,
             timer: 1500,

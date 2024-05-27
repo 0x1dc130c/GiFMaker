@@ -30,7 +30,7 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
                         title: "Success!",
                         text: "Tag added successfully",
                         icon: "success",
-                        timer: 2000,
+                        timer: 1500,
                         timerProgressBar: true,
                         showConfirmButton: false,
                     }).then(() => {
@@ -38,7 +38,16 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
                         window.location.reload();
                     });
                 } else {
-                    console.log('data.message : ', data.message);
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Tag already exists",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    }).then(() => {
+                        onclose();
+                    });
                 }
             })
             .catch((error) => {

@@ -6,25 +6,26 @@ import ReloadImage from "./reloadImage";
 import { set } from "animejs";
 import { FcLike } from "react-icons/fc";
 import Swal from "sweetalert2";
+
 interface BoardCategoriesProps {
     categories: string;
     gridClass: string;
     refecth: boolean;
 }
 
-let cols_one: string[] = [];
-let cols_two: string[] = [];
-let cols_three: string[] = [];
-let cols_four: string[] = [];
-let cols_five: string[] = [];
-let cols_more: string[] = [];
-
-
-const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories,refecth }) => {
+const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories, refecth }) => {
+    const [colsOne, setColsOne] = useState<string[]>([]);
+    const [colsTwo, setColsTwo] = useState<string[]>([]);
+    const [colsThree, setColsThree] = useState<string[]>([]);
+    const [colsFour, setColsFour] = useState<string[]>([]);
+    const [colsFive, setColsFive] = useState<string[]>([]);
+    const [colsMore, setColsMore] = useState<string[]>([]);
     const [imgURLS, setImgURLS] = useState<string[]>([]);
     const [showPopUp, setShowPopUp] = useState("");
     const [count, setCount] = useState(3);
     const [likeImg, setLikeImg] = useState<string[]>([]);
+    const [checkCategories, setCheckCategories] = useState<string>("");
+
     const handleClick = (url: string) => {
         console.log("Print url:", url);
         setShowPopUp(url);
@@ -38,119 +39,104 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
         setCount((prevCount: number) => prevCount + 3);
     }
 
-    function Refecth(){
-        if (refecth){
-            console.log('refetch if -----------------',refecth)
-            cols_one = [];
-            cols_two = [];
-            cols_three = [];
-            cols_four = [];
-            cols_five = [];
-            cols_more = []; 
+    const Refecth = () => {
+        setImgURLS([]);
+        setColsOne([]);
+        setColsTwo([]);
+        setColsThree([]);
+        setColsFour([]);
+        setColsFive([]);
+        setColsMore([]);
+    };
 
-        } else {
-            console.log('refetch else ----------------',refecth) 
-        }
+    const loadImages = async () => {
+        Swal.fire({
+            title: "Loading...",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+        });
+        await fetch("/api/showCategories", {
+            method: "POST",
+            body: JSON.stringify({ categories_: categories }),
+        }).then((response) => response.json())
+            .then((data) => {
+                for (let i = 0; i < data.data.length; i++) {
+                    setImgURLS(data.data)
+                }
+                Swal.close();
+            }).catch((error) => {
+                console.error("Failed to fetch categories", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Load failed',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            });
     }
 
     useEffect(() => {
-        cols_one.length = 0;
-        cols_two.length = 0;
-        cols_three.length = 0;
-        cols_four.length = 0;
-        cols_five.length = 0;
-        cols_more.length = 0;
-        const fetchData = async () => {
-            Swal.fire({
-                title: 'Loading...',
-                didOpen: () => {
-                    Swal.showLoading()
-                }
-            });
-            await fetch("/api/showCategories", {
-                method: "POST",
-                body: JSON.stringify({ categories_: categories }),
-            }).then((response) => response.json())
-                .then((data) => {
-                    setImgURLS([]);
-                    Refecth();
-                    for (let i = 0; i < data.data.length; i++) {
-                        setImgURLS(data.data)
-                    }
-                    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Load successfully',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }).catch((error) => {
-                    console.error("Failed to fetch categories", error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Load failed',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                });
-
-        }
-        fetchData();
-    }, [count, categories, refecth]);
-
-    for (let i = 0; i < imgURLS.length; i++) {
-        if (cols_one.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            cols_one.push(resultdata);
-        } else if (cols_two.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            cols_two.push(resultdata);
-        } else if (cols_three.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            cols_three.push(resultdata);
-        } else if (cols_four.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            cols_four.push(resultdata);
-        } else if (cols_five.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            cols_five.push(resultdata);
+        if (categories !== checkCategories) {
+            Refecth();
+            setCheckCategories(categories);
+            loadImages();
         } else {
-            cols_more.push(imgURLS[i]);
+            loadImages();
+            Refecth();
+        }
+    }, [count, categories, refecth]);
+    
+    for (let i = 0; i < imgURLS.length; i++) {
+        if (colsOne.length <= count) {
+            const imgData = JSON.stringify(imgURLS[i]);
+            const img_ = imgData.split("|");
+            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+            const userUrl = img_[1].split('"')[0] ?? ""
+            const userUrlPart = userUrl.split('=') ?? ""
+            const resultdata = imgUrlPart + "|" + userUrlPart
+            colsOne.push(resultdata);
+        } else if (colsTwo.length <= count) {
+            const imgData = JSON.stringify(imgURLS[i]);
+            const img_ = imgData.split("|");
+            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+            const userUrl = img_[1].split('"')[0] ?? ""
+            const userUrlPart = userUrl.split('=') ?? ""
+            const resultdata = imgUrlPart + "|" + userUrlPart
+            colsTwo.push(resultdata);
+        } else if (colsThree.length <= count) {
+            const imgData = JSON.stringify(imgURLS[i]);
+            const img_ = imgData.split("|");
+            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+            const userUrl = img_[1].split('"')[0] ?? ""
+            const userUrlPart = userUrl.split('=') ?? ""
+            const resultdata = imgUrlPart + "|" + userUrlPart
+            colsThree.push(resultdata);
+        } else if (colsFour.length <= count) {
+            const imgData = JSON.stringify(imgURLS[i]);
+            const img_ = imgData.split("|");
+            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+            const userUrl = img_[1].split('"')[0] ?? ""
+            const userUrlPart = userUrl.split('=') ?? ""
+            const resultdata = imgUrlPart + "|" + userUrlPart
+            colsFour.push(resultdata);
+        } else if (colsFive.length <= count) {
+            const imgData = JSON.stringify(imgURLS[i]);
+            const img_ = imgData.split("|");
+            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+            const userUrl = img_[1].split('"')[0] ?? ""
+            const userUrlPart = userUrl.split('=') ?? ""
+            const resultdata = imgUrlPart + "|" + userUrlPart
+            colsFive.push(resultdata);
+        } else {
+            colsMore.push(imgURLS[i]);
         }
     }
-
-5
 
     return (
         <>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className={gridClass}>
-                    {cols_one.map((url, index) => (
+                    {colsOne.map((url, index) => (
                         console.log('col 1', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
@@ -183,7 +169,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
                 </div>
 
                 <div className={gridClass}>
-                    {cols_two.map((url, index) => (
+                    {colsTwo.map((url, index) => (
                         // console.log('col 1', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
@@ -215,7 +201,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
                 </div>
 
                 <div className={gridClass}>
-                    {cols_three.map((url, index) => (
+                    {colsThree.map((url, index) => (
                         // console.log('col 2', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
@@ -247,7 +233,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
                 </div>
 
                 <div className={gridClass}>
-                    {cols_four.map((url, index) => (
+                    {colsFour.map((url, index) => (
                         // console.log('col 3', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
@@ -279,7 +265,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
                 </div>
 
                 <div className={gridClass}>
-                    {cols_five.map((url, index) => (
+                    {colsFive.map((url, index) => (
                         // console.log('col 4', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
