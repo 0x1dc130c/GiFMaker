@@ -145,8 +145,21 @@ const like_history = sequelize.define('like_history', {
   },
 }, { freezeTableName: true, timestamps: false });
 
-User.hasMany(info_image, { foreignKey: 'UserID' });
-info_image.belongsTo(User, { foreignKey: 'UserID' });
+// User.hasMany(info_image, { foreignKey: 'UserID' });
+// info_image.belongsTo(User, { foreignKey: 'UserID' });
+info_image.hasOne(comP, { foreignKey: 'img_ID', onDelete: 'CASCADE', onUpdate: 'RESTRICT' });
+comP.belongsTo(info_image, { foreignKey: 'img_ID', onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+
+User.hasMany(info_image, { foreignKey: 'UserID', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+info_image.belongsTo(User, { foreignKey: 'UserID', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+
+// One-to-Many Relationship
+info_image.hasMany(like_history, { foreignKey: 'img_id', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+like_history.belongsTo(info_image, { foreignKey: 'img_id', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+
+// One-to-Many Relationship
+User.hasMany(Tag, { foreignKey: 'UserID', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
+Tag.belongsTo(User, { foreignKey: 'UserID', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 
 const models = { User, info_image, comP, Tag, like_history };
 
