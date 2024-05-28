@@ -9,7 +9,7 @@ type Data = {
 
 export async function POST(req: NextRequest, res: NextResponse<Data>) {
     const stickersDirectory = path.join(process.cwd(), 'public/stickers')
-    console.log('stickersDirectory >>>>>>>>>>>>>>>>>>>> : ', stickersDirectory)
+
     try {
         const filenames = await fs.readdir(stickersDirectory)
         return NextResponse.json({  message: "Success", status: 200,stickers: filenames })

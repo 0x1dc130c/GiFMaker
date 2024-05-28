@@ -17,7 +17,7 @@ export const Resources = observer(() => {
       {selectedMenuOption === "Video" ? <VideoResourcesPanel /> : null}
       {selectedMenuOption === "Image" ? <ImageResourcesPanel /> : null}
       {selectedMenuOption === "Text" ? <TextResourcesPanel /> : null}
-      {selectedMenuOption === "Sticker" ? <StickerPanel /> : null}
+      {selectedMenuOption === "Template" ? <StickerPanel /> : null}
       {selectedMenuOption === "Filter" ? <EffectsPanel /> : null}
       {selectedMenuOption === "Export" ? <ExportVideoPanel /> : null}
       {/* {selectedMenuOption === "Fill" ? <FillPanel /> : null} */}

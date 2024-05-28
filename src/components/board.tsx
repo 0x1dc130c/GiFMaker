@@ -16,9 +16,6 @@ interface BoradProps {
 
 const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
-  function Reloadimg() {
-    setCount((prevCount: number) => prevCount + 3);
-  }
   const [colsOne, setColsOne] = useState<string[]>([]);
   const [colsTwo, setColsTwo] = useState<string[]>([]);
   const [colsThree, setColsThree] = useState<string[]>([]);
@@ -28,9 +25,16 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
   const [imgURLS, setImgURLS] = useState<string[]>([]);
   const [showPopUp, setShowPopUp] = useState("");
   const [count, setCount] = useState(3);
+  const [number, setNumber] = useState(0);
   const [likeImg, setLikeImg] = useState<string[]>([]);
   const [checkSortimg, setCheckSortimg] = useState('latest');
 
+
+  function Reloadimg() {
+    setCount((prevCount: number) => prevCount + 3);
+    setImgURLS([]);
+    loadMoreImages();
+  }
   const handleClick = (url: string) => {
     setShowPopUp(url);
   };
@@ -51,16 +55,42 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
   };
 
   // ฟังก์ชันสำหรับการโหลดข้อมูลรูปภาพ
-  const loadImages = (sortParam:any) => {
+
+  const loadMoreImages = () => {
+    Swal.fire({
+      title: "Loading...",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
+    setImgURLS([]);
+    axios.post("/api/loadMore", { sort: sort, setnum : number }).then((response) => {
+      if (response.data.status === 200) {
+        setImgURLS(response.data.img_url);
+        setNumber(response.data.setnum);
+        Swal.close();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error loading more images',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
+
+  const loadImages = (sortParam: any) => {
     Swal.fire({
       title: "Loading...",
       showConfirmButton: false,
       allowOutsideClick: false,
     });
 
-    axios.post("/api/sortImage", { sort: sortParam }).then((response) => {
+    axios.post("/api/sortImage", { sort: sortParam, setnum : number }).then((response) => {
       if (response.data.status === 200) {
         setImgURLS(response.data.img_url);
+        setNumber(response.data.setnum);
         Swal.close(); // ปิด Swal เมื่อโหลดข้อมูลเสร็จสิ้น
       } else {
         Swal.fire({
@@ -74,101 +104,117 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
     });
   };
 
+  const searchImages = (searchParam: string) => {
+    Swal.fire({
+      title: "Loading...",
+      html: "<div class='text-center'><div class='spinner-border' role='status'></div></div>",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
+    axios.post("/api/search", { search }).then((response) => {
+      if (response.data.status === 200) {
+        for (let i = 0; i < response.data.img_url.length; i++) {
+          console.log('response.data.img_url[i]', response.data.img_url[i]);
+          setImgURLS(response.data.img_url);
+        }
+        Swal.close();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error searching images',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
+
+  }
+
   useEffect(() => {
     // ตรวจสอบว่าค่า sort และ checkSortimg เหมือนกันหรือไม่
     if (sort !== checkSortimg) {
       Refecth();
       setCheckSortimg(sort);
+      setImgURLS([]);
       loadImages(sort);
+      setNumber(0);
+      setCount(3);
+
     } else {
       Refecth();
       loadImages(sort);
     }
-  }, [sort, checkSortimg]); // dependencies array
-
-  const searchImages = (searchParam: string) => {
-      Swal.fire({
-        title: "Loading...",
-        html: "<div class='text-center'><div class='spinner-border' role='status'></div></div>",
-        showConfirmButton: false,
-        allowOutsideClick: false,
-      });
-      axios.post("/api/search", { search }).then((response) => {
-        if (response.data.status === 200) {
-          for (let i = 0; i < response.data.img_url.length; i++) {
-            console.log('response.data.img_url[i]', response.data.img_url[i]);
-            setImgURLS(response.data.img_url);
-          }
-          Swal.close();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error searching images',
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-      });
-    
-  }
-
-  useEffect(() => {
     if (search !== "") {
       Refecth();
       searchImages(search);
-    } 
-  }, [count, search]);
-
-  if (imgURLS.length !== 0) {
-    for (let i = 0; i < imgURLS.length; i++) {
-      if (colsOne.length <= count) {
+    }
+  }, [sort, checkSortimg]); // dependencies array
+  function loadimage() {
+    const cols = [colsOne, colsTwo, colsThree, colsFour, colsFive];
+    let index = 0;
+  
+    // ตรวจสอบค่า sort
+    if (checkSortimg === 'popular' || checkSortimg === 'latest') {
+      // หาก sort เป็น popular หรือ latest ให้เรียงรูปภาพจากซ้ายไปขวา
+      for (let i = 0; i < Math.min(number, imgURLS.length); i++) {
         const imgData = JSON.stringify(imgURLS[i]);
         const img_ = imgData.split("|");
-        const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-        const userUrl = img_[1].split('"')[0] ?? ""
-        const userUrlPart = userUrl.split('=') ?? ""
-        const resultdata = imgUrlPart + "|" + userUrlPart
-        colsOne.push(resultdata);
-      } else if (colsTwo.length <= count) {
+        const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? "";
+        const userUrl = img_[1].split('"')[0] ?? "";
+        const userUrlPart = userUrl.split('=') ?? "";
+        const resultdata = imgUrlPart + "|" + userUrlPart;
+  
+        let imageExists = false;
+  
+        // ตรวจสอบว่ารูปภาพมีอยู่ในคอลัมน์ที่เป็นปัจจุบันหรือไม่
+        for (let col of cols) {
+          if (col.includes(imgUrlPart)) {
+            imageExists = true;
+            break;
+          }
+        }
+  
+        if (!imageExists) {
+          // เพิ่มรูปภาพลงในคอลัมน์ตามลำดับจากซ้ายไปขวา
+          cols[index].push(resultdata);
+        }
+  
+        // เลื่อนไปยังคอลัมน์ถัดไป
+        index = (index + 1) % cols.length;
+      }
+    } else {
+      // หาก sort ไม่ใช่ popular หรือ latest ให้เพิ่มรูปภาพลงในคอลัมน์แบบเฉลี่ย
+      for (let i = 0; i < Math.min(number, imgURLS.length); i++) {
         const imgData = JSON.stringify(imgURLS[i]);
         const img_ = imgData.split("|");
-        const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-        const userUrl = img_[1].split('"')[0] ?? ""
-        const userUrlPart = userUrl.split('=') ?? ""
-        const resultdata = imgUrlPart + "|" + userUrlPart
-        colsTwo.push(resultdata);
-      } else if (colsThree.length <= count) {
-        const imgData = JSON.stringify(imgURLS[i]);
-        const img_ = imgData.split("|");
-        const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-        const userUrl = img_[1].split('"')[0] ?? ""
-        const userUrlPart = userUrl.split('=') ?? ""
-        const resultdata = imgUrlPart + "|" + userUrlPart
-        colsThree.push(resultdata);
-      } else if (colsFour.length <= count) {
-        const imgData = JSON.stringify(imgURLS[i]);
-        const img_ = imgData.split("|");
-        const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-        const userUrl = img_[1].split('"')[0] ?? ""
-        const userUrlPart = userUrl.split('=') ?? ""
-        const resultdata = imgUrlPart + "|" + userUrlPart
-        colsFour.push(resultdata);
-      } else if (colsFive.length <= count) {
-        const imgData = JSON.stringify(imgURLS[i]);
-        const img_ = imgData.split("|");
-        const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-        const userUrl = img_[1].split('"')[0] ?? ""
-        const userUrlPart = userUrl.split('=') ?? ""
-        const resultdata = imgUrlPart + "|" + userUrlPart
-        colsFive.push(resultdata);
-      } else {
-        colsMore.push(imgURLS[i]);
+        const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? "";
+        const userUrl = img_[1].split('"')[0] ?? "";
+        const userUrlPart = userUrl.split('=') ?? "";
+        const resultdata = imgUrlPart + "|" + userUrlPart;
+  
+        let imageExists = false;
+  
+        // ตรวจสอบว่ารูปภาพมีอยู่ในคอลัมน์ที่เป็นปัจจุบันหรือไม่
+        for (let col of cols) {
+          if (col.includes(imgUrlPart)) {
+            imageExists = true;
+            break;
+          }
+        }
+  
+        if (!imageExists) {
+          // เพิ่มรูปภาพลงในคอลัมน์ปัจจุบัน
+          cols[index].push(resultdata);
+        }
+  
+        // เลื่อนไปยังคอลัมน์ถัดไป
+        index = (index + 1) % cols.length;
       }
     }
-
   }
-
+  
+  loadimage();
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">

@@ -19,7 +19,7 @@ export type ImageEditorElement = EditorElementBase<
   
 >;
 export type StickerEditorElement = EditorElementBase<
-  "sticker",
+  "Template",
   { src: string; elementId: string; imageObject?: fabric.Object, effect: Effect}
 >;
 
@@ -118,7 +118,7 @@ export type MenuOption =
   | "Image"
   | "Export"
   | "Filter"
-  | "Sticker"
+  | "Template"
   ;
 
 
