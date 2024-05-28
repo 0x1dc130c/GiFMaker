@@ -104,7 +104,7 @@ export default function Home() {
         <div className="grid bg-gray-800 m-[20px] p-14 min-h-[90vh] rounded-md min-w-screen">
           <div className="grid p-6 grid-cols-2">
             <div className="col-start-1">
-              <h1 className="text-4xl font-bold text-white">Categories</h1>
+              <h1 className="text-4xl font-bold text-white">Tags</h1>
               <div className="grid grid-cols-5 gap-2 mt-4">
                 {categories.map((category) => (
                   <Link key={category.tagID} href={`/?category=${category.tagName}`} passHref>

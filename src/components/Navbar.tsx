@@ -38,7 +38,7 @@ function Navbar() {
               <Link href="/" className={`text-3xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300 ${isActive('/')}`}>Home</Link>
             </li>
             <li className="bg-indigo-900">
-              <Link href="/about" className={`text-3xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300 ${isActive('/about')}`}>About Me</Link>
+              <Link href="/about" className={`text-3xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300 ${isActive('/about')}`}>About Us</Link>
             </li>
           </ul>
         </div>

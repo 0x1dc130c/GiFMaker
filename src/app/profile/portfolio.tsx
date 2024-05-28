@@ -40,7 +40,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
 
     axios.post("/api/portfolio")
       .then((res: any) => {
-        console.log('res.data.img_url --------------------------------------', res.data.img_url);
+
         setImgURLS(res.data.img_url);
 
         if (res.data.img_url.length === 0) {
@@ -116,15 +116,15 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
   };       
 
   
-  if(imgURLS.length > 0){
-    console.log('imgURLS count --------------------------- ', imgURLS.length);
-  } else {
-    console.log('not imgURLS count --------------------------- ', imgURLS.length);
-  }
+  // if(imgURLS.length > 0){
+  //   console.log('imgURLS count --------------------------- ', imgURLS.length);
+  // } else {
+  //   console.log('not imgURLS count --------------------------- ', imgURLS.length);
+  // }
 
-  for (let i = 0; i < cols_one.length; i++) {
-    console.log('cols_one  --------------------------- ', cols_one[i]);
-  }
+  // for (let i = 0; i < cols_one.length; i++) {
+  //   console.log('cols_one  --------------------------- ', cols_one[i]);
+  // }
 
   
   return (

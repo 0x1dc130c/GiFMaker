@@ -22,6 +22,11 @@ function Register() {
         return hasLetter;
     };
 
+    const checkEmail = (email : string) => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
+    }
+
     const handleSunmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (password !== Cpassword) {
@@ -39,8 +44,20 @@ function Register() {
         if (!isPasswordValid(password)) {
             // setAlert('Password must be between 8 and 16 characters long and contain at least one character.');
             Swal.fire({
-                title: "Password must be between 8 and 16 characters long and contain at least one character.",
+                title: "Password length must be between 8 to 16 characters.",
                 text: "Please enter the same password.",
+                icon: "error",
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return;
+        }
+        if (!checkEmail(email)) {
+            // setAlert('Email is not valid');
+            Swal.fire({
+                title: "Email is not valid",
+                text: "Please enter the correct email.",
                 icon: "error",
                 timer: 2000,
                 timerProgressBar: true,
@@ -133,7 +150,7 @@ function Register() {
                         </div>
                         <div>
                             <label htmlFor="email" className="block mb-2 text-xl font-semibold text-white dark:text-white">Email</label>
-                            <input onChange={(e) => setEmail(e.target.value)} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="" required />
+                            <input onChange={(e) => setEmail(e.target.value)} type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="" required />
                         </div>
                         <div>
                             <label htmlFor="name" className="block mb-2 text-xl font-semibold text-white dark:text-white">Name</label>
