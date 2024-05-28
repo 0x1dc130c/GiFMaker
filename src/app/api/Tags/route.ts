@@ -4,14 +4,13 @@ import models from "../../utils/models";
 
 
 export async function POST(request: Request) {
-
     try{
-            const tableTag = await models.Tag.findAll({ where : { status: 'active' }, raw: true});
-            console.log('table Tag  : ',tableTag);
-            return NextResponse.json({
-                tableTag,
-                status: 200,
-            });
+        const tableTag = await models.Tag.findAll({ where : { status: 'active' }, raw: true});
+        console.log('table Tag  : ',tableTag);
+        return NextResponse.json({
+            tableTag,
+            status: 200,
+        });
 
     } catch (error) {
         const message = "Error during fetch data";

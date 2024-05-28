@@ -3,7 +3,10 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar-admin";
 import Footer from "@/components/Footer";
 import PopEdit from "@/components/popupEdit";
+import Swal from "sweetalert2";
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 
 const Admin = () => {
     const [table, setTable] = useState<any[]>([]);
@@ -12,6 +15,13 @@ const Admin = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            MySwal.fire({
+                title: 'Loading...',
+                showConfirmButton: false,
+                willOpen: () => {
+                    MySwal.showLoading()
+                },
+            });
             try {
                 const response = await fetch("/api/showUser", {
                     method: "POST",
@@ -19,32 +29,38 @@ const Admin = () => {
                 const data = await response.json();
 
                 if (data.status === 200) {
-                    console.log('data.tableUser ----------- : ', data.tableUser);
                     setTable(data.tableUser);
-                    console.log('table ----------- : ', table);
+                    MySwal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 } else {
-                    console.log('data.message ----------- : ', data.message);
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Error show user status 500',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             } catch (error) {
-                console.error('Error fetching data:', error);
+                MySwal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         };
 
         fetchData();
     }, []);
 
-    const useEditState = () => {
-        return { showPopUp, setShowPopUp, datauser, setDatauser };
-    }
-
     const handleEdit = (item: any) => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const { showPopUp, setShowPopUp, datauser, setDatauser } = useEditState();
         setShowPopUp('true');
         setDatauser([item]);
     }
-
-
 
     const handleClose = () => {
         setShowPopUp('');
@@ -53,8 +69,8 @@ const Admin = () => {
     return (
         <div>
             <Navbar />
-            <main className="flex min-h-screen flex-col items-center justify-between p-10 bg-gray-900 ">
-                <div className="flex flex-col bg-gray-800 m-[20px] p-14 w-[80rem] min-h-screen rounded-md">
+            <main className="flex-col items-center justify-between p-10 bg-gray-900 ">
+                <div className="flex flex-col bg-gray-800 m-[20px] p-14 w-[80rem] rounded-md">
                     <div className="p-6">
                         <div className="flex justify-center">
                             <h1 className="text-5xl font-semibold text-white m-5">Manage Account</h1>
@@ -110,7 +126,7 @@ const Admin = () => {
                             </table>
                         </div>
                     </div>
-                    {showPopUp === 'true' ? <PopEdit item={datauser} onclose={() => setShowPopUp('')} /> : null}
+                    {showPopUp === 'true' ? <PopEdit item={datauser} onclose={handleClose} /> : null}
                 </div>
             </main>
             <Footer />

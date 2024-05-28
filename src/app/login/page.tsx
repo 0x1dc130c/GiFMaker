@@ -4,6 +4,9 @@ import React, { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { useCookies } from "next-client-cookies";
 import Swal from "sweetalert2";
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 function Login() {
   useEffect(() => {
@@ -19,21 +22,17 @@ function Login() {
   const [error, setError] = React.useState("");
   const cookies = useCookies();
 
-  const payload = {
-    username: username,
-    password: password,
-  }; // Declare the payload variable
   const handleSunmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(username, password);
     if (!username || !password) {
-      setError("กรุณากรอกข้อมูลให้ครบ");
+      setError("Please fill in complete information.");
       return;
     }
     try {
-      Swal.fire({
-        title: "กำลังเข้าสู่ระบบ",
-        text: "กรุณารอสักครู่...",
+      MySwal.fire({
+        title: "Logging in",
+        text: "please wait a moment...",
         showConfirmButton: false,
         allowOutsideClick: false,
         didOpen: () => {
@@ -43,6 +42,9 @@ function Login() {
       fetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
+        headers: {
+          'Content-Type': 'application/json',
+        }
       })
         .then((res) => {
           if (!res.ok) {
@@ -50,14 +52,14 @@ function Login() {
               throw new Error(data.message);
             });
           }
-
           return res.json();
         })
         .then((data) => {
+          Swal.close();
           if (data.status === 200) {
-            Swal.fire({
-              title: "เข้าสู่ระบบสำเร็จ",
-              text: "กำลังพาคุณไปยังหน้าหลัก...",
+            MySwal.fire({
+              title: "Login successful",
+              text: "Taking you to the home page....",
               icon: "success",
               timer: 1500,
               timerProgressBar: true,
@@ -72,8 +74,8 @@ function Login() {
               console.log("User Login Successfully");
             });
           } else {
-            Swal.fire({
-              title: "เข้าสู่ระบบไม่สำเร็จ",
+            MySwal.fire({
+              title: "Login failed",
               text: data.message,
               icon: "error",
               timer: 1500,
@@ -83,32 +85,25 @@ function Login() {
           }
         })
         .catch((error) => {
-          Swal.fire({
-            title: "เข้าสู่ระบบไม่สำเร็จ",
+          MySwal.fire({
+            title: "Login failed",
             text: error.message,
             icon: "error",
             timer: 1500,
             timerProgressBar: true,
             showConfirmButton: false,
-            backdrop: `
-            bg-red-500
-            url('/images/nyan-cat.gif')
-            center left
-            no-repeat
-  ` //
           });
         });
     } catch (error) {
       console.log("Error During login : ", error);
-      // Handle the error here
     }
   };
 
   return (
-    <div className="m-0 bg-gray-800 h-full">
+    <div className="m-0 bg-gray-800 min-h-screen flex flex-col">
       <Navbar />
-      <div className="items-center justify-between flex flex-col p-14">
-        <div className="w-full max-w-sm p-4 bg-indigo-700  border border-indigo-400 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex-grow flex items-center justify-center p-14">
+        <div className="w-full max-w-sm p-4 bg-indigo-700 border border-indigo-400 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           <form className="space-y-6" onSubmit={handleSunmit}>
             <h5 className="text-2xl font-semibold text-white dark:text-white text-center">
               Login to your account
@@ -116,13 +111,13 @@ function Login() {
             <div>
               <label
                 htmlFor="username"
-                className="block mb-2 text-xl font-semiblod text-white dark:text-white"
+                className="block mb-2 text-xl font-semibold text-white dark:text-white"
               >
                 Username
               </label>
               <input
                 onChange={(e) => setUsername(e.target.value)}
-                type="username"
+                type="text"
                 name="username"
                 id="username"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -133,7 +128,7 @@ function Login() {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-xl font-semiblod text-white dark:text-white"
+                className="block mb-2 text-xl font-semibold text-white dark:text-white"
               >
                 Password
               </label>
@@ -169,7 +164,6 @@ function Login() {
             >
               Login to your account
             </button>
-
           </form>
         </div>
       </div>

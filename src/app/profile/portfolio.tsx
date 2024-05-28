@@ -31,7 +31,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
   useEffect(() => {
     setLoading(true);  // เริ่มการโหลด
     Swal.fire({
-      title: 'กำลังโหลดรูปภาพ...',
+      title: 'Loading image...',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
@@ -40,13 +40,13 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
 
     axios.post("/api/portfolio")
       .then((res: any) => {
-        console.log('res.data.img_url --------------------------------------', res.data.img_url);
+
         setImgURLS(res.data.img_url);
 
         if (res.data.img_url.length === 0) {
           Swal.fire({
             icon: "error",
-            title: "คุณยังไม่มีรูปใน Store ของคุณ",
+            title: "You don't have any images in your Store yet.",
           });
         } else {
           Swal.close();  // ปิดการแจ้งเตือนเมื่อโหลดเสร็จและมีรูปภาพ
@@ -56,7 +56,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
         console.error('Error fetching data:', error);
         Swal.fire({
           icon: "error",
-          title: "เกิดข้อผิดพลาดในการดึงข้อมูล",
+          title: "An error occurred fetching data.",
           text: error.message,
         });
       })
@@ -90,7 +90,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
   const notimg = () => {
     Swal.fire({
       icon: "error",
-      title: "คุณยังไม่มีรูปใน Store ของคุณ",
+      title: "You don't have any images in your Store yet.",
     });
     return null; // Return null instead of void
   }
@@ -98,15 +98,15 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
   const handleClick = (url: string) => {
     Swal.fire({
       imageUrl: url,
-      text: "คุณต้องการลบรูปนี้หรือไม่?",
+      text: "Do you want to delete this photo??",
       showCancelButton: true,
-      confirmButtonText: "ลบ",
-      cancelButtonText: "ยกเลิก",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
         axios.post("/api/deleteimg", { url }).then((res) => {
           if (res.data.istrue) {
-            Swal.fire("ลบรูปสำเร็จ", "", "success").then(() => {
+            Swal.fire("Successfully deleted images", "", "success").then(() => {
               window.location.reload();
             });
           }
@@ -116,15 +116,15 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
   };       
 
   
-  if(imgURLS.length > 0){
-    console.log('imgURLS count --------------------------- ', imgURLS.length);
-  } else {
-    console.log('not imgURLS count --------------------------- ', imgURLS.length);
-  }
+  // if(imgURLS.length > 0){
+  //   console.log('imgURLS count --------------------------- ', imgURLS.length);
+  // } else {
+  //   console.log('not imgURLS count --------------------------- ', imgURLS.length);
+  // }
 
-  for (let i = 0; i < cols_one.length; i++) {
-    console.log('cols_one  --------------------------- ', cols_one[i]);
-  }
+  // for (let i = 0; i < cols_one.length; i++) {
+  //   console.log('cols_one  --------------------------- ', cols_one[i]);
+  // }
 
   
   return (

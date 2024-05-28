@@ -10,6 +10,7 @@ const EFFECT_TYPE_TO_LABEL: Record<string, string> = {
   blackAndWhite: "Black and White",
   sepia: "Sepia",
   invert: "Invert",
+  polaroid: "Polaroid",
 };
 export type EffectResourceProps = {
   editorElement: VideoEditorElement | ImageEditorElement;
@@ -35,7 +36,7 @@ export const EffectResource = observer((props: EffectResourceProps) => {
           <div
             className="image-container"
             style={{
-              filter: effectType === "none" ? "none" : `grayscale(${effectType === "blackAndWhite" ? "100%" : "0%"}) sepia(${effectType === "sepia" ? "100%" : "0%"}) invert(${effectType === "invert" ? "100%" : "0%"})`,
+              filter: effectType === "none" ? "none" : `grayscale(${effectType === "blackAndWhite" ? "100%" : "0%"}) sepia(${effectType === "sepia" ? "100%" : "0%"}) invert(${effectType === "invert" ? "100%" : "0%"}) contrast(${effectType === "polaroid" ? "150%" : "100%"})`,
             }}
           >
             <img src="/images/imgTast.jpg" alt={label} className="w-full h-auto" />

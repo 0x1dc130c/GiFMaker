@@ -7,6 +7,16 @@ const storageAccountName = 'gifmakerstorage';
 const storageAccountKey = 'GTVRTSAC2UtTOCgVoWuRtAQ6G6w4LWvbyT/TzWlHKA1uJWZro/CU+sQZPIfA6QtHJQZmlrClfAY7+AStc6Ax0g==';
 const containerName = 'profilestores';
 
+async function createUser( userDetails: any ) {
+    try{
+        const newUser = await models.User.create(userDetails);
+    }   catch (error) {
+        console.log("Error creating user: ", error);
+    }
+   
+
+}
+
 export async function POST(request: Request) {
     try {
         const body = await request.formData();
@@ -20,7 +30,7 @@ export async function POST(request: Request) {
         const profileimg = body.get('file');
         // const img = profileimg !== null ? profileimg.split(";") : null;
         const blob = profileimg as File;
-        const status = 1;
+        const status = 'active';
         const role = "user";
 
         // console.log('username', username, 'password', password, 'cpassword', cpassword, 'email', email, 'name', name, 'profileimg', profileimg, 'blob', blob, 'status', status, 'role', role);
@@ -41,7 +51,30 @@ export async function POST(request: Request) {
             await blockBlobClient.uploadData(await blob.arrayBuffer(), options);
             const imgURL = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${blobName}`;
 
-            models.User.create({ Username: username, Password: password, email: email, status: status, role: role, name: name, path_profile: imgURL });
+            const newUserDetails = {
+                Username : username,
+                Password : password,
+                email : email,
+                status : status,
+                role : role,
+                name : name,
+                path_profile : imgURL
+            }
+
+            // createUser(newUserDetails);
+            models.User.create({
+                Username: username,
+                Password: password,
+                email: email,
+                status: status,
+                role: role,
+                name: name,
+                path_profile: imgURL
+              }).then(user => {
+                console.log("User created successfully:", user);
+              }).catch(error => {
+                console.error("Error creating user:", error);
+              });
             return NextResponse.json({ message: { username, email, password }, status: 200 });
 
         } else {
@@ -55,3 +88,4 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "Error in registration", status: 500 });
     }
 }
+

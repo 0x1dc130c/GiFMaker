@@ -64,19 +64,19 @@ export const ExportVideoPanel = observer(() => {
           onClick={() => {
             // แสดง modal สอบถามก่อนที่จะส่งออกวิดีโอ
             Swal.fire({
-              title: 'ต้องการส่งออกวิดีโอหรือไม่?',
-              text: `ความยาวของวิดีโอที่เลือกคือ ${store.maxTime / 1000} วินาที`,
+              title: 'Do you want to export the video?',
+              text: `The length of the selected video is ${store.maxTime / 1000} seconds`,
               icon: 'question',
               showCancelButton: true,
               confirmButtonColor: '#3085d6',
               cancelButtonColor: '#d33',
-              confirmButtonText: 'ใช่, ส่งออก!',
-              cancelButtonText: 'ยกเลิก'
+              confirmButtonText: 'Yes, export!',
+              cancelButtonText: 'Cancel'
             }).then((result) => {
               if (result.isConfirmed) {
                 // แสดงหน้ารอโหลด
                 Swal.fire({
-                  title: 'กำลังส่งออกวิดีโอ...',
+                  title: 'Exporting video...',
                   allowOutsideClick: false
                 });
 
@@ -86,14 +86,10 @@ export const ExportVideoPanel = observer(() => {
                 setTimeout(() => {
                   store.setPlaying(true);
                   store.saveCanvasToVideoWithAudio();
-
-                  // ปิดหน้ารอโหลดเมื่อสำเร็จ
                   Swal.close();
-
-                  // แสดง modal แจ้งเตือนเมื่อส่งออกสำเร็จ
                   Swal.fire(
-                    'สำเร็จ!',
-                    'วิดีโอถูกส่งออกเรียบร้อยแล้ว',
+                    'Success!',
+                    'The video has been exported successfully',
                     'success'
                   );
                 }, 1000);
@@ -101,7 +97,7 @@ export const ExportVideoPanel = observer(() => {
             });
           }}
         >
-          Export Video ({store.maxTime / 1000} secs)
+          Export Video
         </button>
 
       </div>

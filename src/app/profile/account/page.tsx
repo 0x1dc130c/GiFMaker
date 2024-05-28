@@ -45,7 +45,6 @@ const AccountUser: React.FC = () => {
                 .then((data) => {
                     if (data.status === 200) {
                         if (data.data.path_profile !== 'null') {
-                            setProfile(data.data.path_profile);
                             setUserid(data.data.UserID);
                         } else {
                             setProfile("/images/profile.png");
@@ -79,9 +78,14 @@ const AccountUser: React.FC = () => {
                         setPassword(dataUsr[1]);
                         setName(dataUsr[2]);
                         setEmail(dataUsr[3]);
+                        setProfile(dataUsr[4]);
                     }
                 } else {
-                    console.log('error ------------------------------------', data);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    });
                 }
                 Swal.close(); // ปิด Swal หลังจากโหลดข้อมูลเสร็จสมบูรณ์
             })
@@ -104,7 +108,7 @@ const AccountUser: React.FC = () => {
                             </h1>
                             <div className="grid grid-cols-2 items-center p-6 mx-auto">
                                 <div className="flex flex-col items-center justify-start">
-                                    <img src={profile} alt="profile" className="w-[20rem] h-[20rem] rounded-md mb-4" />
+                                    <img src={profile.split('=')[1]} alt="profile" className="w-[20rem] h-[20rem] rounded-md mb-4" />
                                     <button className="bg-rose-500 hover:bg-rose-700 font-semibold text-white py-4 px-4 rounded focus:outline-none focus:shadow-outline" onClick={handleShowimg}>Change Profile image</button>
                                 </div>
                                 <div className="ml-6 ">

@@ -32,7 +32,6 @@ const ColorPicker = () =>{
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
 
   const handleChange = (newColor: any) => {
-    console.log('color colorPiker---------------> ', newColor.hex);
     setColor(newColor.hex);
     store.setTextColorStore(newColor.hex);
   };
@@ -41,16 +40,17 @@ const ColorPicker = () =>{
     setShowColorPicker(!showColorPicker);
   };
 
+
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
+    <div className="relative inline-block">
       <button
         type="button"
-        className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center me-2 mb-2"
+        className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center me-2 mb-2 border-2 border-white p-4"
         style={{ backgroundColor: color }}
         onClick={toggleColorPicker}
       >
         <svg
-          className="w-6 h-6 text-gray-800 dark:text-white"
+          className="w-6 h-6 text-white dark:text-white"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -62,7 +62,7 @@ const ColorPicker = () =>{
         </svg>
       </button>
       {showColorPicker && (
-        <div style={{ position: 'absolute', top: '100%', left: 0 }}>
+        <div style={{ position: 'absolute', top: '100%', left: 0, zIndex: 10 }}>
           <BlockPicker
             color={color}
             colors={professionalVideoColors}
@@ -71,9 +71,9 @@ const ColorPicker = () =>{
         </div>
       )}
     </div>
-
   );
 };
 
 export default ColorPicker;
+
 

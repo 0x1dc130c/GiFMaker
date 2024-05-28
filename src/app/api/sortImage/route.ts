@@ -6,11 +6,13 @@ export async function POST(request: NextRequest) {
     if (request.method == "POST") {
       const body = await request.json();
       const { sort } = body;
-      console.log("sort =================== : ", sort);
       if (sort === "latest") {
-        // ดึงข้อมูลรูปภาพ
+        // ดึงข้อมูลรูปภาพที่มี status เป็น public
         const imageData = await models.info_image.findAll({
           attributes: ["path_Img", "img_ID", "user_like", "UserID"],
+          where: {
+            status_img: 'public' // เงื่อนไขการเช็คค่า status
+          },
           order: [['timestamp', 'ASC']],
           raw: true
         }) as any;
@@ -38,7 +40,7 @@ export async function POST(request: NextRequest) {
           const matchedUser = userData.find((userItem: any) => userItem.UserID === imageItem.UserID);
           if (matchedUser) {
             matchedData.push({
-              imageUrl:"!Imgurl="+imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like+"|path_profile="+matchedUser.path_profile + "?name=" + matchedUser.name,
+              imageUrl: "!Imgurl=" + imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like + "|path_profile=" + matchedUser.path_profile + "?name=" + matchedUser.name,
             });
           }
         });
@@ -50,15 +52,18 @@ export async function POST(request: NextRequest) {
 
       } else if (sort === "popular") {
 
-
         const imageData = await models.info_image.findAll({
           attributes: ["path_Img", "img_ID", "user_like", "UserID"],
+          where: {
+            status_img: 'public' // เงื่อนไขการเช็คค่า status
+          },
           order: [['user_like', 'DESC']],
           raw: true
         }) as any;
 
         // สร้าง URL สำหรับรูปภาพและดึง UserIDs
-        const imageUrls = imageData.map((item: any) => `${item.path_Img}?id=${item.img_ID}&like=${item.user_like}`);
+        // const imageUrls = imageData.map((item: any) => `${item.path_Img}?id=${item.img_ID}&like=${item.user_like}`);
+        const imageUrls = imageData.map((item: any) => item.path_Img + "?id=" + item.img_ID + "&like=" + item.user_like);
         const userIds = imageData.map((item: any) => item.UserID);
 
         // ดึงข้อมูลผู้ใช้โดยใช้ UserIDs
@@ -70,8 +75,7 @@ export async function POST(request: NextRequest) {
           raw: true
         }) as any;
 
-        // สร้าง URL สำหรับโปรไฟล์ผู้ใช้
-        const userUrls = userData.map((item: any) => `${item.path_profile}?name=${item.name}`);
+        const userUrls = userData.map((item: any) => item.path_profile + "?name=" + item.name);
 
         // สร้างรายการสำหรับเก็บข้อมูลที่ UserID ตรงกัน
         const matchedData: any[] = [];
@@ -80,7 +84,7 @@ export async function POST(request: NextRequest) {
           const matchedUser = userData.find((userItem: any) => userItem.UserID === imageItem.UserID);
           if (matchedUser) {
             matchedData.push({
-              imageUrl: `'!Imgurl='${imageItem.path_Img}?id=${imageItem.img_ID}&like=${imageItem.user_like}'|path_profile'${matchedUser.path_profile}?name=${matchedUser.name}`
+              imageUrl: "!Imgurl=" + imageItem.path_Img + "?id=" + imageItem.img_ID + "?like=" + imageItem.user_like + "|path_profile=" + matchedUser.path_profile + "?name=" + matchedUser.name,
             });
           }
         });

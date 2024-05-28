@@ -20,13 +20,15 @@ export const VideoResourcesPanel = observer(() => {
       <div className="flex justify-start ml-3 mt-3 items-center">
         <UploadButton
           accept="video/mp4,video/x-m4v,video/*"
-          className="bg-rose-500 hover:bg-gray-400 text-white font-bold text-center mx-2 py-2 px-4 rounded cursor-pointer "
+          className="bg-rose-500 hover:bg-rose-700 text-white font-bold text-center mx-2 py-2 px-4 rounded cursor-pointer "
           onChange={handleFileChange}
         />
+      </div>
+      <div>
         {store.videos.map((video, index) => {
           return <VideoResource key={video} video={video} index={index} />;
         })}
-      </div>
+        </div>
     </>
   );
 });

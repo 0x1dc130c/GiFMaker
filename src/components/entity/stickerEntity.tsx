@@ -1,64 +1,51 @@
 'use client';
 import { observer } from 'mobx-react';
-import React, { useState } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { StoreContext } from '@/store';
 import { MdAdd } from 'react-icons/md';
 import axios from 'axios';
- // Add missing import statement
+
 type StickerPanelProps = {
     sticker: string;
     index: number;
 };
 
+const formatTimeToMinSec = (time: number) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+  return `${minutes}:${seconds.toFixed(3)}`;  // Format seconds to three decimal places
+};
 
-const funcconvert = async (sticker : any) => {
-    const formData = new FormData();
-    formData.append('image', sticker);
-    if (!formData.has('image')) {
-        console.log('No image selected');
-    } else {
-        console.log('image for formData : ', formData.get('image'));
-    }
-    // try {
-    //     const { data } = await axios.post('/api/convertgif', formData);
-    //     console.log('Response from server:', data);
-    // } catch (error) {
-    //     console.error('Error:', error);
-    // }
-}
 export const Stickerentity = observer(
-
     ({ sticker, index }: StickerPanelProps) => {
-        const ref = React.useRef<HTMLImageElement>(null);
-        const store = React.useContext(StoreContext);
-        const [resolution, setResolution] = useState({ w: 0, h: 0 });
-        console.log('sticker ----------------------------->>>', sticker)
-        console.log('type ------------------------------->>> ', typeof sticker)
-        // funcconvert(sticker)
+        const store = useContext(StoreContext);
+        const ref = useRef<HTMLVideoElement>(null);
+        const [formattedVideoLength, setFormattedVideoLength] = useState("00:00");
+
+        console.log('sticker stickerentiy >>>>>>>>>>>>>>>>>>>> : ', sticker, index);
+
         return (
-            <div className="rounded-lg overflow-hidden items-center m-[15px] flex flex-col relative cursor-pointer bg-gray-700 p-4" onClick={() => store.addStickers(index)}>
+            <div 
+                className="rounded-lg overflow-hidden items-center m-[15px] flex flex-col relative cursor-pointer bg-gray-700 p-4" 
+                onClick={() => store.addStickers(index)}
+            >
                 <div className="bg-[rgba(0,0,0,.25)] text-white py-1 absolute text-base top-2 right-2">
-                    {resolution.w}x{resolution.h}
+                    {formattedVideoLength}
                 </div>
-                { 
-                <img
-                    onLoad={() => {
-                        setResolution({
-                            w: ref.current?.naturalWidth ?? 0,
-                            h: ref.current?.naturalHeight ?? 0,
-                        });
+                <video
+                    onLoadedData={() => {
+                        const videoLength = ref.current?.duration ?? 0;
+                        setFormattedVideoLength(formatTimeToMinSec(videoLength));
                     }}
+                    autoPlay
+                    loop
                     ref={ref}
                     className="max-h-[100px] max-w-[150px]"
                     src={sticker}
                     height={200}
                     width={200}
-                    id={`image-${index}`}
-                ></img>
-
-             
-
-                }   
+                    id={`sticker-${index}`}
+                ></video>
             </div>
         );
     }

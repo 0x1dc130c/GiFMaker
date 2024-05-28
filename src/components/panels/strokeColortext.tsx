@@ -1,30 +1,47 @@
 'use client';
-import React, { useState } from 'react';
 import { StoreContext } from "@/store";
+import React, { useContext } from 'react';
 
-// strokeColor component to add stroke color to text
 const StrokeColor = () => {
-    const store = React.useContext(StoreContext);
-    const [selectedStrokeColor, setSelectedStrokeColor] = useState('');
-    const handleStrokeColorChange = (event: any) => {
-        const selectedStrokeColor = event.target.value;
-        setSelectedStrokeColor(selectedStrokeColor);
-        store.setStrokeColor(selectedStrokeColor);
+    const store = useContext(StoreContext);
+
+    const handleChange = (color:any ) => {
+        store.setStrokeColor(color);
     };
 
     return (
-        <select
-            value={selectedStrokeColor}
-            onChange={handleStrokeColorChange}
-            className="block w-full px-4 py-2 mt-1 text-sm bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-        >
-            <option value="">Select Stroke Color</option>
-            <option value="black">Black</option>
-            <option value="red">Red</option>
-            <option value="blue">Blue</option>
-            <option value="green">Green</option>
-            <option value="yellow">Yellow</option>
-        </select>
+        <div className="flex flex-wrap gap-2">
+            <button
+                className="text-white font-medium rounded-lg text-sm px-5 py-4 text-center mb-2"
+                style={{ backgroundColor: "#000000" }}
+                onClick={() => handleChange("#000000")}
+            >
+            </button>
+            <button
+                className="text-white font-medium rounded-lg text-sm px-5 py-4 text-center mb-2"
+                style={{ backgroundColor: "#0000FF" }}
+                onClick={() => handleChange("#0000FF")}
+            >
+            </button>
+            <button
+                className="text-white font-medium rounded-lg text-sm px-5 py-4 text-center mb-2"
+                style={{ backgroundColor: "#FF0000" }}
+                onClick={() => handleChange("#FF0000")}
+            >
+            </button>
+            <button
+                className="text-white font-medium rounded-lg text-sm px-5 py-4 text-center mb-2"
+                style={{ backgroundColor: "#008000" }}
+                onClick={() => handleChange("#008000")}
+            >
+            </button>
+            <button
+                className="text-white font-medium rounded-lg text-sm px-5 py-4 text-center mb-2"
+                style={{ backgroundColor: "#FFFFFF" }}
+                onClick={() => handleChange("#FFFFFF")}
+            >
+            </button>
+        </div>
     );
 };
 

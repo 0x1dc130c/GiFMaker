@@ -22,7 +22,7 @@ const SearchBar: React.FC<SearchProps> = ({ onSearch }) => {
   return (
     <input
       type="text"
-      placeholder="🔍ค้นหา"
+      placeholder="🔍 Search"
       value={query}
       onChange={handleChange}
       onKeyPress={handleKeyPress}

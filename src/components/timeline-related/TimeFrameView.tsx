@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { EditorElement } from "@/types";
 import { StoreContext } from "@/store";
@@ -13,6 +12,20 @@ export const TimeFrameView = observer((props: { element: EditorElement }) => {
   const bgColorOnSelected = isSelected ? "bg-rose-800" : "bg-rose-500";
   const disabledCursor = disabled ? "cursor-no-drop" : "cursor-ew-resize";
   const showDisabledCursor = isSelected ? "" : "hidden";
+
+  const handleStartTimeChange = (value: number) => {
+    const newStartTime = Math.min(value, element.timeFrame.end);
+    store.updateEditorElementTimeFrame(element, {
+      start: newStartTime,
+    });
+  };
+
+  const handleEndTimeChange = (value: number) => {
+    const newEndTime = Math.max(value, element.timeFrame.start);
+    store.updateEditorElementTimeFrame(element, {
+      end: newEndTime,
+    });
+  };
 
   return (
     <div
@@ -57,7 +70,7 @@ export const TimeFrameView = observer((props: { element: EditorElement }) => {
           store.updateEditorElementTimeFrame(element, {
             start: value,
             end: value + (end - start),
-          })
+          });
         }}
       >
         <div
@@ -66,6 +79,7 @@ export const TimeFrameView = observer((props: { element: EditorElement }) => {
           {element.name}
         </div>
       </DragableView>
+
       <DragableView
         className="z-10"
         disabled={disabled}

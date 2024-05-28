@@ -13,10 +13,56 @@ function Register() {
     const [alert, setAlert] = React.useState('');
     const [file, setFile] = React.useState(null as any);
 
+    const isPasswordValid = (password : string) => {
+        if (password.length < 8 || password.length > 16) {
+            return false; // รหัสผ่านมีความยาวไม่ถูกต้อง
+        }
+        // ตรวจสอบว่ามีตัวอักษรอย่างน้อยหนึ่งตัวหรือไม่
+        const hasLetter = /[a-zA-Z]/.test(password);
+        return hasLetter;
+    };
+
+    const checkEmail = (email : string) => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
+    }
+
     const handleSunmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (password !== Cpassword) {
-            setAlert('รหัสผ่านไม่ตรงกัน');
+            // setAlert('Passwords dont match');
+            Swal.fire({
+                title: "Password does not match",
+                text: "Please enter the same password.",
+                icon: "error",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return;
+        }
+        if (!isPasswordValid(password)) {
+            // setAlert('Password must be between 8 and 16 characters long and contain at least one character.');
+            Swal.fire({
+                title: "Password length must be between 8 to 16 characters.",
+                text: "Please enter the same password.",
+                icon: "error",
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return;
+        }
+        if (!checkEmail(email)) {
+            // setAlert('Email is not valid');
+            Swal.fire({
+                title: "Email is not valid",
+                text: "Please enter the correct email.",
+                icon: "error",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
             return;
         }
         try {
@@ -28,8 +74,8 @@ function Register() {
             formData.set('name', name);
             formData.set('file', file);
             Swal.fire({
-                title: "กำลังลงทะเบียน",
-                text: "กรุณารอสักครู่...",
+                title: "Currently registering",
+                text: "Just a moment please....",
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 didOpen: () => {
@@ -41,13 +87,13 @@ function Register() {
                 body: formData
             });
             if (!response.ok) {
-                throw new Error('มีข้อผิดพลาดในการส่งข้อมูล');
+                throw new Error('There was an error sending data.');
             }
             const data = await response.json();
             if (data.status === 200) {
                 Swal.fire({
-                    title: "การลงทะเบียนสำเร็จ",
-                    text: "คุณลงทะเบียนเรียบร้อยแล้ว",
+                    title: "Registration successful.",
+                    text: "You have successfully registered.",
                     icon: "success",
                     timer: 1500,
                     timerProgressBar: true,
@@ -57,10 +103,11 @@ function Register() {
                 setuserName(''); setPassword(''); setCPassword(''); setEmail(''); setName('');
                 form.reset();
                 console.log("User Registerd Successfully");
+                window.location.href = '/login';
             } else {
                 Swal.fire({
-                    title: "การลงทะเบียนล้มเหลว",
-                    text: "เกิดข้อผิดพลาดขณะลงทะเบียน",
+                    title: "Registration failed",
+                    text: "An error occurred while registering.",
                     icon: "error",
                     timer: 1500,
                     timerProgressBar: true,
@@ -70,8 +117,8 @@ function Register() {
             }
         } catch (error) {
             Swal.fire({
-                title: "เกิดข้อผิดพลาด",
-                text: "มีข้อผิดพลาดในการส่งข้อมูล",
+                title: "An error occurred.",
+                text: "There was an error sending data.",
                 icon: "error",
                 timer: 1500,
                 timerProgressBar: true,
@@ -79,7 +126,7 @@ function Register() {
             });
         }
     }
-    
+
     return (
         <div className="m-0">
             <Navbar />
@@ -87,7 +134,7 @@ function Register() {
                 <div className="w-full max-w-sm p-4 bg-indigo-700 border border-indigo-400 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                     <form className="space-y-6" onSubmit={handleSunmit}>
 
-                        {alert && <div className="text-red-500 text-sm font-medium text-center">{alert}</div>}
+                        {alert && <div className="text-rose-300 text-xm font-semibold text-center">{alert}</div>}
                         <h5 className="text-xl font-semibold text-white dark:text-white text-center">Register</h5>
                         <div>
                             <label htmlFor="username" className="block mb-2 text-xl font-semibold text-white dark:text-white">Username</label>
@@ -103,7 +150,7 @@ function Register() {
                         </div>
                         <div>
                             <label htmlFor="email" className="block mb-2 text-xl font-semibold text-white dark:text-white">Email</label>
-                            <input onChange={(e) => setEmail(e.target.value)} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="" required />
+                            <input onChange={(e) => setEmail(e.target.value)} type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="" required />
                         </div>
                         <div>
                             <label htmlFor="name" className="block mb-2 text-xl font-semibold text-white dark:text-white">Name</label>
