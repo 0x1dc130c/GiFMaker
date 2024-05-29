@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { StoreContext } from '@/store';
+import { GrTemplate } from "react-icons/gr";
 import { Stickerentity } from '../entity/stickerEntity';
 export const StickerPanel = observer(() => {
     const store = React.useContext(StoreContext);
@@ -30,7 +31,7 @@ export const StickerPanel = observer(() => {
     return (
         <div>
             <div className="px-[16px] pt-[16px] pb-[8px] font-semibold text-xl text-white bg-gray-900">
-                Stickers
+                Template
             </div>
             <div>
                 {store.sticker && store.sticker.map((sticker: any, index: any) => {

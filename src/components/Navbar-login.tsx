@@ -113,7 +113,7 @@ function Navbar() {
             </li>
             <li className='bg-indigo-900'>
               <Link href="/create" className={`block py-2 px-3 md:p-0 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:text-blue-500 dark:border-gray-700 ${isActive('/create')}`}>
-                <span className="text-3xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300"> Create Gif </span>
+                <span className="text-3xl font-semibold block py-2 px-3 md:p-0 rounded hover:bg-fuchsia-500 md:hover:bg-transparent md:hover:text-fuchsia-500 md:dark:hover:text-fuchsia-300 dark:border-fuchsia-300"> Create GIF </span>
               </Link>
             </li>
             <li className='bg-indigo-900'>

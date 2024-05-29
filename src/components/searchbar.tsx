@@ -9,7 +9,7 @@ interface SearchProps {
 const SearchBar: React.FC<SearchProps> = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       onSearch(query);
     }
@@ -25,7 +25,7 @@ const SearchBar: React.FC<SearchProps> = ({ onSearch }) => {
       placeholder="🔍 Search"
       value={query}
       onChange={handleChange}
-      onKeyPress={handleKeyPress}
+      onKeyDown={handleKeyDown}
       className="border border-gray-300 rounded-md p-2 w-full"
     />
   );

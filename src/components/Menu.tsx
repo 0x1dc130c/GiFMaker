@@ -12,6 +12,7 @@ import {
 } from "react-icons/md";
 import { PiSmileyStickerBold } from "react-icons/pi";
 import { Store } from "@/store/Store";
+import { GrTemplate } from "react-icons/gr";
 
 export const Menu = observer(() => {
   const store = React.useContext(StoreContext);
@@ -50,6 +51,13 @@ export const Menu = observer(() => {
 
 const MENU_OPTIONS = [
   {
+    name: "Template",
+    icon: GrTemplate,
+    action: (store: Store) => {
+      store.setSelectedMenuOption("Template");
+    },
+  },
+  {
     name: "Image",
     icon: MdImage,
     action: (store: Store) => {
@@ -77,14 +85,6 @@ const MENU_OPTIONS = [
       store.setSelectedMenuOption("Filter");
     },
   },
-  {
-  name: "Sticker",
-  icon: PiSmileyStickerBold,
-  action: (store: Store) => {
-    store.setSelectedMenuOption("Sticker");
-  },
-},
-  
   {
     name: "Export",
     icon: MdDownload,

@@ -109,8 +109,8 @@ export default function Home() {
                 {categories.map((category) => (
                   <Link key={category.tagID} href={`/?category=${category.tagName}`} passHref>
                     <div
-                      className={`p-2 rounded-md text-white font-semibold text-center text-xl cursor-pointer transform transition-transform duration-300 ease-in-out ${selectedCategory === category.tagName ? 'bg-gray-900' : 'bg-gray-700'
-                        } hover:bg-gray-600 hover:scale-105`}
+                      className={`p-2 rounded-md text-white font-semibold text-center text-xl cursor-pointer transform transition-transform duration-300 ease-in-out ${selectedCategory === category.tagName ? 'bg-rose-900' : 'bg-rose-500'
+                        } hover:bg-rose-500 hover:scale-105`}
                       onClick={() => handleClickCategories(category.tagName)}
                     >
                       {category.tagName}

@@ -100,8 +100,8 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
                     Tag : {item[0].tagName}
                 </div>
                 <button onClick={onclose} className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg m-2 cursor-pointer">Close</button>
-                <button onClick={() => {handleDelete('inactive')}} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg m-2 cursor-pointer">Delete</button>
-                <button onClick={() => {handleconfirm('active')}} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg m-2 cursor-pointer">Confirm</button>
+                <button onClick={() => {handleDelete('inactive')}} className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg m-2 cursor-pointer">Decline Tag</button>
+                <button onClick={() => {handleconfirm('active')}} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg m-2 cursor-pointer">Approve Tag</button>
             </div>
         </div>
     )

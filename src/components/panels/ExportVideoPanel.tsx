@@ -3,8 +3,51 @@ import React from "react";
 import { StoreContext } from "@/store";
 import { observer } from "mobx-react";
 import Swal from 'sweetalert2';
+
 export const ExportVideoPanel = observer(() => {
   const store = React.useContext(StoreContext);
+
+  const handleExportVideo = () => {
+    Swal.fire({
+      title: 'Do you want to export the video?',
+      text: `The length of the selected video is ${store.maxTime / 1000} seconds`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, export!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Exporting video...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        // Reset store state and start exporting video
+        store.handleSeek(0);
+        store.setSelectedElement(null);
+        store.setPlaying(true);
+        store.saveCanvasToVideoWithAudio();
+
+        // Use setInterval to check the success status
+        const interval = setInterval(() => {
+          if (store.success === true) {
+            clearInterval(interval);
+            Swal.close();
+            Swal.fire(
+              'Success!',
+              `The ${store.selectedVideoFormat.toUpperCase()} has been exported successfully`,
+              'success'
+            );
+          }
+        }, 500); // Check every 500ms
+      }
+    });
+  };
 
   return (
     <>
@@ -61,45 +104,10 @@ export const ExportVideoPanel = observer(() => {
 
         <button
           className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-lg mt-4 text-3xl"
-          onClick={() => {
-            // แสดง modal สอบถามก่อนที่จะส่งออกวิดีโอ
-            Swal.fire({
-              title: 'Do you want to export the video?',
-              text: `The length of the selected video is ${store.maxTime / 1000} seconds`,
-              icon: 'question',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, export!',
-              cancelButtonText: 'Cancel'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // แสดงหน้ารอโหลด
-                Swal.fire({
-                  title: 'Exporting video...',
-                  allowOutsideClick: false
-                });
-
-                // ทำการส่งออกวิดีโอ
-                store.handleSeek(0);
-                store.setSelectedElement(null);
-                setTimeout(() => {
-                  store.setPlaying(true);
-                  store.saveCanvasToVideoWithAudio();
-                  Swal.close();
-                  Swal.fire(
-                    'Success!',
-                    'The video has been exported successfully',
-                    'success'
-                  );
-                }, 1000);
-              }
-            });
-          }}
+          onClick={handleExportVideo}
         >
           Export Video
         </button>
-
       </div>
     </>
   );
