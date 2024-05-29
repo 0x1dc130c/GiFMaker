@@ -25,6 +25,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
     const [count, setCount] = useState(3);
     const [likeImg, setLikeImg] = useState<string[]>([]);
     const [checkCategories, setCheckCategories] = useState<string>("");
+    const [number, setNumber] = useState(0);
 
     const handleClick = (url: string) => {
         console.log("Print url:", url);
@@ -85,53 +86,72 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
             Refecth();
         }
     }, [count, categories, refecth]);
+
+    function loadimage() {
+        const cols = [colsOne, colsTwo, colsThree, colsFour, colsFive];
+        let colIndex = 0;
     
-    for (let i = 0; i < imgURLS.length; i++) {
-        if (colsOne.length <= count) {
+        for (let i = 0; i < imgURLS.length; i++) {
             const imgData = JSON.stringify(imgURLS[i]);
             const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            colsOne.push(resultdata);
-        } else if (colsTwo.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            colsTwo.push(resultdata);
-        } else if (colsThree.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            colsThree.push(resultdata);
-        } else if (colsFour.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            colsFour.push(resultdata);
-        } else if (colsFive.length <= count) {
-            const imgData = JSON.stringify(imgURLS[i]);
-            const img_ = imgData.split("|");
-            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
-            const userUrl = img_[1].split('"')[0] ?? ""
-            const userUrlPart = userUrl.split('=') ?? ""
-            const resultdata = imgUrlPart + "|" + userUrlPart
-            colsFive.push(resultdata);
-        } else {
-            colsMore.push(imgURLS[i]);
+            const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? "";
+            const userUrl = img_[1].split('"')[0] ?? "";
+            const userUrlPart = userUrl.split('=') ?? "";
+            const resultdata = imgUrlPart + "|" + userUrlPart;
+    
+            // Push the result data to the current column
+            cols[colIndex].push(resultdata);
+    
+            // Move to the next column, and wrap around if at the end
+            colIndex = (colIndex + 1) % cols.length;
         }
     }
-
+    // for (let i = 0; i < imgURLS.length; i++) {
+    //     if (colsOne.length <= count) {
+    //         const imgData = JSON.stringify(imgURLS[i]);
+    //         const img_ = imgData.split("|");
+    //         const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+    //         const userUrl = img_[1].split('"')[0] ?? ""
+    //         const userUrlPart = userUrl.split('=') ?? ""
+    //         const resultdata = imgUrlPart + "|" + userUrlPart
+    //         colsOne.push(resultdata);
+    //     } else if (colsTwo.length <= count) {
+    //         const imgData = JSON.stringify(imgURLS[i]);
+    //         const img_ = imgData.split("|");
+    //         const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+    //         const userUrl = img_[1].split('"')[0] ?? ""
+    //         const userUrlPart = userUrl.split('=') ?? ""
+    //         const resultdata = imgUrlPart + "|" + userUrlPart
+    //         colsTwo.push(resultdata);
+    //     } else if (colsThree.length <= count) {
+    //         const imgData = JSON.stringify(imgURLS[i]);
+    //         const img_ = imgData.split("|");
+    //         const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+    //         const userUrl = img_[1].split('"')[0] ?? ""
+    //         const userUrlPart = userUrl.split('=') ?? ""
+    //         const resultdata = imgUrlPart + "|" + userUrlPart
+    //         colsThree.push(resultdata);
+    //     } else if (colsFour.length <= count) {
+    //         const imgData = JSON.stringify(imgURLS[i]);
+    //         const img_ = imgData.split("|");
+    //         const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+    //         const userUrl = img_[1].split('"')[0] ?? ""
+    //         const userUrlPart = userUrl.split('=') ?? ""
+    //         const resultdata = imgUrlPart + "|" + userUrlPart
+    //         colsFour.push(resultdata);
+    //     } else if (colsFive.length <= count) {
+    //         const imgData = JSON.stringify(imgURLS[i]);
+    //         const img_ = imgData.split("|");
+    //         const imgUrlPart = img_[0].split('!')[1].split('Imgurl=').pop() ?? ""
+    //         const userUrl = img_[1].split('"')[0] ?? ""
+    //         const userUrlPart = userUrl.split('=') ?? ""
+    //         const resultdata = imgUrlPart + "|" + userUrlPart
+    //         colsFive.push(resultdata);
+    //     } else {
+    //         colsMore.push(imgURLS[i]);
+    //     }
+    // }
+    loadimage();
     return (
         <>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">

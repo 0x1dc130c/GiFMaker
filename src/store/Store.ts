@@ -36,7 +36,7 @@ export class Store {
   animations: Animation[]
   animationTimeLine: anime.AnimeTimelineInstance;
   playing: boolean;
-
+  success: boolean;
   currentKeyFrame: number;
   fps: number;
 
@@ -47,6 +47,7 @@ export class Store {
 
   constructor() {
     this.canvas = null;
+    this.success = false;
     this.videos = [];
     this.images = [];
     this.sticker = [];
@@ -814,7 +815,7 @@ export class Store {
   }
 
   saveCanvasToVideoWithAudioWebmMp4() {
-    console.log('modified')
+    this.success = false;
     let mp4 = this.selectedVideoFormat === 'mp4'
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const stream = canvas.captureStream(30);
@@ -848,7 +849,6 @@ export class Store {
       };
       mediaRecorder.onstop = async function (e) {
         const blob = new Blob(chunks, { type: "video/webm" });
-
         if (mp4) {
           // lets use ffmpeg to convert webm to mp4
           const data = new Uint8Array(await (blob).arrayBuffer());
@@ -867,10 +867,9 @@ export class Store {
           const outputBlob = new Blob([output], { type: "video/mp4" });
           const outputUrl = URL.createObjectURL(outputBlob);
           const a = document.createElement("a");
-          a.download = "video.mp4";
+          a.download = "undefined.mp4";
           a.href = outputUrl;
           a.click();
-
         } else {
           const data = new Uint8Array(await (blob).arrayBuffer());
           const ffmpeg = new FFmpeg();
@@ -889,7 +888,7 @@ export class Store {
           const outputBlob = new Blob([output], { type: "image/gif" });
           const outputUrl = URL.createObjectURL(outputBlob);
           const a = document.createElement("a");
-          a.download = "video-test.gif";
+          a.download = "undefined.gif";
           a.href = outputUrl;
           a.click();
         }
@@ -900,7 +899,10 @@ export class Store {
       }, this.maxTime);
       video.remove();
     })
+    this.success = true;
   }
+  
+
 
   refreshElements() {
     const store = this;

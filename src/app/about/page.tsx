@@ -38,14 +38,14 @@ export default function Home() {
       )}
       <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-900">
       <div className="grid bg-gray-800 m-[20px] p-14 min-h-[80vh] rounded-md min-w-screen">
-          <div className="text-center text-white">
+          <div className="text-center text-white text-xl">
           <p className="text-3xl">About Us</p>
           <br></br>
           &nbsp;GIFMaker, launched in the second quarter of 2024, is a website dedicated to crafting and sharing GIF animations. To explore user-generated
           examples, simply visit the homepage.
           </div>
           <hr></hr>
-          <div className="text-center text-white">
+          <div className="text-center text-white text-xl">
           <p className="text-3xl">Features</p>
           <br></br>
           <ul>
@@ -54,10 +54,10 @@ export default function Home() {
           </ul>
           </div>
           <hr></hr>
-          <div className="text-center text-white">
+          <div className="text-center text-white text-xl">
           <p className="text-3xl">License</p>
           <br></br>
-          &nbsp;At GIFMaker, we believe in the power of sharing and collaboration. We want to make our content as accessible as possible while still respecting the rights of content creators. That&apos;s why we&apos;ve chosen to license our content under the <b><a href="https://creativecommons.org/licenses/by/4.0/" className="hover:underline" target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 International License (CC BY 4.0)</a></b>.
+          &nbsp;At GIFMaker, we believe in the power of sharing and collaboration. We want to make our content as accessible as possible while still respecting the rights of content creators. That&apos;s why we&apos;ve chosen to license our content under the <b><a href="https://creativecommons.org/licenses/by/4.0/" className="hover:underline hover:text-rose-500 " target="_blank" rel="noopener noreferrer">Creative Commons Attribution 4.0 International License (CC BY 4.0)</a></b>.
           </div>
       </div>
       </main>
