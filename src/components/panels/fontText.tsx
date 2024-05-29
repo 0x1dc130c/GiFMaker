@@ -21,6 +21,10 @@ const FontSelect = () => {
       <option value="Poetsen One">PoetsenOne</option>
       <option value="Kanit">Kanit</option>
       <option value="Jersey 20">Jersey20</option>
+      <option value="Inter">Inter</option>
+      <option value="Roboto">Roboto</option>
+      <option value="Montserrat">Montserrat</option>
+      <option value="Ubuntu">Ubuntu</option>
       {/* Add more font options here */}
     </select>
 
