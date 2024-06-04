@@ -156,7 +156,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
   function loadimage() {
     const cols = [colsOne, colsTwo, colsThree, colsFour, colsFive];
     let index = 0;
-
     // ตรวจสอบค่า sort
     if (sort === 'popular' || sort === 'latest') {
       // หาก sort เป็น popular หรือ latest ให้เรียงรูปภาพจากซ้ายไปขวา
