@@ -12,13 +12,13 @@ const sequelize = new Sequelize(
     define: {
       timestamps: false,
     },
-    logging: (msg: any) => //console.log(msg)
+    logging: (msg: any) => console.log(msg)
   },
 );
 
 sequelize
   .authenticate()
-  .then(() => //console.log("Database connected successfully!"))
+  .then(() => console.log("Database connected successfully!"))
   .catch((err: any) =>
     console.error(`Unable to connect to the database: ${err}`),
   );
