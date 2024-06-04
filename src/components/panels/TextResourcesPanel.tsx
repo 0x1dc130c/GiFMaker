@@ -1,83 +1,94 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { TextResource } from "../entity/TextResource";
+import { StoreContext } from "@/store";
 
 const TEXT_RESOURCES = [
   {
-    name: "Title",
-    fontSize: 28,
+    name: "Add a heading",
+    fontSize: 32,
     fontWeight: 600,
+    fontFamily: "Arial", // ตรวจสอบให้แน่ใจว่าได้ระบุ fontFamily
   },
   {
-    name: "Subtitle",
-    fontSize: 16,
-    fontWeight: 600,
-  },
-  {
-    name: "Body",
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  {
-    name: "Caption",
-    fontSize: 12,
-    fontWeight: 400,
-  },
-  {
-    name: "Heading 1",
+    name: "Add a subheading",
     fontSize: 24,
-    fontWeight: 800,
+    fontWeight: 600,
+    fontFamily: "Arial",
   },
   {
-    name: "Heading 2",
-    fontSize: 20,
-    fontWeight: 800,
-  },
-  {
-    name: "Heading 3",
-    fontSize: 18,
-    fontWeight: 800,
-  },
-  {
-    name: "Heading 4",
+    name: "Add a body text",
     fontSize: 16,
-    fontWeight: 800,
+    fontWeight: 600,
+    fontFamily: "Arial",
+  },
+];
+
+const TextFontfamily = [
+  {
+    name: "Arial",
+    fontSize: 18,
+    fontWeight: 400,
+    fontFamily: "Arial",
   },
   {
-    name: "Heading 5",
-    fontSize: 14,
-    fontWeight: 800,
+    name: "Rampart One",
+    fontSize: 20,
+    fontWeight: 500,
+    fontFamily: "Rampart One",
   },
   {
-    name: "Heading 6",
-    fontSize: 12,
-    fontWeight: 800,
+    name: "Kanit",
+    fontSize: 20,
+    fontWeight: 500,
+    fontFamily: "Kanit",
+  },
+  {
+    name: "Jersey 20",
+    fontSize: 20,
+    fontWeight: 500,
+    fontFamily: "Jersey 20",
   },
 ];
 
 export const TextResourcesPanel = observer(() => {
+  const [textColor_, setTextColor_] = useState("#ffffff");
+  const store = React.useContext(StoreContext);
+
   return (
-    <div className="bg-slate-200 h-full">
-      <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold text-black">
+    <div className="bg-gray-800 h-full">
+      <div className="px-[16px] pt-[16px] pb-[8px] font-semibold text-2xl text-white bg-gray-900">
         Text
       </div>
-      <ul>
-
-
-        {TEXT_RESOURCES.map((resource) => {
-          return (
-            <li
-              key={resource.name}
-            >
-              <TextResource
-                sampleText={resource.name}
-                fontSize={resource.fontSize}
-                fontWeight={resource.fontWeight}
-              />
-            </li>
-          );
-        })}
+      <ul className="divide-y divide-rose-200">
+        {TEXT_RESOURCES.map((resource) => (
+          <li key={resource.name} className="cursor-pointer">
+            <TextResource
+              sampleText={resource.name}
+              fontSize={resource.fontSize}
+              textColor={textColor_}
+              fontWeight={resource.fontWeight}
+              fontFamily={resource.fontFamily}
+            />
+          </li>
+        ))}
+        <div className="px-[16px] pt-[16px] pb-[8px] font-semibold text-2xl text-white bg-gray-900">
+         Font Family
+        </div>
+        {TextFontfamily.map((resource) => (
+          
+          <li key={resource.name} className="cursor-pointer">
+            <TextResource
+              sampleText={resource.name}
+              fontSize={resource.fontSize}
+              textColor={textColor_}
+              fontWeight={resource.fontWeight}
+              fontFamily={resource.fontFamily}
+            />
+          </li>
+          
+        ))}
       </ul>
     </div>
   );

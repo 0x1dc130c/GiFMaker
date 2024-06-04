@@ -2,77 +2,113 @@
 import React from "react";
 import { StoreContext } from "@/store";
 import { observer } from "mobx-react";
+import Swal from 'sweetalert2';
 
 export const ExportVideoPanel = observer(() => {
   const store = React.useContext(StoreContext);
 
+  const handleExportVideo = () => {
+    Swal.fire({
+      title: 'Do you want to export the video?',
+      text: `The length of the selected video is ${store.maxTime / 1000} seconds`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, export!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Exporting video...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        // Reset store state and start exporting video
+        store.handleSeek(0);
+        store.setSelectedElement(null);
+        store.setPlaying(true);
+        store.saveCanvasToVideoWithAudio();
+
+        // Use setInterval to check the success status
+        const interval = setInterval(() => {
+          if (store.success === true) {
+            clearInterval(interval);
+            Swal.close();
+            Swal.fire(
+              'Success!',
+              `The ${store.selectedVideoFormat.toUpperCase()} has been exported successfully`,
+              'success'
+            );
+          }
+        }, 500); // Check every 500ms
+      }
+    });
+  };
+
   return (
     <>
-      <div className="text-sm px-[16px] pt-[16px] pb-[8px] font-semibold">
-        Export
-      </div>
-      {/* Set max time from number input */}
-      <div className="px-[16px]">
+      <div className="bg-gray-700 p-4 rounded-lg shadow-md m-2">
+        <div className="font-semibold text-xl mb-4 text-white">Export</div>
+
+        {/* Set max time from number input */}
         <div className="flex flex-row items-center my-2">
-          <div className="text-xs font-semibold mr-2">Video Length:</div>
+          <div className="text-xm font-semibold mr-2 text-white">Video Length</div>
           <input
             type="number"
-            className="rounded text-center border-slate-200 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500 max-w-[50px] mr-2"
+            className="rounded text-center border-slate-200 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500 max-w-[70px] mr-2"
             value={store.maxTime / 1000}
+            min={1}
+            max={10}
             onChange={(e) => {
               const value = e.target.value;
               store.setMaxTime(Number(value) * 1000);
             }}
           />
-          <div>secs</div>
+          <div className="text-xm text-white">secs</div>
         </div>
-        <div className="flex flex-row items-center my-2">
-          <div className="text-xs font-semibold mr-2">Canvas Resolution:</div>
-          <div className="text-xs mr-2">Todo</div>
-        </div>
-      </div>
-      {/*  Format selection with radio button */}
-      <div className="px-[16px]">
-        <div className="text-xs font-semibold mr-2">Video Format:</div>
-        <div className="flex flex-row items-center my-2">
-          <input
-            type="radio"
-            className="mr-2"
-            name="video-format"
-            value="mp4"
-            checked={store.selectedVideoFormat === "mp4"}
-            onChange={(e) => {
-              store.setVideoFormat("mp4");
-            }}
-          />
-          <div className="text-xs mr-2">MP4</div>
-          <input
-            type="radio"
-            className="mr-2"
-            name="video-format"
-            value="gif"
-            checked={store.selectedVideoFormat === "webm"}
-            onChange={(e) => {
-              store.setVideoFormat("webm");
-            }}
-          />
-          <div className="text-xs mr-2">webm</div>
-        </div>
-      </div>
 
-      <button
-        className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-1 rounded-lg m-4"
-        onClick={() => {
-          store.handleSeek(0);
-          store.setSelectedElement(null);
-          setTimeout(() => {
-            store.setPlaying(true);
-            store.saveCanvasToVideoWithAudio();
-          }, 1000);
-        }}
-      >
-        Export Video ({store.maxTime / 1000} secs) {store.selectedVideoFormat === "mp4" ? ("ALPHA") : ""}
-      </button>
+        {/* Format selection with radio button */}
+        <div className="flex flex-row items-center my-2">
+          <div className="text-xm font-semibold mr-2 text-white">Video Format</div>
+          <label className="inline-flex items-center mr-4">
+            <input
+              type="radio"
+              className="mr-1"
+              name="video-format"
+              value="mp4"
+              checked={store.selectedVideoFormat === "mp4"}
+              onChange={(e) => {
+                store.setVideoFormat("mp4");
+              }}
+            />
+            <span className="text-xm mr-2 text-white">MP4</span>
+          </label>
+          <label className="inline-flex items-center">
+            <input
+              type="radio"
+              className="mr-1"
+              name="video-format"
+              value="gif"
+              checked={store.selectedVideoFormat === "gif"}
+              onChange={(e) => {
+                store.setVideoFormat("gif");
+              }}
+            />
+            <span className="text-xm text-white">GIF</span>
+          </label>
+        </div>
+
+        <button
+          className="bg-rose-500 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-lg mt-4 text-3xl"
+          onClick={handleExportVideo}
+        >
+          Export Video
+        </button>
+      </div>
     </>
   );
 });

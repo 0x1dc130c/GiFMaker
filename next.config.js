@@ -7,7 +7,12 @@ const nextConfig = {
     });
     return config;
   },
+  images: {
+    domains: ['gifmakerstorage.blob.core.windows.net'], // เพิ่ม hostname ของรูปภาพที่คุณใช้ที่นี่
+  },
+  compiler: {
+    styledComponents: true
+  }
 };
-// export default nextConfig;
 
 module.exports = nextConfig;

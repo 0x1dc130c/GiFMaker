@@ -39,6 +39,18 @@ export function isHtmlAudioElement(
   return element.tagName === "AUDIO";
 }
 
+export function isstickerElement(
+  element:
+    | HTMLVideoElement
+    | HTMLImageElement
+    | HTMLCanvasElement
+    | null
+    | HTMLElement
+): element is HTMLCanvasElement {
+  if (!element) return false;
+  return element.tagName === "STICKER";
+}
+
 
 export function formatTimeToMinSec(time: number) {
   const minutes = Math.floor(time / 60);

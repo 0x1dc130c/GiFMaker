@@ -13,9 +13,19 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontFamily: {
+        RampartOne: ['Rampart One', 'sans-serif'],
+        Kanit: ["Kanit",' sans-serif'],
+        PoetsenOne : ["Poetsen One", 'sans-serif'],
+        Jersey20 : ["Jersey 20", 'sans-serif'],
+
+      },
     },
   },
   plugins: [
     require('flowbite/plugin'),
+    require('tailwind-scrollbar'),
+    require('tailwind-scrollbar')({ preferredStrategy: 'pseudoelements' }),
+    require('tailwind-scrollbar-hide'), 
   ],
 }

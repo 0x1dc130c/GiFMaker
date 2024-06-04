@@ -76,7 +76,7 @@ export const ScaleRangeInput: React.FC<ScaleRangeInputProps> = (props) => {
             height={props.height}
             ref={ref}></canvas>
         <div
-            className="rounded-full bg-black w-[3px] absolute top-0 left-0"
+            className="rounded-full bg-rose-400 w-[2.5px] absolute top-0 left-0.5 "
             style={{
                 height: `${props.height}px`,
                 transform: `translateX(${value / max * canvasSize.width}px) translateX(-2px)`

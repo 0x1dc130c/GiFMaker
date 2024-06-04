@@ -1,4 +1,4 @@
-import { EditorElement, EffecType } from "@/types";
+ import { EditorElement, EffecType } from "@/types";
 import { fabric } from "fabric";
 // https://jsfiddle.net/i_prikot/pw7yhaLf/
 
@@ -9,13 +9,21 @@ export const CoverImage = fabric.util.createClass(fabric.Image, {
     disableCrop: false,
     cropWidth: 0,
     cropHeight: 0,
+    brightness: 0,
+    contrast: 0,
+    hue: 0,
+    pixelate: 0,
 
     initialize(element: HTMLImageElement | HTMLVideoElement, options: any) {
         options = options || {};
 
         options = Object.assign({
             cropHeight: this.height,
-            cropWidth: this.width
+            cropWidth: this.width,
+            brightness: this.brightness,
+            contrast: this.contrast,
+            hue: this.hue,
+            pixelate: this.pixelate,
         }, options);
         this.callSuper("initialize", element, options);
     },
@@ -69,18 +77,61 @@ export const CoverImage = fabric.util.createClass(fabric.Image, {
         } = crop;
         ctx.save();
         const customFilter: EffecType = this.customFilter;
-        ctx.filter = getFilterFromEffectType(customFilter);
-        ctx.drawImage(
-            this._element,
-            Math.max(cropX, 0),
-            Math.max(cropY, 0),
-            Math.max(1, cropWidth),
-            Math.max(1, cropHeight),
-            -width / 2,
-            -height / 2,
-            Math.max(0, width),
-            Math.max(0, height)
-        );
+        if (customFilter === "none") {
+            ctx.filter = `brightness(${this.brightness}%) contrast(${this.contrast * 2}%) hue-rotate(${this.hue * 2}deg)`;
+        } else {
+            ctx.filter = getFilterFromEffectType(customFilter);
+            ctx.filter += `brightness(${this.brightness}%) contrast(${this.contrast * 2}%) hue-rotate(${this.hue * 2}deg)`;
+        }
+        if (this.pixelate > 0) {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+
+            if (tempCtx) {
+                tempCanvas.width = cropWidth / this.pixelate;
+                tempCanvas.height = cropHeight / this.pixelate;
+
+                // Draw the image to the small canvas
+                tempCtx.drawImage(
+                    this._element,
+                    Math.max(cropX, 0),
+                    Math.max(cropY, 0),
+                    Math.max(1, cropWidth),
+                    Math.max(1, cropHeight),
+                    0,
+                    0,
+                    tempCanvas.width,
+                    tempCanvas.height
+                );
+
+                // Scale the small canvas back up to the original size
+                ctx.drawImage(
+                    tempCanvas,
+                    0,
+                    0,
+                    tempCanvas.width,
+                    tempCanvas.height,
+                    -width / 2,
+                    -height / 2,
+                    width,
+                    height
+                );
+            }
+        } else {
+            // Draw the image normally if pixelate is not applied
+            ctx.drawImage(
+                this._element,
+                Math.max(cropX, 0),
+                Math.max(cropY, 0),
+                Math.max(1, cropWidth),
+                Math.max(1, cropHeight),
+                -width / 2,
+                -height / 2,
+                Math.max(0, width),
+                Math.max(0, height)
+            );
+        }
+
         ctx.filter = "none";
         ctx.restore();
     },
@@ -93,13 +144,21 @@ export const CoverVideo = fabric.util.createClass(fabric.Image, {
     disableCrop: false,
     cropWidth: 0,
     cropHeight: 0,
+    brightness: 0,
+    contrast: 0,
+    hue: 0,
+    pixelate: 0,
 
     initialize(element: HTMLVideoElement, options: any) {
         options = options || {};
 
         options = Object.assign({
             cropHeight: this.height,
-            cropWidth: this.width
+            cropWidth: this.width,
+            brightness: this.brightness,
+            contrast: this.contrast,
+            hue: this.hue,
+            pixelate: this.pixelate,
         }, options);
         this.callSuper("initialize", element, options);
     },
@@ -156,27 +215,80 @@ export const CoverVideo = fabric.util.createClass(fabric.Image, {
         const videoScaledY = video.height / video.videoHeight;
 
         ctx.save();
+
+        // Apply filters except for pixelate
         const customFilter: EffecType = this.customFilter;
-        ctx.filter = getFilterFromEffectType(customFilter);
-        ctx.drawImage(
-            this._element,
-            Math.max(cropX, 0) / videoScaledX,
-            Math.max(cropY, 0) / videoScaledY,
-            Math.max(1, cropWidth) / videoScaledX,
-            Math.max(1, cropHeight) / videoScaledY,
-            -width / 2,
-            -height / 2,
-            Math.max(0, width),
-            Math.max(0, height)
-        );
+        if (customFilter === "none") {
+            ctx.filter = `brightness(${this.brightness}%) contrast(${this.contrast * 2}%) hue-rotate(${this.hue * 2}deg)`;
+        } else {
+            ctx.filter = getFilterFromEffectType(customFilter);
+            ctx.filter += ` brightness(${this.brightness}%) contrast(${this.contrast * 2}%) hue-rotate(${this.hue * 2}deg)`;
+        }
+
+        // Create a temporary canvas for pixelation
+        const minPixelateValue = 0.1; // ค่าต่ำสุดของการ pixelate
+        const maxPixelateValue = 10;  // ค่าสูงสุดของการ pixelate
+
+        let pixelateValue = this.pixelate;
+        pixelateValue = Math.max(minPixelateValue, Math.min(maxPixelateValue, pixelateValue));
+
+        if (pixelateValue > 0) {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+
+            if (tempCtx) {
+                tempCanvas.width = cropWidth / pixelateValue;
+                tempCanvas.height = cropHeight / pixelateValue;
+
+                // Draw the video frame to the small canvas
+                tempCtx.drawImage(
+                    this._element,
+                    Math.max(cropX, 0) / videoScaledX,
+                    Math.max(cropY, 0) / videoScaledY,
+                    Math.max(1, cropWidth) / videoScaledX,
+                    Math.max(1, cropHeight) / videoScaledY,
+                    0,
+                    0,
+                    tempCanvas.width,
+                    tempCanvas.height
+                );
+
+                // Scale the small canvas back up to the original size
+                ctx.drawImage(
+                    tempCanvas,
+                    0,
+                    0,
+                    tempCanvas.width,
+                    tempCanvas.height,
+                    -width / 2,
+                    -height / 2,
+                    width,
+                    height
+                );
+            }
+        } else {
+            // Draw the video frame normally if pixelate is not applied
+            ctx.drawImage(
+                this._element,
+                Math.max(cropX, 0) / videoScaledX,
+                Math.max(cropY, 0) / videoScaledY,
+                Math.max(1, cropWidth) / videoScaledX,
+                Math.max(1, cropHeight) / videoScaledY,
+                -width / 2,
+                -height / 2,
+                width,
+                height
+            );
+        }
+
         ctx.filter = "none";
         ctx.restore();
     },
 
 });
 
-function getFilterFromEffectType(effectType: EffecType){
-    switch(effectType){
+function getFilterFromEffectType(effectType: EffecType) {
+    switch (effectType) {
         case "blackAndWhite":
             return "grayscale(100%)";
         case "sepia":
@@ -185,12 +297,12 @@ function getFilterFromEffectType(effectType: EffecType){
             return "invert(100%)";
         case "saturate":
             return "saturate(100%)";
+        case "polaroid":
+            return "contrast(150%)";
         default:
             return "none";
     }
 }
-
-
 
 declare module "fabric" {
     namespace fabric {

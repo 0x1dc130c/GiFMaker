@@ -1,49 +1,148 @@
-import React from "react";
-import Link from 'next/link'
+"use client";
+
+import Link from "next/link";
 import Navbar from "../components/Navbar";
+import Navbar_login from "../components/Navbar-login";
+import Navbar_admin from "../components/Navbar-admin";
 import Footer from "../components/Footer";
 import Borad from "../components/board";
+import SearchBar from "../components/searchbar";
+import Sort from "../components/sort";
+import React, { useEffect, useState } from "react";
+import PopUp from "../components/popup";
+import BoardCategories from "../components/boardCategories";
+
 export default function Home() {
+  const [nav, setNav] = useState("");
+  const [showPopUp, setShowPopUp] = useState("");
+  const [profile, setProfile] = useState({} as any);
+  const [categories, setCategories] = useState<{ tagID: number, tagName: string }[]>([]);
+  const [boardCategories_, setBoardCategories_] = useState<string>("");
+  const [checkSortimg, setCheckSortimg] = useState('latest');
+
+  const handleClose = () => {
+    setShowPopUp("");
+  };
+
+  useEffect(() => {
+    const address = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+    fetch(address + "/api/Checkcookies", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          console.log("cookie is set", data);
+          setNav(data.data.role);
+          setProfile(data.data.path_profile);
+        } else {
+          setNav("guest");
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const page = urlParams.get("share");
+    if (page) {
+      setShowPopUp(page);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/categories", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          setCategories(data.data);
+        } else {
+          console.error("Failed to fetch categories");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
+  const [sortOrder, setSortOrder] = useState<string>('latest');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [refetch, setRefetch] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const handleSortChange = (newSortOrder: string) => {
+    setSortOrder(newSortOrder);
+    // setRefetch(true); // Trigger refetch
+    setCheckSortimg(newSortOrder);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setRefetch(true); // Trigger refetch
+  };
+
+  const handleClickCategories = (categories_: any) => {
+    setBoardCategories_(categories_);
+    setSelectedCategory(categories_);
+    setRefetch(true); // Trigger refetch
+  };
+  console.log('checkSortimg ............................. ', checkSortimg)
+  console.log('sortOrder ............................. ', sortOrder)
+
   return (
-    < main >
-      <Navbar />
-      <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-200">
-        <div className="grid bg-gray-500 m-[20px] p-14 w-[100rem] min-h-screen">
-          <div className="sm:hidden row-start-1">
-              <label htmlFor="tabs" className="sr-only">Select your country</label>
-              <select id="tabs" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <option>Profile</option>
-                  <option>Dashboard</option>
-                  <option>setting</option>
-                  <option>Invoioce</option>
-              </select>
-          </div>
-          <ul className="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex dark:divide-gray-700 dark:text-gray-400 m-[20px]">
-              <li className="w-full focus-within:z-10">
-                  <a href="#" className="inline-block w-full p-4 text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none dark:bg-gray-700 dark:text-white" aria-current="page">Profile</a>
-              </li>
-              <li className="w-full focus-within:z-10">
-                  <a href="#" className="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">Dashboard</a>
-              </li>
-              <li className="w-full focus-within:z-10">
-                  <a href="#" className="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">Settings</a>
-              </li>
-              <li className="w-full focus-within:z-10">
-                  <a href="#" className="inline-block w-full p-4 bg-white border-s-0 border-gray-200 dark:border-gray-700 rounded-e-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">Invoice</a>
-              </li>
-          </ul>
-          <div className="row-start-2 m-1">
-            <h1>Hello</h1>
+    <main>
+      {String(nav) === "admin" ? (
+        <Navbar_admin />
+      ) : String(nav) === "user" ? (
+        <Navbar_login />
+      ) : (
+        <Navbar />
+      )}
+      <main className="flex min-h-screen flex-col items-center justify-between p-14 bg-gray-900">
+        <div className="grid bg-gray-800 m-[20px] p-14 min-h-[90vh] rounded-md min-w-screen">
+          <div className="grid p-6 grid-cols-2">
+            <div className="col-start-1">
+              <h1 className="text-4xl font-bold text-white">Tags</h1>
+              <div className="grid grid-cols-5 gap-2 mt-4">
+                {categories.map((category) => (
+                  <Link key={category.tagID} href={`/?category=${category.tagName}`} passHref>
+                    <div
+                      className={`p-2 rounded-md text-white font-semibold text-center text-xl cursor-pointer transform transition-transform duration-300 ease-in-out ${selectedCategory === category.tagName ? 'bg-rose-900' : 'bg-rose-500'
+                        } hover:bg-rose-500 hover:scale-105`}
+                      onClick={() => handleClickCategories(category.tagName)}
+                    >
+                      {category.tagName}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="col-start-2">
+              <Sort onSortChange={handleSortChange} onCategoryChange={setBoardCategories_} onRefetch={setRefetch} />
+              <div className="flex justify-end">
+                <div className="m-2 w-[300px]">
+                  <SearchBar onSearch={handleSearch} />
+                </div>
+              </div>
+            </div>
           </div>
           <div className="row-start-3">
-            <Borad gridClass="grid gap-4" />
-          </div> 
-          <div className="row-start-4">
-            <Link href="/"><button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Purple to Blue</button></Link>
+            {
+              boardCategories_ === "" ? (
+                (checkSortimg === "latest" || checkSortimg === "popular") && (
+                  <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} refecth={refetch} />
+                )
+              ) : (
+                <BoardCategories gridClass="grid gap-4" categories={boardCategories_} refecth={refetch} />
+              )
+            }
           </div>
-      </div>
+        </div>
       </main>
-    <Footer />
+      <Footer />
+      {showPopUp && <PopUp imgUrl={showPopUp} onclose={handleClose} />}
     </main>
   );
 }
