@@ -1,7 +1,7 @@
 // project-root/utils/db.ts
-import { Sequelize } from "sequelize";
+import * as sequelize_1 from "sequelize";
 
-const sequelize = new Sequelize(
+const sequelize = new sequelize_1.Sequelize(
   'gif_maker',
   'gif_maker',
   'Z@VFcy1rhyQlD7R8',
