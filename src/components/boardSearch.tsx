@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import axios from "axios";
 import PopUp from "./popup";
 import ReloadImage from "./reloadImage";
@@ -7,14 +7,14 @@ import { set } from "animejs";
 import { FcLike } from "react-icons/fc";
 import Swal from "sweetalert2";
 
-interface BoradProps {
+interface BoradProps_ {
   gridClass: string;
   sort: string;
   search: string;
   refecth: boolean;
 }
 
-const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
+const boradsearch: React.FC<BoradProps_> = ({ gridClass, sort, search, refecth }) => {
 
   const [colsOne, setColsOne] = useState<string[]>([]);
   const [colsTwo, setColsTwo] = useState<string[]>([]);
@@ -80,30 +80,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
     });
   };
 
-  const loadImages = (sortParam: any) => {
-    Swal.fire({
-      title: "Loading...",
-      showConfirmButton: false,
-      allowOutsideClick: false,
-    });
 
-    axios.post("/api/sortImage", { sort: sortParam, setnum: number }).then((response) => {
-      if (response.data.status === 200) {
-        console.log('response.data.img_url', response.data.img_url)
-        setImgURLS(response.data.img_url);
-        setNumber(response.data.setnum);
-        Swal.close(); // ปิด Swal เมื่อโหลดข้อมูลเสร็จสิ้น
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Error sorting images',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
-  };
 
   const searchImages = (searchParam: string) => {
     Swal.fire({
@@ -115,6 +92,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
     axios.post("/api/search", { search }).then((response) => {
       if (response.data.status === 200) {
         for (let i = 0; i < response.data.img_url.length; i++) {
+          console.log('response.data.img_url[i]', response.data.img_url[i]);
           setImgURLS(response.data.img_url);
         }
         Swal.close();
@@ -138,20 +116,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
       console.log('search>>>>>>>>>>>>>>>>>>>>', search);
       searchImages(search);
     }
-    else if (sort !== checkSortimg) {
-      Refecth();
-      setCheckSortimg(sort);
-      setImgURLS([]);
-      console.log('check set imag URLS ', imgURLS)
-      loadImages(sort);
-      setNumber(0);
-      setCount(3);
-
-    } else {
-      Refecth();
-      loadImages(sort);
-    }
-
   }, [sort, checkSortimg]); // dependencies array
   function loadimage() {
     const cols = [colsOne, colsTwo, colsThree, colsFour, colsFive];
@@ -256,7 +220,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsTwo.map((url, index) => (
-            // //console.log('col 1', url),
+            // console.log('col 1', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -288,7 +252,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsThree.map((url, index) => (
-            // //console.log('col 2', url),
+            // console.log('col 2', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -320,7 +284,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsFour.map((url, index) => (
-            // //console.log('col 3', url),
+            // console.log('col 3', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -352,7 +316,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsFive.map((url, index) => (
-            // //console.log('col 4', url),
+            // console.log('col 4', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -393,5 +357,5 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
   );
 };
 
-export default Borad;
+export default boradsearch;
 

@@ -79,6 +79,7 @@ export default function Home() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+    setBoardCategories_("");
     setRefetch(true); // Trigger refetch
   };
 
@@ -88,11 +89,17 @@ export default function Home() {
     setRefetch(true); // Trigger refetch
   };
 
+  useEffect(() => {
+    if (refetch) {
+      setRefetch(false);
+    }
+  }, [refetch]);
+
   return (
     <main>
       {String(nav) === "admin" ? (
         <Navbar_admin />
-      ) : String(nav) === "user" ? (
+      ) : String(nav) === "user" ?  (
         <Navbar_login />
       ) : (
         <Navbar />
@@ -128,6 +135,7 @@ export default function Home() {
           <div className="row-start-3">
             {
               boardCategories_ === "" ? (
+                 
                 (checkSortimg === "latest" || checkSortimg === "popular") && (
                   <Borad gridClass="grid gap-4" sort={sortOrder} search={searchQuery} refecth={refetch} />
                 )

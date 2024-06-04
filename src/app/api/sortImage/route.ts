@@ -2,13 +2,21 @@ import { NextResponse, NextRequest } from "next/server";
 import models from "@/app/utils/models";
 
 export async function POST(request: NextRequest) {
-  const count = 20;
+  let checksort = 'latest'
+  // const count = ;
   let c = 0;
   try {
     if (request.method == "POST") {
       const body = await request.json();
       const { sort, setnum } = body;
-      c += setnum;
+      if (checksort != sort) {
+        console.log('sort: ', sort)
+        console.log('checksort: ', checksort)
+        c = 0;
+      } else {
+        c += setnum;
+      }
+      
       const matchedData: any[] = [];
       if (sort === "latest") {
         //console.log("Sort: ", sort, "Setnum: ", setnum, "Count: ", count)
@@ -21,7 +29,7 @@ export async function POST(request: NextRequest) {
           raw: true
         }) as any;
 
-        for (let i = setnum; i < Math.min(setnum + count, imageData.length); i++) {
+        for (let i = setnum; i < Math.min(setnum + imageData.length, imageData.length); i++) {
           const item = imageData[i];
           item.imageUrl = item.path_Img + "?id=" + item.img_ID + "&like=" + item.user_like;
           const userIds = imageData.map((item: any) => item.UserID);
@@ -48,6 +56,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Success", status: 200, img_url: datas, sort: sort, setnum: c});
 
       } else if (sort === "popular") {
+        checksort = sort
         c += setnum;
         const matchedData: any[] = [];
         const imageData = await models.info_image.findAll({
@@ -58,10 +67,10 @@ export async function POST(request: NextRequest) {
           order: [['user_like', 'DESC']],
           raw: true
         }) as any;
-
+        console.log('imageData: ', imageData)
         // สร้าง URL สำหรับรูปภาพและดึง UserIDs
         // const imageUrls = imageData.map((item: any) => `${item.path_Img}?id=${item.img_ID}&like=${item.user_like}`);
-        for (let i = setnum; i < Math.min(setnum + count, imageData.length); i++) {
+        for (let i = setnum; i < Math.min(setnum + imageData.length, imageData.length); i++) {
           const item = imageData[i];
           item.imageUrl = item.path_Img + "?id=" + item.img_ID + "&like=" + item.user_like;
           const userIds = imageData.map((item: any) => item.UserID);
