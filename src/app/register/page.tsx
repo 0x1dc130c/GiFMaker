@@ -102,7 +102,6 @@ function Register() {
                 const form = e.target as HTMLFormElement;
                 setuserName(''); setPassword(''); setCPassword(''); setEmail(''); setName('');
                 form.reset();
-                console.log("User Registerd Successfully");
                 window.location.href = '/login';
             } else {
                 Swal.fire({
@@ -113,7 +112,7 @@ function Register() {
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-                console.log("User Registerd Failed");
+                //console.log("User Registerd Failed");
             }
         } catch (error) {
             Swal.fire({

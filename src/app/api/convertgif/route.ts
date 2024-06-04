@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       console.error(err);
       return NextResponse.json({ error: err });
     }
-    console.log('stdout --------------------- ',stdout);
+    //console.log('stdout --------------------- ',stdout);
     return NextResponse.json({ success: 'Video converted successfully', stdout});
   });
   

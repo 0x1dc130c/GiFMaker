@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       img_url: matchedData,
     });
   } catch (error) {
-    console.log("Error During login : ", error);
+    //console.log("Error During login : ", error);
     return NextResponse.json({ istrue: false, message: "Error", status: 500 });
   }
 }

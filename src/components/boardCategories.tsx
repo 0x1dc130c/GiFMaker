@@ -28,7 +28,6 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
     const [number, setNumber] = useState(0);
 
     const handleClick = (url: string) => {
-        console.log("Print url:", url);
         setShowPopUp(url);
     };
 
@@ -157,7 +156,6 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className={gridClass}>
                     {colsOne.map((url, index) => (
-                        console.log('col 1', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
                                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -190,7 +188,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
 
                 <div className={gridClass}>
                     {colsTwo.map((url, index) => (
-                        // console.log('col 1', url),
+                        // //console.log('col 1', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
                                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -222,7 +220,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
 
                 <div className={gridClass}>
                     {colsThree.map((url, index) => (
-                        // console.log('col 2', url),
+                        // //console.log('col 2', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
                                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -254,7 +252,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
 
                 <div className={gridClass}>
                     {colsFour.map((url, index) => (
-                        // console.log('col 3', url),
+                        // //console.log('col 3', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
                                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -286,7 +284,7 @@ const BoardCategories: React.FC<BoardCategoriesProps> = ({ gridClass, categories
 
                 <div className={gridClass}>
                     {colsFive.map((url, index) => (
-                        // console.log('col 4', url),
+                        // //console.log('col 4', url),
                         <div key={index} className="w-full h-full flex relative">
                             <img
                                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"

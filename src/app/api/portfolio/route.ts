@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         const UserID = decoded.UserID;
 
         const data = await models.info_image.findAll({attributes:["path_Img","img_ID"],where: {UserID: UserID}, raw: true});
-        console.log('image my user ------------------------------------------------ ',data);
+        //console.log('image my user ------------------------------------------------ ',data);
         const datas = data.map((item: any) => item.path_Img+"?id="+item.img_ID);
         return NextResponse.json({
           istrue: true,
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         });
     }
   } catch (error) {
-    console.log("Error During login : ", error);
+    //console.log("Error During login : ", error);
     return NextResponse.json({message: "Error", status: 500 });
   }
 }

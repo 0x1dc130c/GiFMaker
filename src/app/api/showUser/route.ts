@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     try {
 
         const tableUser = await models.User.findAll({ where : { role: 'user' }, raw: true});
-        console.log(tableUser);
+        //console.log(tableUser);
 
         return NextResponse.json({
             tableUser,

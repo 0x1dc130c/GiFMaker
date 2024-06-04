@@ -7,7 +7,7 @@ const PopTag_ = ({ item, onclose }: { item: any, onclose: () => void }) => {
     const [tags, setTags] = useState('');
 
     const handleconfirm = async (statusconfirm: string) => {
-        console.log('tagid_ : ', tagid_);
+        //console.log('tagid_ : ', tagid_);
 
         try {
             // Show Swal while data is being sent
@@ -30,7 +30,7 @@ const PopTag_ = ({ item, onclose }: { item: any, onclose: () => void }) => {
             });
 
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
 
             if (data.status === 200) {
                 // Show Swal when tag addition is successful

@@ -11,7 +11,7 @@ async function createUser( userDetails: any ) {
     try{
         const newUser = await models.User.create(userDetails);
     }   catch (error) {
-        console.log("Error creating user: ", error);
+        //console.log("Error creating user: ", error);
     }
    
 
@@ -20,7 +20,7 @@ async function createUser( userDetails: any ) {
 export async function POST(request: Request) {
     try {
         const body = await request.formData();
-        console.log("body", body);
+        //console.log("body", body);
         // const { username,password, cpassword, email, name, profileimg } = body;
         const username = body.get('username');
         const password = body.get('password');
@@ -33,12 +33,12 @@ export async function POST(request: Request) {
         const status = 'active';
         const role = "user";
 
-        // console.log('username', username, 'password', password, 'cpassword', cpassword, 'email', email, 'name', name, 'profileimg', profileimg, 'blob', blob, 'status', status, 'role', role);
-        console.log('blob check ------------------------------ ', blob)
-        console.log('blob check ------------------------------ ', blob !== null)
-        console.log('blob check ------------------------------ ', blob.type)
+        // //console.log('username', username, 'password', password, 'cpassword', cpassword, 'email', email, 'name', name, 'profileimg', profileimg, 'blob', blob, 'status', status, 'role', role);
+        //console.log('blob check ------------------------------ ', blob)
+        //console.log('blob check ------------------------------ ', blob !== null)
+        //console.log('blob check ------------------------------ ', blob.type)
         if (blob instanceof Blob ){
-            console.log("blob if ------------------------------ ", blob);
+            //console.log("blob if ------------------------------ ", blob);
             const options: BlockBlobUploadOptions = {
                 blobHTTPHeaders: { blobContentType: blob.type }
             };
@@ -71,20 +71,20 @@ export async function POST(request: Request) {
                 name: name,
                 path_profile: imgURL
               }).then(user => {
-                console.log("User created successfully:", user);
+                //console.log("User created successfully:", user);
               }).catch(error => {
                 console.error("Error creating user:", error);
               });
             return NextResponse.json({ message: { username, email, password }, status: 200 });
 
         } else {
-            console.log("blob else ------------------------------ ", blob);
+            //console.log("blob else ------------------------------ ", blob);
             models.User.create({ Username: username, Password: password, email: email, status: status, role: role, name: name, path_profile: 'null'});
             return NextResponse.json({ message: { username, email, password }, status: 200 });
         }
 
     } catch (error) {
-        console.log("error ================================= ", error)
+        //console.log("error ================================= ", error)
         return NextResponse.json({ message: "Error in registration", status: 500 });
     }
 }

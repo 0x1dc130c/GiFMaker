@@ -114,7 +114,6 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
     axios.post("/api/search", { search }).then((response) => {
       if (response.data.status === 200) {
         for (let i = 0; i < response.data.img_url.length; i++) {
-          console.log('response.data.img_url[i]', response.data.img_url[i]);
           setImgURLS(response.data.img_url);
         }
         Swal.close();
@@ -253,7 +252,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsTwo.map((url, index) => (
-            // console.log('col 1', url),
+            // //console.log('col 1', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -285,7 +284,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsThree.map((url, index) => (
-            // console.log('col 2', url),
+            // //console.log('col 2', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -317,7 +316,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsFour.map((url, index) => (
-            // console.log('col 3', url),
+            // //console.log('col 3', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -349,7 +348,7 @@ const Borad: React.FC<BoradProps> = ({ gridClass, sort, search, refecth }) => {
 
         <div className={gridClass}>
           {colsFive.map((url, index) => (
-            // console.log('col 4', url),
+            // //console.log('col 4', url),
             <div key={index} className="w-full h-full flex relative">
               <img
                 className="h-auto max-w-full rounded-lg object-cover cursor-pointer"

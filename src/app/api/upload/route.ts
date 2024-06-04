@@ -15,19 +15,19 @@ async function UploadMysql(uID: number, nameImg : string, time : number, url : s
   const Userid = uID;
   const TagName = tagname;
   const user_like = 0
-  console.log('nameImg : ', nameImg);
-  console.log('timestamp : ', timstamp);
-  console.log('url : ', url); 
-  console.log('UserID : ', Userid);
-  console.log('status : ', status);
-  console.log('TagNames : ', tagname);
+  //console.log('nameImg : ', nameImg);
+  //console.log('timestamp : ', timstamp);
+  //console.log('url : ', url); 
+  //console.log('UserID : ', Userid);
+  //console.log('status : ', status);
+  //console.log('TagNames : ', tagname);
   try {
     const data = await models.info_image.create({imgName: nameImg, timestamp: timstamp, path_Img: url, UserID: Userid, status_img: status, TagNames: TagName, user_like: user_like, description: description});
-    console.log('data : ', data);
+    //console.log('data : ', data);
 
   } catch (error) {
 
-    console.log('Error in UploadMysql : ', error);
+    //console.log('Error in UploadMysql : ', error);
 
   }
   
@@ -47,7 +47,7 @@ export async function POST(request : NextRequest){
       }
 
     } catch (error) {
-      console.log('Error in userid : ', error);
+      //console.log('Error in userid : ', error);
     }
    
   }
@@ -60,10 +60,10 @@ export async function POST(request : NextRequest){
       const tag = data.get('tag') as string;
       const uID = await userid();
       const description = data.get('description') as string;
-      console.log('nameFile : ', nameFile);
-      console.log('description : ', description);
+      //console.log('nameFile : ', nameFile);
+      //console.log('description : ', description);
       const blob = file;
-      console.log('Uploading image api blob :', blob);
+      //console.log('Uploading image api blob :', blob);
       const options: BlockBlobUploadOptions = {
           blobHTTPHeaders: { blobContentType: file.type }
         };
@@ -81,7 +81,7 @@ export async function POST(request : NextRequest){
       // อัปโหลด Blob
       await blockBlobClient.uploadData(await blob.arrayBuffer(), options);
 
-      console.log('file : ', file);
+      //console.log('file : ', file);
       return NextResponse.json({ message: 'File uploaded successfully',  status: 200});
     } catch (error) {
       console.error('Error uploading file : ', error);

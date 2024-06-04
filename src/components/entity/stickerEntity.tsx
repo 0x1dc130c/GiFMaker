@@ -22,7 +22,7 @@ export const Stickerentity = observer(
         const ref = useRef<HTMLVideoElement>(null);
         const [formattedVideoLength, setFormattedVideoLength] = useState("00:00");
 
-        console.log('sticker stickerentiy >>>>>>>>>>>>>>>>>>>> : ', sticker, index);
+        //console.log('sticker stickerentiy >>>>>>>>>>>>>>>>>>>> : ', sticker, index);
 
         return (
             <div 

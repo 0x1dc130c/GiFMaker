@@ -4,7 +4,7 @@ import models from "../../utils/models";
 export async function POST(req: NextRequest) {
     try {  
         const body = await req.json();
-        console.log('body : ', body);
+        //console.log('body : ', body);
         const { imgID } = body;
 
         // แก้ไขการค้นหาเพื่อใช้ชื่อคอลัมน์ที่ถูกต้อง

@@ -5,7 +5,7 @@ const FontSelect = () => {
   const store = React.useContext(StoreContext);
   const handleFontChange = (event: any) => {
     const selectedFont = event.target.value;
-    console.log('selectedFont: ===============================> ', selectedFont);
+    //console.log('selectedFont: ===============================> ', selectedFont);
     setSelectedFont(selectedFont);
     store.setFontFamily(selectedFont);
   };

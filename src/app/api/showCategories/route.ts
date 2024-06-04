@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
                 },
                 raw: true
             });
-            console.log('categories -------------------------- ',categories);
+            //console.log('categories -------------------------- ',categories);
             const UserIDs = categories.map((item: any) => item.UserID);
-            console.log('userid -------------------------- ',UserIDs);
+            //console.log('userid -------------------------- ',UserIDs);
             const userData = await models.User.findAll({
                 attributes: ["UserID", "name", "path_profile"],
                 where: {

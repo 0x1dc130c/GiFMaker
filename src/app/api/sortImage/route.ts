@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
       c += setnum;
       const matchedData: any[] = [];
       if (sort === "latest") {
-        console.log("Sort: ", sort, "Setnum: ", setnum, "Count: ", count)
+        //console.log("Sort: ", sort, "Setnum: ", setnum, "Count: ", count)
         const imageData = await models.info_image.findAll({
           attributes: ["path_Img", "img_ID", "user_like", "UserID"],
           where: {
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
           c += 1;
         }
           
-        console.log("Matched Data: ", matchedData);
+        //console.log("Matched Data: ", matchedData);
 
         const datas = matchedData;
         return NextResponse.json({ message: "Success", status: 200, img_url: datas, sort: sort, setnum: c});
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ istrue: true, message: "Success", status: 200 });
     }
   } catch (error) {
-    console.log("Error During login : ", error);
+    //console.log("Error During login : ", error);
     return NextResponse.json({ istrue: false, message: "Error", status: 500 });
   }
 }

@@ -32,7 +32,6 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 200) {
-          console.log("cookie is set", data);
           setNav(data.data.role);
           setProfile(data.data.path_profile);
         } else {
@@ -88,8 +87,6 @@ export default function Home() {
     setSelectedCategory(categories_);
     setRefetch(true); // Trigger refetch
   };
-  console.log('checkSortimg ............................. ', checkSortimg)
-  console.log('sortOrder ............................. ', sortOrder)
 
   return (
     <main>

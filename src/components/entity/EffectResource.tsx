@@ -19,8 +19,8 @@ export type EffectResourceProps = {
 export const EffectResource = observer((props: EffectResourceProps) => {
 
   const handleChangeEffectType = (type: EffecType) => {
-    console.log("type", type);
-    console.log('props.editorElement.id', props.editorElement.id)
+    //console.log("type", type);
+    //console.log('props.editorElement.id', props.editorElement.id)
     store.updateEffect(props.editorElement.id, { type });
   };
 

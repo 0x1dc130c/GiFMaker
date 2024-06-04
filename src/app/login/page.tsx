@@ -24,7 +24,6 @@ function Login() {
 
   const handleSunmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(username, password);
     if (!username || !password) {
       setError("Please fill in complete information.");
       return;
@@ -71,7 +70,6 @@ function Login() {
               } else {
                 window.location.href = "/";
               }
-              console.log("User Login Successfully");
             });
           } else {
             MySwal.fire({
@@ -95,7 +93,6 @@ function Login() {
           });
         });
     } catch (error) {
-      console.log("Error During login : ", error);
     }
   };
 

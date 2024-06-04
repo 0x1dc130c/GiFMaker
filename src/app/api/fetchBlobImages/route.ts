@@ -6,8 +6,8 @@ import { BlobServiceClient } from '@azure/storage-blob';
 export async function GET(req: NextRequest) {
 
     if (req.method === 'GET') {
-        console.log('GET request');
-        console.log('req : ', req.method);
+        //console.log('GET request');
+        //console.log('req : ', req.method);
         
         try {
             const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -19,11 +19,11 @@ export async function GET(req: NextRequest) {
             const prefix = 'foldergif/';
             const urls: string[] = [];
             for await (const blob of containerClient.listBlobsFlat({ prefix })) {
-                console.log("Blob:", blob.name);
+                //console.log("Blob:", blob.name);
                 const imageURL = containerClient.getBlobClient(blob.name).url;
                 urls.push(imageURL);
             }
-            console.log('Images fetched:', urls);
+            //console.log('Images fetched:', urls);
 
             return NextResponse.json({ urls });
 
@@ -51,11 +51,11 @@ export async function GET(req: NextRequest) {
         //     const urls: string[] = [];
 
         //     for await (const blob of containerClient.listBlobsFlat({ prefix })) {
-        //         console.log("Blob:", blob.name);
+        //         //console.log("Blob:", blob.name);
         //         const imageURL = containerClient.getBlobClient(blob.name).url;
         //         urls.push(imageURL);
         //     }
-        //     console.log('Images fetched:', urls);
+        //     //console.log('Images fetched:', urls);
         //     return res.json({ urls });
 
         // } catch (error) {
@@ -75,11 +75,11 @@ export async function GET(req: NextRequest) {
     //     const urls: string[] = [];
 
     //     for await (const blob of containerClient.listBlobsFlat({ prefix })) {
-    //         console.log("Blob:", blob.name);
+    //         //console.log("Blob:", blob.name);
     //         const imageURL = containerClient.getBlobClient(blob.name).url;
     //         urls.push(imageURL);
     //     }
-    //     console.log('Images fetched:', urls);
+    //     //console.log('Images fetched:', urls);
     //     return res.json({ urls });
 
     // } catch (error) {

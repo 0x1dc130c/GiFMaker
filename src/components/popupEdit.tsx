@@ -32,7 +32,7 @@ const PopEdit = ({ item, onclose }: { item: any, onclose: () => void }) => {
                 body: JSON.stringify({ userid_, username_, password_, role_, email_, name_, status_}),
             }).then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
+                    //console.log(data);
                     if (data.status === 200) {
                         Swal.fire(
                             'Saved!',

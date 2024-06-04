@@ -6,7 +6,7 @@ const Popreport = ({ item }: { item: any }) => {
     const [Details, setDetails] = useState(''); // ปรับเพิ่ม useState('') และ setDetails('')
 
     const handleOnClose = () => {
-        console.log('onclose called');
+        //console.log('onclose called');
         Swal.close();
     };
 

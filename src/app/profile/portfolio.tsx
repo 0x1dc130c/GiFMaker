@@ -115,18 +115,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
     });
   };       
 
-  
-  // if(imgURLS.length > 0){
-  //   console.log('imgURLS count --------------------------- ', imgURLS.length);
-  // } else {
-  //   console.log('not imgURLS count --------------------------- ', imgURLS.length);
-  // }
-
-  // for (let i = 0; i < cols_one.length; i++) {
-  //   console.log('cols_one  --------------------------- ', cols_one[i]);
-  // }
-
-  
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
       <div className={gridClass}>
@@ -144,7 +132,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
 
       <div className={gridClass}>
         {cols_two.map((url, index) => (
-          // console.log('col 1', url),
+          // //console.log('col 1', url),
           <div key={index} className="w-full h-full flex">
             <img
               className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -158,7 +146,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
 
       <div className={gridClass}>
         {cols_three.map((url, index) => (
-          // console.log('col 2', url),
+          // //console.log('col 2', url),
           <div key={index} className="w-full h-full flex">
             <img
               className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -172,7 +160,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
 
       <div className={gridClass}>
         {cols_four.map((url, index) => (
-          // console.log('col 3', url),
+          // //console.log('col 3', url),
           <div key={index} className="w-full h-full flex">
             <img
               className="h-auto max-w-full rounded-lg object-cover cursor-pointer"
@@ -186,7 +174,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ gridClass}) => {
 
       <div className={gridClass}>
         {cols_five.map((url, index) => (
-          // console.log('col 4', url),
+          // //console.log('col 4', url),
           <div key={index} className="w-full h-full flex">
             <img
               className="h-auto max-w-full rounded-lg object-cover cursor-pointer"

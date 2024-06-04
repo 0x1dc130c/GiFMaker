@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       }
     }
   } catch (error) {
-    console.log("Error During login : ", error);
+    //console.log("Error During login : ", error);
     return NextResponse.json({ message: "Error", status: 500 });
   }
 }

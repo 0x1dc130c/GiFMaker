@@ -21,12 +21,12 @@ export async function POST(request: NextRequest) {
             }
 
         } catch (error) {
-            console.log('Error in userid : ', error);
+            //console.log('Error in userid : ', error);
         }
 
     }
     // const uID = await userid();
-    // console.log('uID >>>>>>>>>>>>>>>>>>>> : ', uID);
+    // //console.log('uID >>>>>>>>>>>>>>>>>>>> : ', uID);
     // const body = await request.formData();
     // const file: File = body.get('image') as unknown as File;
     // const nameimg = file;
@@ -34,20 +34,20 @@ export async function POST(request: NextRequest) {
     //     const body = await request.formData();
     //         const file : File = body.get('image') as unknown as File;
     //         const nameimg = file;
-    //         console.log('nameimg >>>>>>>>>>>>>>>>>>>> : ', nameimg);
+    //         //console.log('nameimg >>>>>>>>>>>>>>>>>>>> : ', nameimg);
     // } catch (error) {
-    //     console.log('Error in nameimg : ', error);
+    //     //console.log('Error in nameimg : ', error);
     // }
     try {
         if (request.method === 'POST') {
             const body = await request.formData();
 
-            console.log('body >>>>>>>>>>>>>>>>>>>> : ', body)
+            //console.log('body >>>>>>>>>>>>>>>>>>>> : ', body)
 
             const file: File = body.get('image') as unknown as File;
-            console.log('file >>>>>>>>>>>>>>>>>>>> : ', file);
+            //console.log('file >>>>>>>>>>>>>>>>>>>> : ', file);
             const uID = await userid();
-            console.log('uID >>>>>>>>>>>>>>>>>>>> : ', uID);
+            //console.log('uID >>>>>>>>>>>>>>>>>>>> : ', uID);
             const blob = file;
 
             const options: BlockBlobUploadOptions = {
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         }
 
     } catch (error) {
-        console.log("error ================================= ", error)
+        //console.log("error ================================= ", error)
         return NextResponse.json({ message: "Error in registration", status: 500 });
     }
 }

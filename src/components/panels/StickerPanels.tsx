@@ -15,7 +15,7 @@ export const StickerPanel = observer(() => {
                 method: "POST",
             });
             const data = await res.json();
-            console.log('data.stickers >>>>>>>>>>>>>>>>>>>> : ', data.stickers);
+            //console.log('data.stickers >>>>>>>>>>>>>>>>>>>> : ', data.stickers);
             setstickers(data.stickers);
         };
         fetchStickers();
@@ -23,7 +23,7 @@ export const StickerPanel = observer(() => {
 
     if(store.sticker.length === 0) {
         stickers.forEach((image, index) => {
-            console.log(' img ----------------------------- ',image);
+            //console.log(' img ----------------------------- ',image);
             store.addStickerResource('/stickers/'+image);
         });
     }

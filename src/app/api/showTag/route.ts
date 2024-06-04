@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     try{
 
         const tableTag = await models.Tag.findAll({ where : { status: 'waiting' }, raw: true});
-        console.log('table Tag  : ',tableTag);
+        //console.log('table Tag  : ',tableTag);
         return NextResponse.json({
             tableTag,
             status: 200,

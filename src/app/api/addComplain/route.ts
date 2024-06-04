@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { img_ID, details,path_img } = body;
         const cookie = req.cookies;
-        console.log('img_ID', img_ID, 'details', details);
         // ตรวจสอบว่าค่า cookie ไม่เป็น undefined และไม่ว่างเปล่า
         if (!cookie || !cookie.toString()) {
             return NextResponse.json({ message: "Error: No cookies found", status: 500 });
@@ -27,9 +26,6 @@ export async function POST(req: NextRequest) {
         }
         
         const decoded = jwt.verify(token, "secret") as JwtPayload;
-        console.log('decoded : ',decoded)
-        console.log('new Date().toISOString(): ',new Date().toISOString())
-        console.log('decoded.path_img' ,path_img)
         // ตรวจสอบว่าการ decode token สำเร็จและมี UserID
         if (!decoded || !decoded.UserID) {
             return NextResponse.json({ message: "Error: Invalid token", status: 500 });

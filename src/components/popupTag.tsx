@@ -24,7 +24,7 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
             body: JSON.stringify({tagid_, statusconfirm}),
         }).then((response) => response.json())
             .then((data) => {
-                console.log(data);
+                //console.log(data);
                 if (data.status === 200) {
                     Swal.fire({
                         title: "Success!",
@@ -71,7 +71,7 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
             body: JSON.stringify({tagid_, statusdelete}),
         }).then((response) => response.json())
             .then((data) => {
-                console.log(data);
+                //console.log(data);
                 if (data.status === 200) {
                     Swal.fire({
                         title: "Success!",
@@ -84,7 +84,7 @@ const PopTag = ({ item, onclose }: { item: any, onclose: () => void }) => {
                         onclose();
                     });
                 } else {
-                    console.log('data.message : ', data.message);
+                    //console.log('data.message : ', data.message);
                 }
 
             })

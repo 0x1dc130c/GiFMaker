@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
             const categories = await models.Tag.findAll({ where: { status: 'active' } });
             // randomize the categories 5 item
             const randomCategories = categories.sort(() => Math.random() - 0.5).slice(0, 5);
-            console.log('random categories:', randomCategories);
+            //console.log('random categories:', randomCategories);
             return NextResponse.json({ data: randomCategories, status: 200 });
 
         }

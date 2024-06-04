@@ -112,7 +112,7 @@ export class Store {
 
   setTextColorStore(textColor: string) {
     this.textColor = textColor;
-    console.log('setTextColor selectedElement  ---------------> ', this.selectedElement)
+    //console.log('setTextColor selectedElement  ---------------> ', this.selectedElement)
     if (this.selectedElement && this.selectedElement.type === 'text') {
       this.updateEditorElement(this.selectedElement);
 
@@ -148,7 +148,7 @@ export class Store {
 
   setBrightness(brightness: number) {
     this.brightness = brightness;
-    console.log('setBrightness brightness store ---------------> ', this.brightness)
+    //console.log('setBrightness brightness store ---------------> ', this.brightness)
     if (this.selectedElement && this.selectedElement.type === 'image') {
       this.updateEditorElement(this.selectedElement);
     }
@@ -172,7 +172,7 @@ export class Store {
   }
 
   setPixelate(pixelate: number) {
-    console.log('setPixelate pixelate store ---------------> ', pixelate)
+    //console.log('setPixelate pixelate store ---------------> ', pixelate)
     this.pixelate = pixelate;
     if (this.selectedElement && this.selectedElement.type === 'image') {
       this.updateEditorElement(this.selectedElement);
@@ -210,14 +210,14 @@ export class Store {
   }
   addImageResource(image: string) {
     this.images = [...this.images, image];
-    console.log(this.images);
-    console.log("image added");
+    //console.log(this.images);
+    //console.log("image added");
   }
 
   addStickerResource(sticker: string) {
     this.sticker = [...this.sticker, sticker];
-    console.log(this.sticker);
-    console.log("sticker added");
+    //console.log(this.sticker);
+    //console.log("sticker added");
   }
 
   addAnimation(animation: Animation) {
@@ -454,7 +454,7 @@ export class Store {
 
 
   addEditorElement(editorElement: EditorElement) {
-    console.log('addEditorElement : editorElement ---------------> ', editorElement)
+    //console.log('addEditorElement : editorElement ---------------> ', editorElement)
     this.setEditorElements([...this.editorElements, editorElement]);
     this.refreshElements();
     this.setSelectedElement(this.editorElements[this.editorElements.length - 1]);
@@ -636,9 +636,9 @@ export class Store {
 
 
   addImage(index: number) {
-    console.log('add image >>>>>>>>>>>>>>>>>>>> ', index)
+    //console.log('add image >>>>>>>>>>>>>>>>>>>> ', index)
     const imageElement = document.getElementById(`image-${index}`)
-    console.log('addImage imageElement ---------------> ', imageElement)
+    //console.log('addImage imageElement ---------------> ', imageElement)
     if (!isHtmlImageElement(imageElement)) {
       return;
     }
@@ -696,7 +696,7 @@ export class Store {
     strokeColor: string
 
   }) {
-    // console.log('options ---------------> ', options)
+    // //console.log('options ---------------> ', options)
     const id = getUid();
     const index = this.editorElements.length;
     const canvasWidth = this.canvas?.getWidth() ?? 0;
@@ -787,8 +787,8 @@ export class Store {
   //   const mediaRecorder = new MediaRecorder(stream);
   //   const chunks: Blob[] = [];
   //   mediaRecorder.ondataavailable = function (e) {
-  //     console.log("data available");
-  //     console.log(e.data);
+  //     //console.log("data available");
+  //     //console.log(e.data);
   //     chunks.push(e.data);
   //   };
   //   mediaRecorder.onstop = function (e) {
@@ -844,7 +844,7 @@ export class Store {
       const chunks: Blob[] = [];
       mediaRecorder.ondataavailable = function (e) {
         chunks.push(e.data);
-        console.log("data available");
+        //console.log("data available");
 
       };
       mediaRecorder.onstop = async function (e) {
@@ -913,7 +913,7 @@ export class Store {
       const element = store.editorElements[index];
       switch (element.type) {
         case "video": {
-          console.log("elementid --------------------> ", element.properties.elementId);
+          //console.log("elementid --------------------> ", element.properties.elementId);
           if (document.getElementById(element.properties.elementId) == null)
             continue;
           const videoElement = document.getElementById(

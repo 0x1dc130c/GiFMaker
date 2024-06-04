@@ -16,10 +16,10 @@ function checkCookie(callback: any) {
     .then((data) => {
       if (data.status === 200) {
 
-        console.log("cookie is set");
+        //console.log("cookie is set");
         callback(true);
       } else {
-        console.log("cookie is not set", data);
+        //console.log("cookie is not set", data);
         callback(false);
       }
     })

@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Error: Invalid method", status: 405 });
     }
   } catch (error) {
-    console.log("Error During login : ", error);
+    //console.log("Error During login : ", error);
     return NextResponse.json({ message: "Error", status: 500 });
   }
 }

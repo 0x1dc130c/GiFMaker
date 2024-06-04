@@ -18,7 +18,7 @@ export const TextResource = observer(
 
 // Only run this effect when fontFamily changes
     const changeFontFamily = (font: any) => {
-      console.log('changeFontFamily -------------------------> ', font)
+      //console.log('changeFontFamily -------------------------> ', font)
       store.setFontFamily(font);
       store.addText({
         text: sampleText,

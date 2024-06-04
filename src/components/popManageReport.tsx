@@ -3,7 +3,7 @@ import React from 'react';
 import Swal from "sweetalert2";
 
 const PManageReport = ({ item, handleClose }: { item: any, handleClose: () => void }) => {
-    console.log('------------------------------------- imgggg', item);
+    //console.log('------------------------------------- imgggg', item);
     const handleApprove = () => {
         Swal.fire({
             title: 'Approve',

@@ -1,5 +1,5 @@
 export function ReloadImage(value : any) {
 
-    console.log('value : ',value);
+    //console.log('value : ',value);
 
 }

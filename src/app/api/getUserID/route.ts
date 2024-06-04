@@ -7,15 +7,15 @@ import jwt,{ sign } from 'jsonwebtoken';
 
 export async function POST(request: NextRequest) {
     try{ // Get the token from the cookie
-        console.log('Request method : ',request.method)
+        //console.log('Request method : ',request.method)
         if (request.method == 'POST') {
             const body = await request.json();
 
-            console.log('body ======================> : ',body);
+            //console.log('body ======================> : ',body);
 
             const { cookieName, cookieValue } = body;
             const decode = jwt.verify(cookieValue, 'secret');
-            console.log('decode : ',decode);
+            //console.log('decode : ',decode);
             const UsID = (decode as any).UserID;
             return NextResponse.json({ message: 'Cookie : ', UsID , status: 200 });
             // } else {
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
             // }
         }
     } catch (error) {
-        console.log("Error During login : ", error);
+        //console.log("Error During login : ", error);
         return NextResponse.json({ message: 'Error', status: 500 });
         // Handle the error here
     }

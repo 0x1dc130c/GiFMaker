@@ -67,7 +67,7 @@ const ShowTags: React.FC<ShowTagsProps> = ({ setCheckedItems }) => {
                 if (data.status === 200) {
                     setUserID(data.data.UserID);
                 } else {
-                    console.log('data.message ----------- : ', data.message);
+                    //console.log('data.message ----------- : ', data.message);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);

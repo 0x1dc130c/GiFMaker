@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({like: true, message: "Success", status: 200 });
     }
   } catch (error) {
-    console.log("Error During login : ", error);
+    //console.log("Error During login : ", error);
     return NextResponse.json({like: false, message: "Error", status: 500 });
   }
 }

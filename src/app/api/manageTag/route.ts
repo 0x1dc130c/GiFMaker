@@ -7,12 +7,12 @@ export async function POST(request: Request) {
 
         const body = await request.json();
         const {tagid_, statusconfirm} = body;
-        console.log('TagID : ', tagid_)
-        console.log('body : ', body);
-        console.log('status : ', statusconfirm);
+        //console.log('TagID : ', tagid_)
+        //console.log('body : ', body);
+        //console.log('status : ', statusconfirm);
 
         const tableTag = await models.Tag.update({ status: statusconfirm }, { where: { TagID: tagid_ } });
-        console.log('tableTag api manageTag ------------> : ',tableTag);
+        //console.log('tableTag api manageTag ------------> : ',tableTag);
         return NextResponse.json({ message: "Success", status: 200 });
     } catch (error) {
         const message = "Error during fetch data";

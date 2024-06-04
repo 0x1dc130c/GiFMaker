@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         const token = sign({UserID : (user as any).UserID ,username: (user as any).Username, role: (user as any).role, pathProfile : (user as any).path_profile, name: (user as any).name},"secret", {
             expiresIn: MAX_AGE,
         });
-        // console.log(token);
+        // //console.log(token);
         
         return NextResponse.json({
             message: "เข้าสู่ระบบสำเร็จ",

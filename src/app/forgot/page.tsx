@@ -31,7 +31,6 @@ function Login() {
                 body: JSON.stringify({ email }),
             });
             const data = await response.json();
-            console.log(data.data.UserID);
             if (response.status === 200) {
                 setData(data);
                 Swal.close();
