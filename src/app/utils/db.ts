@@ -13,7 +13,7 @@ const sequelize = new sequelize_1.Sequelize(
       timestamps: false,
     },
     logging: (msg: any) => console.log(msg)
-  },
+  }
 );
 
 sequelize
